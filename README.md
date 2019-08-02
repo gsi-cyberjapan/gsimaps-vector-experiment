@@ -41,7 +41,7 @@
 * [地物の属性一覧](https://maps.gsi.go.jp/help/pdf/vector/attribute.pdf)
 
 ## style.json
-* 地図のデザインを規定しているファイル。[Style Specification](https://docs.mapbox.com/mapbox-gl-js/style-spec/)に従って記述されています。
+* 地図のデザインを規定しているファイル。[Style Specification](https://docs.mapbox.com/mapbox-gl-js/style-spec/)をベースとしておりますが、若干の拡張を施しています。
 * 2019年7月29日現在の地理院地図Vectorの「おすすめの地図」のデザインファイル「style.json」は以下の表の通りです。
 * 右クリックの「名前をつけて保存」からダウンロードすることができます。
 * 保存したファイルは、地理院地図Vectorの「スタイルファイルを読み込む」機能から読み込むこともできます。
