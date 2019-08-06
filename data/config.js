@@ -356,6 +356,10 @@ GSIBV.CONFIG.MENU = [
   {
     "id": "gsimaps",
     "title": "地理院地図で表示"
+  },
+  {
+  	"id":"centercross",
+  	"title":"中心十字線"
   }
 
 ];
