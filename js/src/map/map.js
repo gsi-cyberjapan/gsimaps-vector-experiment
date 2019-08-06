@@ -217,6 +217,9 @@ GSIBV.Map = class extends MA.Class.Base {
     //this._createMousePosition();
 
     this._centerCross = new GSIBV.Map.CenterCross(this._map);
+    this._centerCrossVisible = true;
+    this._centerCross.visible = this._centerCrossVisible;
+
     this._mousePositionControl = new GSIBV.Map.MousePosition(this._map);
     /*
     this._mousePositionLayer = new GSIBV.Map.ControlLayer.MousePosition();
@@ -623,6 +626,12 @@ GSIBV.Map = class extends MA.Class.Base {
     }
     this.fire("vectortile", { "list": this._loadingVectorTileList });
 
+  }
+
+  centercrosschange(){
+    this._centerCrossVisible = !this._centerCrossVisible;
+    this._centerCross.visible=this._centerCrossVisible;
+    //this.fire("layerchange");
   }
 
 }
