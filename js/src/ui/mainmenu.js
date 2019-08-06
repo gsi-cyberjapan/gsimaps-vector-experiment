@@ -55,6 +55,9 @@ GSIBV.UI.MainMenu = class extends MA.Class.Base {
       case "eng":
         this._app.lang = ( this._app.lang == "ja" ? "en" : "ja" );
         break;
+      case "centercross":
+        this._app._map.centercrosschange();
+        break;
     }
   }
 
