@@ -408,12 +408,22 @@ GSIBV.Map.Layer.BinaryVectorTile = class extends GSIBV.Map.Layer {
       
       try {
         map.repaint = false;
+        var z = Math.floor( this._map.zoom );
+
         for (var i = 0; i < this._layers.length; i++) {
           var layer = this._layers[i];
+
+          // 20190809 ID8 現在の可視状態に合わせて表示を切り替え
+          visibility =  visible ? "visible" : "none";
+          if ( visible && !layer.layer.getVisible(z) ) {
+            visibility = "none";
+          }
+
           if (layer.list) {
             //if (!layer.added) continue;
             for (var j = 0; j < layer.list.length; j++) {
               var id = layer.list[j].id;
+              
               if ( !map.getLayer(id)) continue;
               map.setLayoutProperty(id, "visibility", visibility);
             }

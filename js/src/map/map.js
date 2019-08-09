@@ -91,7 +91,7 @@ GSIBV.Map = class extends MA.Class.Base {
 
       },
       zoom: this._startUp.zoom,
-      minZoom: 2,
+      minZoom: 4,
       maxZoom: 17,
       center: this._startUp.center,
       boxZoom: false,
