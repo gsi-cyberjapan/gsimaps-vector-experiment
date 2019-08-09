@@ -148,6 +148,12 @@ GSIBV.UI.Edit.Fill = class extends GSIBV.UI.Edit.Base {
           "value":"dot", 
           "title":GSIBV.CONFIG.LANG.JA.UI.EDITINPUT["dot"], 
           "titleEng":GSIBV.CONFIG.LANG.EN.UI.EDITINPUT["dot"]
+        },
+                {
+          "img":img( "minus", fillColor),
+          "value":"minus", 
+          "title":GSIBV.CONFIG.LANG.JA.UI.EDITINPUT["minus"], 
+          "titleEng":GSIBV.CONFIG.LANG.EN.UI.EDITINPUT["minus"]
         }
       ],
       this.drawStyle.getValue("fill-style")
