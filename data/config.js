@@ -128,21 +128,21 @@ GSIBV.CONFIG.Sprite = {
 
 //ベクトルタイルの読み込むズーム設定
 GSIBV.CONFIG.VectorTileSourceList = [
-  {"minzoom":5,"maxzoom":18} // ZL5～18までそれぞれのZLのタイル使用
+  {"minzoom":4,"maxzoom":17} // ZL4～17までそれぞれのZLのタイル使用
 ];
 /*
-//ZL15以降はZL15のタイルを使用する例
+//ZL14以降はZL14のタイルを使用する例
 GSIBV.CONFIG.VectorTileSourceList = [
-  {"minzoom":5,"maxzoom":15} // ZL5～15までそれぞれのZLのタイル使用、それ以降は15が使用される
+  {"minzoom":4,"maxzoom":14} // ZL4～14までそれぞれのZLのタイル使用、それ以降は14が使用される
 ];
 
-//ZL5,9,12,15,18のタイルを使用する例
+//ZL4,8,10,14,17のタイルを使用する例
 GSIBV.CONFIG.VectorTileSourceList =[
-  {"minzoom":5,"maxzoom":5},
-  {"minzoom":9,"maxzoom":9}, 
-  {"minzoom":12,"maxzoom":12},
-  {"minzoom":15,"maxzoom":15},
-  {"minzoom":18,"maxzoom":18}
+  {"minzoom":4,"maxzoom":4},
+  {"minzoom":8,"maxzoom":8}, 
+  {"minzoom":11,"maxzoom":11},
+  {"minzoom":14,"maxzoom":14},
+  {"minzoom":17,"maxzoom":17}
 ];
 */
 

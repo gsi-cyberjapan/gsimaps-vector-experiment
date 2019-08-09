@@ -173,6 +173,7 @@ GSIBV.CONFIG.LANG.JA.UI.EDITINPUT = {
   "rtlb" : "右上から左下",
   "cross" : "クロス",
   "dot" : "点",
+  "minus" : "横線",
 
   
   "selectimage" : "画像を選択",
