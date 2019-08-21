@@ -181,11 +181,36 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
           if ( info == undefined && layer.drawList.length > 0) {
             info = layer.drawList[0].drawStyle._info.clone();
           }
+
+          
+          // 20190821 - start 編集前のアイコン画像を退避
+          var iconGroup = undefined;
+          var iconImage = undefined;
+
+          for( var k =0; k<layer.drawList.length; k++) {
+            var draw = layer.drawList[k];
+            iconGroup = draw.drawStyle.data["icon-group"];
+            iconImage = draw.drawStyle.data["icon-image"];
+          }
+          // 20190821 - end
+          
           layer._drawList = [];
 
           for( var k=0; k<drawList.length;k++) {
             var json = drawList[k].toData();
             json.info = info.toData();
+            
+            // 20190821 - start 編集前のアイコン画像を設定
+            if ( json.draw ) {
+              if ( json.draw["icon-group"] != undefined && iconGroup != undefined ) {
+                json.draw["icon-group"] = iconGroup;
+              }
+              if ( json.draw["icon-image"] != undefined && iconImage != undefined ) {
+                json.draw["icon-image"] = iconImage;
+              }
+            }
+            // 20190821 - end
+
             var draw = new GSIBV.VectorTileData.Draw(layer._owner, layer);
             draw.fromJSON( json );
             layer._drawList.push( draw );
