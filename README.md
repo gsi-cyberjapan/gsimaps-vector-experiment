@@ -62,7 +62,11 @@
 		<td><a href="https://maps.gsi.go.jp/vector/data/blank2.json">白地図2</a></td>
 	</tr>
 </table>
-※　「2」がついているものは、若干初期表示は遅いが、道路の立体交差を表現しているものになります。
+※　「2」がついているものは、若干初期表示は遅いが、道路の立体交差を表現しているものになります。<br><br>
+
+* この他、ラスタの[地理院地図](https://maps.gsi.go.jp)の「標準地図」にできる限り表現を近づけたstyle.jsonは[こちら]( https://maps.gsi.go.jp/vector/data/std3.json)よりダウンロードできます。
+このファイルも、「スタイルファイルを読み込む」機能から読み込むことができますが、初期表示に長い時間がかかりますので、ご注意ください。
+
 
 ## デモサイト
 - 地理院地図Vector　https://maps.gsi.go.jp/vector/
