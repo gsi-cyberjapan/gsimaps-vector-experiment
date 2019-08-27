@@ -14,7 +14,6 @@ GSIBV.VectorTileData = class extends MA.Class.Base {
 
     this._tiles = [
       "https://cyberjapandata.gsi.go.jp/xyz/experimental_bvmap/{z}/{x}/{y}.pbf"
-//      "https://maps.gsi.go.jp/xyz/mapboxtestdata0311/{z}/{x}/{y}.pbf"
     ];
 
     if ( json ) {
