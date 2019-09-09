@@ -284,7 +284,9 @@ GSIBV.UI.EditLayerView = class extends GSIBV.UI.Base {
 
   _onMenuButtonClick() {
 
-    //this._class.showPopupMenu(this);
+    // 20190909
+    GSIBV.UI.EditLayerView.hidePopupMenu();
+
     if (!this._class._popupMenu ) {
       this._class._popupMenu = new GSIBV.UI.Popup.Menu ();
       this._class._popupMenu.on("select",MA.bind(function(e){
