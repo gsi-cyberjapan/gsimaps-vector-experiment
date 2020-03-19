@@ -1,0 +1,4839 @@
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: 'Lucida Grande', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, メイリオ, sans-serif;
+}
+
+html, body {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  -webkit-text-size-adjust: 100%;
+}
+
+img {
+  border: 0;
+}
+
+form {
+  margin: 0px;
+  padding: 0px;
+}
+
+#template {
+  display: none;
+}
+
+select::-ms-expand {
+  background: none;
+  border: none;
+}
+
+.noscript {
+  height: 64px;
+  width: 100%;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 100000;
+  background: #aaa;
+}
+
+.logo {
+  display: block;
+  position: absolute;
+  width: 150px;
+  height: 100%;
+  /*
+  background-image: url(../image/logo.png);
+  
+  background-position: left 50%;
+  background-repeat: no-repeat;
+  */
+  color:#fff;
+  font-size:9pt;
+  text-decoration: none;
+}
+.logo div.logo-1{
+  width:100%;
+  text-align: center;
+  line-height: 22px;
+  font-size:16px;
+  padding-left:4px;
+  letter-spacing: 1px;
+}
+
+.logo div.logo-2{
+  
+  width:100%;
+  text-align: center;
+  line-height: 8px;
+  font-size:12px;
+
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: none;
+  border: none;
+}
+
+::-webkit-scrollbar-track {
+  background: none;
+  border: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgba(128, 128, 128, 0.3);
+}
+
+/* 点滅 */
+
+.blink_background {
+  -webkit-animation: blink_bg 500ms ease-in-out infinite alternate;
+  -moz-animation: blink_bg 500ms ease-in-out infinite alternate;
+  animation: blink_bg 500ms ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes blink_bg {
+  0% {
+    background-color: rgba(255, 255, 0, 0);
+  }
+  100% {
+    background-color: rgba(255, 255, 0, 0.1);
+  }
+}
+
+@-moz-keyframes blink_bg {
+  0% {
+    background-color: rgba(255, 255, 0, 0);
+  }
+  100% {
+    background-color: rgba(255, 255, 0, 0.1);
+  }
+}
+
+@keyframes blink_bg {
+  0% {
+    background-color: rgba(255, 255, 0, 0);
+  }
+  100% {
+    background-color: rgba(255, 255, 0, 0.1);
+  }
+}
+
+.-gsibv-mousepoint-mode {
+  cursor: crosshair;
+}
+
+#incompatible {
+  display: none;
+}
+
+#main {
+  display: none;
+}
+
+
+
+input[type=radio].normalcheck, input[type=checkbox].normalcheck {
+  display: inline-block;
+  margin-right: 2px;
+}
+
+input[type=radio].normalcheck+label, input[type=checkbox].normalcheck+label {
+  position: relative;
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 9pt;
+  line-height: 13px;
+  cursor: pointer;
+}
+
+input[type=search] {
+  -webkit-appearance: textfield;
+}
+
+input[type=text] {
+  background-color: #5a5a5a;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+input[type=text]::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #ccc;
+  opacity: 1;
+  /* Firefox */
+}
+
+input[type=text]::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #ccc;
+}
+
+input[type=text]:focus {
+  outline: 0;
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+select {
+  -webkit-appearance: button;
+  appearance: button;
+  background-color: #5a5a5a;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  padding: 0 3px 0 3px;
+  cursor: pointer;
+  padding-right: 20px;
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)"\
+        width="12" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L10 2 L6 10 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+}
+
+select:focus {
+  outline: 0;
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+textarea {
+  background-color: #5a5a5a;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+textarea:focus {
+  outline: 0;
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+a.button {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  background-color: #5a5a5a;
+  border-radius: 3px;
+  padding: 1px 6px 1px 6px;
+  border-radius: 3px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  font-size: 9pt;
+  cursor: pointer;
+}
+
+a.button:hover {
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.-gsibv-mapmenu-button-label {
+  position: absolute;
+  bottom: 1px;
+  font-size: 11px;
+  text-align: center;
+  left: 2px;
+  right: 2px;
+  background-color:rgba(0,0,0,0.5);
+  color:#fff;
+  white-space: nowrap;
+}
+
+
+button {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  background-color: #5a5a5a;
+  border-radius: 3px;
+  padding: 1px 6px 1px 6px;
+  border-radius: 3px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  font-size: 9pt;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+
+button.mapboxgl-popup-close-button {
+  
+  padding: 0;
+  box-shadow: none;
+  color:#000;
+  background-color:transparent;
+}
+
+.mapboxgl-popup-content h3{
+  margin:0;
+}
+
+button:hover {
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+@media (min-width: 1px) {
+  input[type=radio].normalcheck, input[type=checkbox].normalcheck {
+    display: none;
+    margin: 0;
+  }
+  input[type=radio].normalcheck+label, input[type=checkbox].normalcheck+label {
+    padding: 0 0 0 20px;
+  }
+  input[type=radio].normalcheck+label::before, input[type=checkbox].normalcheck+label::before {
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 0;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: block;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    margin-top: -7px;
+    background: #666;
+  }
+  input[type=radio].normalcheck+label::before {
+    border: 1px solid #777;
+    border-radius: 50px;
+  }
+  input[type=checkbox].normalcheck+label::before {
+    border: 1px solid #777;
+    border-radius: 50px;
+    background: #666;
+  }
+  input[type=radio].normalcheck:checked+label::after, input[type=checkbox].normalcheck:checked+label::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: block;
+  }
+  input[type=radio].normalcheck:checked+label::after {
+    left: 3px;
+    width: 8px;
+    height: 8px;
+    margin-top: -3px;
+    background: #fff;
+    border-radius: 50%;
+  }
+  input[type=checkbox].normalcheck:checked+label::after {
+    left: 3px;
+    width: 15px;
+    height: 8px;
+    margin-top: -6px;
+    border-left: 3px solid #fff;
+    border-bottom: 3px solid #fff;
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+
+
+
+
+  input[type=radio].normalcheck.white+label::before, input[type=checkbox].normalcheck.white+label::before {
+    
+    background: #fff;
+  }
+  input[type=radio].normalcheck.white+label::before {
+    border: 1px solid #777;
+  }
+  input[type=checkbox].normalcheck.white+label::before {
+    border: 1px solid #777;
+    background: #fff;
+  }
+  input[type=radio].normalcheck.white:checked+label::after {
+    background: #333;
+  }
+  input[type=checkbox].normalcheck.white:checked+label::after {
+    border-left: 3px solid #333;
+    border-bottom: 3px solid #333;
+  }
+
+}
+
+/*画面を覆う*/
+
+#main {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+#main .print-header {
+  display: none;
+  width: 650px;
+  border-collapse: collapse;
+
+}
+
+#main .print-header *{
+  font-size:11pt;
+}
+
+#main.print {
+  position:relative;
+  left:auto;
+  right:auto;
+  top:auto;
+  bottom:auto;
+  overflow:visible;
+  padding:18px;
+}
+@media print{
+  
+  #main.print {
+    padding: 0;
+  }
+  #main .no_print{
+    display:none;
+  }
+}
+
+#main.print #header{
+  display: none;
+}
+
+#main.print #left-panel {
+  display: none;
+}
+
+
+#main.print #context-menu {
+  display: none;
+}
+
+#main.print .content{
+  
+  position:relative;
+  left:auto;
+  right:auto;
+  top:auto;
+  bottom:auto;
+  width:650px;
+  height:900px;
+
+  border:1px solid #333;
+}
+
+
+
+
+#main.print .print-header {
+  display: block;
+}
+
+
+/*header*/
+
+#header {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 36px;
+  line-height: 36px;
+  color: #fff;
+  background-color: #363636;
+  background: rgba(55, 55, 55, 1);
+  border-bottom: 1px solid #000000;
+  z-index: 6;
+}
+
+#header .query-frame {
+  position: absolute;
+  left: 160px;
+  top: 5px;
+  bottom: 5px;
+  right: 38px;
+}
+
+#header .query-frame input[name=q] {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-left: 24px;
+  background-repeat: no-repeat;
+  background-position: 5px center;
+  background-size: 14px 14px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?><svg height="18px" version="1.1" viewBox="0 0 18 18" width="18px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="rgba(222,222,222,1)" id="Core" transform="translate(-339.000000, -381.000000)"><g id="search" transform="translate(339.000000, 381.000000)"><path d="M12.5,11 L11.7,11 L11.4,10.7 C12.4,9.6 13,8.1 13,6.5 C13,2.9 10.1,0 6.5,0 C2.9,0 0,2.9 0,6.5 C0,10.1 2.9,13 6.5,13 C8.1,13 9.6,12.4 10.7,11.4 L11,11.7 L11,12.5 L16,17.5 L17.5,16 L12.5,11 L12.5,11 Z M6.5,11 C4,11 2,9 2,6.5 C2,4 4,2 6.5,2 C9,2 11,4 11,6.5 C11,9 9,11 6.5,11 L6.5,11 Z" id="Shape"/></g></g></g></svg>');
+}
+
+.-gsibv-tooltip {
+  position: absolute;
+  z-index: 99000;
+  
+  padding: 8px;
+  font-size: 8pt;
+  border-radius: 3px;
+  color: #fff;
+  z-index: 10;
+  border-radius: 3px;
+  background: rgba(55, 55, 55, 0.98);
+  box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.3);
+
+  max-width: 300px;
+}
+
+.search-result-frame {
+  position: absolute;
+  z-index: 1000;
+  background-color: rgba(44, 44, 44, 0.9);
+  top: 33px;
+  right: 50px;
+  left: 160px;
+  max-width: 800px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.31);
+  -moz-box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.31);
+  box-shadow: 0px 1px 1px 1px rgba(88, 88, 88, 0.31);
+}
+
+.search-result-frame .header {
+  padding: 2px;
+}
+
+.search-result-frame .header a.close-button {
+  position: absolute;
+  right: 0;
+  top: 2px;
+  width: 18px;
+  height: 18px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?><svg width="18" height="18" stroke-linecap="round" stroke-width="2" stroke="rgba(255,255,255,1)" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path d="M6,6 L12,12 M12,6 L6,12 z"/></svg>');
+}
+
+.search-result-frame .header .title {
+  position: relative;
+  line-height: 18px;
+  height: 18px;
+}
+
+.search-result-frame .header .title .message {
+  line-height: 18px;
+  height: 18px;
+  font-size: 9pt;
+  color: #fff;
+  padding-left: 2px;
+}
+
+.search-result-frame .header .title .message2 {
+  line-height: 18px;
+  height: 18px;
+  font-size: 8pt;
+  color: #fff;
+  position: absolute;
+  right: 30px;
+  top: 0px;
+}
+
+.search-result-frame .header table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.search-result-frame .header table td {
+  width: 50%;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.search-result-frame .header .pref {
+  display: inline-block;
+  width: 50%;
+}
+
+.search-result-frame .header .city {
+  display: inline-block;
+  width: 50%;
+}
+
+.search-result-frame .header select {
+  width: 100%;
+}
+
+.search-result-frame .result {
+  max-height: 300px;
+  overflow-y: auto;
+  margin: 0 4px 4px 4px;
+}
+
+.search-result-frame ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.search-result-frame ul li {
+  display: block;
+  border-bottom: 1px dotted #555;
+}
+
+.search-result-frame ul li a {
+  display: block;
+  text-decoration: none;
+  color: #fff;
+  padding: 4px 0 4px 26px;
+  background-repeat: no-repeat;
+  background-position: 3px 50%;
+  background-size: 18px 18px;
+  background-image: url(../image/search-result.png);
+}
+
+.search-result-frame ul li a:hover {
+  background-color: rgba(78, 78, 78, 0.95);
+}
+
+.search-result-frame ul li a .title {
+  font-size: 10pt;
+  display: inline-block;
+}
+
+.search-result-frame ul li a .addr {
+  font-size: 9.5px;
+  color: rgb(201, 225, 252);
+  display: inline-block;
+  margin-left: 12px;
+}
+
+#header a.menu-button {
+  display: block;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-image: url('data:image/svg+xml,<svg height="32" width="32" fill="rgba(255,255,255,1)" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="8" width="20" height="3" rx="2" ry="2" /><rect x="6" y="20" width="20" height="3" rx="2" ry="2" /><rect x="6" y="14" width="20" height="3"  rx="2" ry="2" /></svg>');
+  background-repeat: no-repeat;
+  background-position: center center;
+  opacity: 0.5;
+}
+
+#header a.menu-button:hover {
+  background-color: #666;
+  transition: background 200ms;
+  opacity: 0.9;
+}
+
+/***********************************************
+コンテキストメニュー
+***********************************************/
+
+#context-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100px;
+  margin-bottom: -100px;
+  background-color: rgba(43, 43, 43, 0.9);
+  overflow-y: visible;
+  /*
+	-webkit-box-shadow: 1px 0px 1px -1px rgba(0,0,0,0.31);
+	-moz-box-shadow: 1px 0px 1px -1px rgba(0,0,0,0.31);
+	box-shadow: 0px -1px 3px 3px rgba(0,0,0,0.31);
+    */
+  z-index: 6;
+  color: #fff;
+  font-size: 9pt;
+  /*
+    border-top:1px solid  rgba(55, 55, 55, 1);
+    */
+}
+/*
+#context-menu::before {
+  content: "  ";
+  position: absolute;
+  background: rgba(60, 60, 60, 1);
+  left: 0;
+  top: -1px;
+  ;
+  height: 1px;
+  right: 50%;
+  z-index: 4;
+  margin-right: 32px;
+  box-shadow: 0px -1px 1px 1px rgba(0, 0, 0, 0.22);
+}
+*/
+
+#context-menu::after {
+  content: "  ";
+  position: absolute;
+  background: rgba(60, 60, 60, 1);
+  right: 0;
+  top: -1px;
+  height: 1px;
+  left: 0;
+  z-index: 4;
+  margin-left: 32px;
+  box-shadow: 0px -1px 1px 1px rgba(0, 0, 0, 0.22);
+}
+
+#context-menu .toggle-button {
+  display: block;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  left: 0px;
+  top: 0px;
+  background-color: rgba(43, 43, 43, 0.9);
+  margin-top: -32px;
+  margin-left: 0;
+  border-top: 1px solid rgba(60, 60, 60, 1);
+  border-right: 1px solid rgba(60, 60, 60, 1);
+  border-left: 1px solid rgba(60, 60, 60, 1);
+  /*
+	-webkit-box-shadow: 8px 0px 8px -1px rgba(0,0,0,0.31);
+	-moz-box-shadow: 8px 0px 8px -1px rgba(0,0,0,0.31);
+	*/
+  /*
+	-moz-border-radius: 0 / 50px 25px 50px 25px / 0 / 0;
+	-webkit-border-radius:  0 / 50px 25px 50px 25px / 0 / 0;
+	-o-border-radius:  0 / 50px 25px 50px 25px / 0 / 0;
+	-ms-border-radius:  0 / 50px 25px 50px 25px / 0 / 0;
+	*/
+  border-radius: 0 6px 0 0/ 0 6px 0 0;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  /*
+  background-image: url('data:image/svg+xml,<svg height="32" fill="rgba(255,255,255,0.8)" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M10 6 L26 6 L26 22 z"/></svg>');
+  */
+  
+  background-image: url(../image/system/footer_up2.png);
+  background-repeat: no-repeat;
+  background-size: 26px 26px;
+  background-position: center center;
+
+}
+
+#context-menu.-ma-expand .toggle-button {
+  
+  margin-top: 0;
+  border:none;
+  border-radius: 0;
+  background-color:transparent;
+
+}
+#context-menu.-ma-expand::after {
+
+  margin-left: 0;
+}
+
+#context-menu.-ma-expand-full .toggle-button {
+  
+  /*
+  background-image: url('data:image/svg+xml,<svg height="32" fill="rgba(255,255,255,0.8)" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M6 6 L6 26 L26 26 z"/></svg>');
+  */
+  background-image: url(../image/system/footer_down2.png);
+}
+
+
+#context-menu .context-menu-content {
+  padding: 5px;
+}
+#context-menu.-ma-expand .context-menu-content {
+  padding-left:32px;
+}
+#context-menu table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#context-menu table th, #context-menu table td {
+  font-size: 10pt;
+  color: #fff;
+}
+
+#context-menu table th {
+  width: 1px;
+  text-align: left;
+  vertical-align: top;
+}
+
+#context-menu .key {
+  display: inline-block;
+  white-space: nowrap;
+  border-radius: 3px;
+  padding: 1px 3px 1px 3px;
+  width: 100%;
+  color: #bbb;
+}
+
+#context-menu td.features-frame {
+  position: relative;
+  min-width: 100px;
+  width: 30%;
+}
+
+#context-menu .features {
+  color: #fff;
+  border-radius: 3px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  padding: 2px;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+#context-menu .features ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+#context-menu .features ul li {
+  position: relative;
+  ;
+  display: block;
+  border-bottom: 1px solid #555;
+}
+
+#context-menu .features ul li a.list-item {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  font-size: 9pt;
+  padding: 6px 0 6px 18px;
+  line-height: 1em;
+  position: relative;
+  ;
+  margin-right: 35px;
+}
+
+#context-menu .features ul li a.layer-button {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  font-size: 8px;
+  line-height: 18px;
+  width: 35px;
+  text-align: center;
+  height: 18px;
+  right: 0;
+  position: absolute;
+  margin: 0;
+  top: 2px;
+}
+
+#context-menu .features ul li a.list-item::before {
+  content: "";
+  left: 0px;
+  top: 0px;
+  width: 20px;
+  height: 100%;
+  position: absolute;
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M4 2 V10 L10 6 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: 2px center;
+  transform: rotate(0);
+  transition: transform 300ms;
+}
+
+#context-menu .features ul li a.list-item.-ma-expand::before {
+  transform: rotate(90deg);
+  transition: transform 300ms;
+}
+
+#context-menu .features ul li div.description {
+  max-height: 0;
+  transition: max-height 300ms;
+  overflow: hidden;
+  padding: 3px;
+  margin: 0 5px 2px 5px;
+  background-color: #5a5a5a;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  transition: max-height 300ms;
+}
+
+#context-menu .features ul li div.description.-ma-expand {
+  max-height: 500px;
+  transition: max-height 300ms;
+}
+
+#context-menu .features ul li div table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#context-menu .features ul li div table th {
+  width: 100px;
+  font-weight: normal;
+  font-size: 9pt;
+  border-bottom: 1px dotted #888;
+  margin-right: 2px;
+}
+
+#context-menu .features ul li div table td {
+  width: 100px;
+  font-weight: normal;
+  font-size: 9pt;
+  border-bottom: 1px dotted #888;
+}
+
+#context-menu .features ul li div table tr:last-child th, #context-menu .features ul li div table tr:last-child td {
+  border-bottom: none;
+}
+
+#context-menu .value.latlng, #context-menu .value.zoom {
+  display: inline-block;
+}
+
+#context-menu .key.zoom {
+  width: auto;
+  padding: 1px 3px 1px 3px;
+  font-size: 8pt;
+}
+
+#context-menu .value {
+  padding: 0 3px 0 3px;
+}
+
+#context-menu .controls {
+  padding: 2px 0 2px 0;
+}
+
+#context-menu .controls a.button {
+  background-color: #3a3a3a;
+  color: #777;
+  width: 130px;
+  text-align: center;
+}
+
+#context-menu .controls a.button.active {
+  background-color: #5a5a5a;
+  color: #fff;
+}
+
+.context-menu-layer-info {
+  position: absolute;
+  z-index: 100;
+  background-color: rgba(55, 55, 55, 0.95);
+  border-radius: 3px;
+  bottom: 100px;
+  right: 10px;
+  width: 300px;
+  padding: 8px;
+  box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.context-menu-layer-info a.close-button {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?><svg width="18" height="18" stroke-linecap="round" stroke-width="2" stroke="rgba(255,255,255,1)" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path d="M6,6 L12,12 M12,6 L6,12 z"/></svg>');
+  z-index: 2;
+}
+
+.context-menu-layer-info .scroll-frame {
+  position: relative;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.context-menu-layer-info .view h3 {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  background-color: rgba(55, 55, 55, 0.9);
+  border-top: 1px solid rgba(66, 66, 66, 0.9);
+  border-bottom: 1px solid rgba(44, 44, 44, 0.9);
+  color: #fff;
+  font-size: 9pt;
+  line-height: 23px;
+  height: 23px;
+  padding-left: 2px;
+  font-weight: normal;
+}
+
+.context-menu-layer-info .view div {
+  padding: 1px;
+}
+
+.context-menu-layer-info .view textarea {
+  width: 100%;
+  height: 2em;
+  font-size: 9pt;
+  line-height: 1em;
+  transition: height 300ms;
+  border-radius: 0;
+  resize: none;
+}
+
+.context-menu-layer-info .view textarea:focus {
+  height: 15em;
+  transition: height 300ms;
+}
+
+.context-menu-layer-info .view.info table {
+  width: 100%;
+  border-spacing: 0;
+}
+
+.context-menu-layer-info .view.info table th, .context-menu-layer-info .view.info table td {
+  color: #fff;
+  font-size: 9pt;
+  text-align: left;
+}
+
+.context-menu-layer-info .view.info table th {
+  width: 40%;
+}
+
+/***********************************************
+menu
+***********************************************/
+
+#menu {
+  position: absolute;
+  top: 36px;
+  z-index: 5000;
+  background: #444;
+  right: 1px;
+  border-radius: 0 0 3px 3px;
+  box-shadow: -1px 1px 2px 2px rgba(0, 0, 0, 0.1);
+  display: none;
+  opacity: 0.95;
+}
+
+#menu ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+#menu ul li {
+  display: block;
+  border-bottom: 1px dotted #555;
+}
+
+#menu ul li a {
+  display: block;
+  padding: 4px;
+  font-size: 10pt;
+  color: #fff;
+  text-decoration: none;
+}
+
+#menu ul li a:hover {
+  background-color: #666;
+  transition: background 200ms;
+}
+
+/***********************************************
+loading
+***********************************************/
+
+.loading {
+  position: absolute;
+  top: 38px;
+  right: 4px;
+  z-index: 4;
+}
+
+.loading ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.loading li {
+  display: block;
+  padding-left: 24px;
+  font-size: 9pt;
+  color: #444;
+  line-height: 22px;
+  height: 22px;
+  background-repeat: no-repeat;
+  background-position: 0 50%;
+  background-image: url(../image/loading.gif);
+}
+
+.loading li span {
+  display: inline-block;
+  font-size: 11pt;
+  color: #444;
+  margin-right: 2px;
+  line-height: 22px;
+  font-weight: bold;
+}
+
+/***********************************************
+左パネル
+***********************************************/
+
+#left-panel {
+  position: absolute;
+  left: 0;
+  top: 36px;
+  bottom: 0;
+  width: 240px;
+  background: rgba(43, 43, 43, 0.9);
+  /*
+	-webkit-box-shadow: 1px 0px 1px -1px rgba(0,0,0,0.31);
+	-moz-box-shadow: 1px 0px 1px -1px rgba(0,0,0,0.31);
+	box-shadow: 1px 0px 1px 1px rgba(0,0,0,0.31);
+    */
+  z-index: 6;
+  border-right: 1px solid rgba(55, 55, 55, 1);
+  margin-left: -240px;
+}
+
+
+#left-panel .scroll{
+  
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right:0;
+}
+
+
+#left-panel .panel .header {
+  position: relative;
+  background-color: rgba(55, 55, 55, 0.9);
+  border-top: 1px solid rgba(66, 66, 66, 0.9);
+  border-bottom: 1px solid rgba(44, 44, 44, 0.9);
+  color: #fff;
+  font-size: 9pt;
+  line-height: 25px;
+  height: 25px;
+  padding-left: 2px;
+}
+
+#left-panel .toggle-button {
+  display: none;
+  position: absolute;
+  width: 24px;
+  height: 28px;
+  right: 0px;
+  top: 1px;
+  background-color: rgba(43, 43, 43, 0.9);
+  border-right: 1px solid rgba(55, 55, 55, 1);
+  border-top: 1px solid rgba(55, 55, 55, 1);
+  border-bottom: 1px solid rgba(55, 55, 55, 1);
+  margin-right: -24px;
+  /*
+	-webkit-box-shadow: 8px 0px 8px -1px rgba(0,0,0,0.31);
+	-moz-box-shadow: 8px 0px 8px -1px rgba(0,0,0,0.31);
+	*/
+  box-shadow: 1px 1px 1px -1px rgba(0, 0, 0, 0.2);
+  /*
+	-moz-border-radius: 0 / 50px 25px 50px 25px / 0 / 0;
+	-webkit-border-radius:  0 / 50px 25px 50px 25px / 0 / 0;
+	-o-border-radius:  0 / 50px 25px 50px 25px / 0 / 0;
+	-ms-border-radius:  0 / 50px 25px 50px 25px / 0 / 0;
+	*/
+  border-radius: 0 6px 6px 0/ 0 6px 6px 0;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  line-height: 1em;
+}
+#left-panel.-ma-expand .toggle-button {
+  display: block;
+}
+
+#left-panel .toggle-button div {
+  font-size: 9pt;
+  margin-top: 26px;
+}
+
+#left-panel .toggle-button:before {
+  display: block;
+  position: absolute;
+  content: "";
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M10 0 V12 L2 6 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 20px;
+  height: 28px;
+  transform: rotate(-180deg);
+  transition: transform 300ms;
+}
+
+#left-panel.-ma-expand .toggle-button:before {
+  display: block;
+  position: absolute;
+  content: "";
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M10 0 V12 L2 6 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 20px;
+  height: 28px;
+  transform: rotate(0);
+  transition: transform 300ms;
+}
+
+#left-panel .header button {
+  color: #fff;
+  display: block;
+  position: absolute;
+  width: 20px;
+  line-height: 20px;
+  height: 20px;
+  top: 50%;
+  margin-top: -10px;
+  right: 68px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+}
+
+#left-panel .header button.select-layer-button {
+  color: #fff;
+  font-size: 9pt;
+  right: 2px;
+  width: 112px;
+  white-space: nowrap;
+  padding-left:0;
+  padding-right:12px;
+}
+
+#left-panel .header button.select-layer-button:before {
+  display: block;
+  position: absolute;
+  content: "";
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M4 2 V10 L8 6 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center center;
+  transform: rotate(0);
+  width: 12px;
+  height: 12px;
+  top: 50%;
+  right: 0px;
+  margin-top: -6px;
+}
+
+#left-panel .header button.select-layer-button:after {
+  content: "";
+  clear: both;
+}
+
+#left-panel .header button.new-data-button {
+  right: 139px;
+  background-size: 17px 17px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20"  height="20" opacity="1" fill="rgba(255,255,255,1)" fill-opacity="1">\
+    <path d="M10.72 3.91L5.19 3.91L5.19 16.09L14.81 16.09L14.81 7.19L16.25 7.19L16.25 17.5L3.75 17.5L3.75 2.5L10.72 2.5L10.72 3.91ZM11.68 6.37L11.68 2.5L16.25 6.37L11.68 6.37Z" />\
+    <rect x="6.5" y="8.5" width="6" height="1.5" />\
+    <rect x="6.5" y="12" width="6" height="1.5" />\
+    </svg>');
+}
+
+#left-panel .header button.open-data-button {
+  right: 116px;
+  background-size: 18px 18px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg height="20px" version="1.1" viewBox="0 0 512 512" width="20px" xmlns="http://www.w3.org/2000/svg" fill="rgba(255,255,255,1)">\
+<path d="M430.1,192H81.9c-17.7,0-18.6,9.2-17.6,20.5l13,183c0.9,11.2,3.5,20.5,21.1,20.5h316.2c18,0,20.1-9.2,21.1-20.5l12.1-185.3   C448.7,199,447.8,192,430.1,192z"/>\
+<path d="M426.2,143.3c-0.5-12.4-4.5-15.3-15.1-15.3c0,0-121.4,0-143.2,0c-21.8,0-24.4,0.3-40.9-17.4C213.3,95.8,218.7,96,190.4,96    c-22.6,0-75.3,0-75.3,0c-17.4,0-23.6-1.5-25.2,16.6c-1.5,16.7-5,57.2-5.5,63.4h343.4L426.2,143.3z"/>\
+></svg>');
+}
+
+
+.-gsibv-popupmenu-newfile {
+  background-repeat: no-repeat;
+  background-position: 2px center;
+  background-size: 18px 18px;
+  padding-left: 22px   !important;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20"  height="20" opacity="1" fill="rgba(255,255,255,1)" fill-opacity="1">\
+  <path d="M10.72 3.91L5.19 3.91L5.19 16.09L14.81 16.09L14.81 7.19L16.25 7.19L16.25 17.5L3.75 17.5L3.75 2.5L10.72 2.5L10.72 3.91ZM11.68 6.37L11.68 2.5L16.25 6.37L11.68 6.37Z" />\
+  <rect x="6.5" y="8.5" width="6" height="1.5" />\
+  <rect x="6.5" y="12" width="6" height="1.5" />\
+  </svg>');
+}
+
+.-gsibv-popupmenu-openfile {
+  background-repeat: no-repeat;
+  background-position: 2px center;
+  background-size: 18px 18px;
+  padding-left: 22px   !important;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg height="20px" version="1.1" viewBox="0 0 512 512" width="20px" xmlns="http://www.w3.org/2000/svg" fill="rgba(255,255,255,1)">\
+<path d="M430.1,192H81.9c-17.7,0-18.6,9.2-17.6,20.5l13,183c0.9,11.2,3.5,20.5,21.1,20.5h316.2c18,0,20.1-9.2,21.1-20.5l12.1-185.3   C448.7,199,447.8,192,430.1,192z"/>\
+<path d="M426.2,143.3c-0.5-12.4-4.5-15.3-15.1-15.3c0,0-121.4,0-143.2,0c-21.8,0-24.4,0.3-40.9-17.4C213.3,95.8,218.7,96,190.4,96    c-22.6,0-75.3,0-75.3,0c-17.4,0-23.6-1.5-25.2,16.6c-1.5,16.7-5,57.2-5.5,63.4h343.4L426.2,143.3z"/>\
+></svg>');
+}
+
+/***********************************************
+スタイル選択
+***********************************************/
+
+#left-panel #recommend {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 324px;
+}
+
+#left-panel #recommend .list {
+  position: absolute;
+  left: 0;
+  top: 25px;
+  right: 0;
+/*  bottom: 25px;*/
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#left-panel #recommend button.detail-button {
+  position: absolute;
+  right: 12px;
+  height:18px;
+  bottom: 4px;
+  padding-left:22px;
+  padding-right:12px;
+  background-color: transparent;
+}
+#left-panel #recommend button.detail-button:before {
+  display: block;
+  position: absolute;
+  content: "";
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M4 2 V10 L8 6 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center center;
+  transform: rotate(0);
+  width: 12px;
+  height: 12px;
+  top: 50%;
+  left: 4px;
+  margin-top: -6px;
+  transition: transform 400ms;
+}
+#left-panel #recommend button.detail-button:hover {
+  background-color: #555;
+  opacity: 1;
+}
+
+#left-panel #recommend button.-ma-expand.detail-button:before {
+    
+  transform: rotate(90deg);
+}
+
+
+#left-panel #recommend button.style-add-button {
+  position: absolute;
+  right: 4px;
+  height:20px;
+  line-height: 20px;
+  bottom: 27px;
+  padding-left:20px;
+  width:146px;
+  text-align: left;
+  background-color: rgba(90, 90, 90, 0.3);
+
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20"  height="20" opacity="1" fill="rgba(255,255,255,1)" fill-opacity="1">\
+    <path d="M10.72 3.91L5.19 3.91L5.19 16.09L14.81 16.09L14.81 7.19L16.25 7.19L16.25 17.5L3.75 17.5L3.75 2.5L10.72 2.5L10.72 3.91ZM11.68 6.37L11.68 2.5L16.25 6.37L11.68 6.37Z" />\
+    <rect x="6.5" y="8.5" width="6" height="1.5" />\
+    <rect x="6.5" y="12" width="6" height="1.5" />\
+    </svg>');
+}
+
+
+#left-panel #recommend button.style-add-button:hover {
+  background-color: #555;
+  opacity: 1;
+}
+
+#left-panel #recommend button.style-add-button:before {
+  display: block;
+  position: absolute;
+  content: "";
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,1)" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M4 2 V10 L8 6 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center center;
+  transform: rotate(0);
+  width: 12px;
+  height: 12px;
+  top: 50%;
+  right: 3px;
+  margin-top: -6px;
+}
+
+
+#left-panel #recommend button.select-layer-button {
+  position: absolute;
+  right: 4px;
+  height:20px;
+  line-height: 20px;
+  background-color: rgba(90, 90, 90, 0.3);
+  bottom: 4px;
+  padding-left:20px;
+  width:146px;
+  text-align: left;
+  background-size: 12px 12px;
+  background-repeat: no-repeat;
+  background-position: 4px 4px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" encoding="UTF-8"?>\
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" version="1.1">\
+  <rect stroke-width="5" stroke="rgba(255,255,255,0.9)" fill="rgba(0,0,0,0)" x="0" y="0" rx="5" ry="5" width="24" height="24" />\
+  <path fill="rgba(255,255,255,0.9)" d="M0 24 L8 10 L 24 24" />\
+  <circle fill="rgba(255,255,255,0.9)" cx="16" cy="8" r="3"/>\
+  </svg>');
+}
+
+#left-panel #recommend button.select-layer-button:before {
+  display: block;
+  position: absolute;
+  content: "";
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,1)" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M4 2 V10 L8 6 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center center;
+  transform: rotate(0);
+  width: 12px;
+  height: 12px;
+  top: 50%;
+  right: 3px;
+  margin-top: -6px;
+}
+
+
+
+#left-panel #recommend button.select-layer-button:hover {
+  background-color: #555;
+  opacity: 1;
+}
+
+
+
+#left-panel #recommend .list a.scroll {
+  position: absolute;
+  display: block;
+  top: 2px;
+  bottom: 50px;
+  width: 14px;
+  background-color: #666;
+  z-index: 10;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border-radius: 2px;
+}
+
+#left-panel #recommend .list a.scroll:hover {
+  background-color: #777;
+}
+
+#left-panel #recommend .list a.scroll.left {
+  left: 0;
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.9)" id="triangle-left" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M10 0 V12 L2 6 z"/></svg>');
+}
+
+#left-panel #recommend .list a.scroll.right {
+  right: 0;
+  background-image: url('data:image/svg+xml,<svg fill="rgba(255,255,255,0.9)" height="12" id="triangle-left" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M2 0 V12 L10 6 z"/></svg>');
+}
+
+#left-panel #recommend .list ul {
+  margin: 0;
+  padding: 0 0 0 4px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  list-style-type: none;
+}
+
+#left-panel #recommend .list ul li {
+  padding: 0;
+  width: 72px;
+  height: 72px;
+  display: block;
+  position: relative;
+  border-radius: 3px;
+  margin: 2px;
+  transition: all 300ms;
+}
+
+#left-panel #recommend .list ul li a {
+  display: block;
+  transition: all 300ms;
+}
+
+#left-panel #recommend .list ul li img {
+  width: 68px;
+  height: 68px;
+  display: block;
+  position: relative;
+  left: 2px;
+  top: 2px;
+  border-radius: 3px;
+  transition: all 300ms;
+}
+
+#left-panel #recommend .list ul li div.title {
+  color: #fff;
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 3px;
+  font-size: 8pt;
+  padding: 3px 1px 3px 1px;
+  text-align: center;
+  line-height: 1.2em;
+  transition: all 300ms;
+}
+
+#left-panel #recommend .list ul li div.title label {
+  font-size: 8pt;
+}
+
+#left-panel #recommend .list ul li div.state-visible {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  color: #fff;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url('data:image/svg+xml,<svg fill="none" height="16" stroke="rgba(255,255,255,1)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>');
+  opacity: 0;
+}
+
+#left-panel #recommend .list ul li.-ma-selected img {
+  box-shadow: 0 0 2px 1px rgb(79, 178, 218);
+}
+
+#left-panel #recommend .list ul li.-ma-selected div.state-visible {
+  opacity: 1;
+  display: block;
+}
+
+#left-panel #recommend .list ul li.-ma-selected.-ma-hidden div.state-visible {
+  background-image: url('data:image/svg+xml,<svg fill="none" height="16" stroke="rgba(128,128,128,1)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><path d="M22,2 L2,22 z"/></svg>');
+}
+
+#left-panel #recommend div.note {
+  position: relative;
+  color: #fff;
+  font-size: 8pt;
+  line-height: 20px;
+/*  height: 25px;*/
+  padding-left: 15px;
+  padding-right: 10px;
+}
+
+/***********************************************
+レイヤー一覧
+***********************************************/
+
+#left-panel #layer-list {
+  position: absolute;
+  left: 0;
+  top: 324px;
+  right: 0;
+  bottom: 0;
+}
+
+#left-panel #layer-list .list {
+  position: absolute;
+  left: 2px;
+  top: 25px;
+  right: 2px;
+  bottom: 2px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+
+.mobile #left-panel #layer-list .list {
+  overflow: unset;
+}
+
+#left-panel #layer-list .list ul {
+  margin: 0;
+  padding: 0;
+}
+
+#left-panel #layer-list .list ul li {
+  margin: 0;
+  padding: 0;
+  display: block;
+  opacity: 1;
+}
+
+#left-panel #layer-list .list ul li * {
+  word-break: break-all;
+}
+
+#left-panel #layer-list .list ul li.layer {
+  display: block;
+  margin: 0;
+  padding: 4px 0 4px 0;
+  text-decoration: none;
+  color: #fff;
+  position: relative;
+  border-bottom: 1px solid #555;
+}
+
+
+#left-panel #layer-list .list ul li.layer.hidden {
+  color: #999;
+}
+
+#left-panel #layer-list .list ul li.layer div.layer-info {
+  position: relative;
+  padding: 0 4px 0 4px;
+}
+
+#left-panel #layer-list .list ul li.layer .type {
+  display: block;
+  position: absolute;
+  font-size: 8px;
+  line-height: 14px;
+  height: 14px;
+  padding: 0 4px 0 4px;
+  background-color: rgb(38, 148, 65);
+  border-radius: 3px;
+  top: 3px;
+  left: 32px;
+  color: #eee;
+}
+
+#left-panel #layer-list .list ul li.layer .type.user-file-layer {
+  background-color: rgb(190, 75, 104);
+}
+
+#left-panel #layer-list .list ul li.layer .control {
+  position: relative;
+  height:18px;
+  margin:0;
+  padding:0;
+}
+
+#left-panel #layer-list .list ul li.layer .pankuzu {
+  font-size: 8pt;
+  position: relative;
+  word-break: break-all;
+  color: rgb(182, 221, 192);
+}
+
+
+#left-panel #layer-list .list ul li.layer .pankuzu span.sp {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)" width="12" \
+    xmlns="http://www.w3.org/2000/svg"><path d="M3 3 L3 9 L8 6 Z"/></svg>');
+
+}
+
+#left-panel #layer-list .list ul li.layer .title {
+  font-size: 10pt;
+  position: relative;
+  word-break: break-all;
+}
+
+#left-panel #layer-list .list ul li.layer .title.no-title {
+  color: #aaa;
+}
+
+
+#left-panel #layer-list .list ul li.layer .title span.parent-title {
+  display: inline-block;
+  color: rgb(182, 221, 192);
+  margin-right:8px;
+}
+
+#left-panel #layer-list .list ul li.layer .title.editable {
+  cursor: text;
+}
+
+#left-panel #layer-list .list ul li.layer .title.editable:hover {
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+#left-panel #layer-list .list ul li.layer textarea.title-edit {
+  position: absolute;
+  font-size: 9.5pt;
+  padding: 0px;
+  resize: none;
+}
+
+#left-panel #layer-list .list ul li.layer button {
+  position: absolute;
+  display: block;
+  text-decoration: none;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  padding: 0;
+  /*
+  top: 50%;
+  margin-top: -12px;
+  */
+  border-radius: 50%;
+  color: #fff;
+  font-size: 9px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  white-space: nowrap;
+  background-color: transparent;
+}
+
+#left-panel #layer-list .list ul li.layer button:hover {
+  background-color: #555;
+  opacity: 1;
+}
+
+#left-panel #layer-list .list ul li.layer button.remove-button {
+  right: 10px;
+  top: 50%;
+  margin-top: -9px;
+  width: 18px;
+  height: 18px;
+  background-size: 16px 16px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg width="24" height="24" stroke-linecap="round" stroke-width="3" stroke="rgba(255,255,255,1)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">\
+    <path d="M6,6 L18,18 M18,6 L6,18"/>\
+    </svg>');
+}
+
+#left-panel #layer-list .list ul li.layer button.edit-button {
+  width: 42px;
+  height: 18px;
+  line-height: 18px;
+  bottom: 0;
+  right: 10px;
+  border-radius: 3px;
+  text-align: left;
+  padding-left: 14px;
+  background-position: 2px center;
+  background-repeat: no-repeat;
+  background-size: 12px 12px;
+}
+
+#left-panel #layer-list .list ul li.layer button.edit-button:before {
+  display: block;
+  position: absolute;
+  content: "";
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M4 2 V10 L8 6 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center center;
+  transform: rotate(0);
+  width: 12px;
+  height: 12px;
+  top: 50%;
+  left: 0px;
+  margin-top: -6px;
+  transition: transform 400ms;
+}
+
+#left-panel #layer-list .list ul li.layer.-ma-edit-expand button.edit-button:before {
+  transform: rotate(90deg);
+}
+
+
+
+#left-panel #layer-list .list ul li.layer button.save-button {
+  width: 42px;
+  height: 18px;
+  line-height: 18px;
+  bottom: 0;
+  right: 55px;
+  border-radius: 3px;
+  text-align: left;
+  padding-left: 16px;
+  background-position: 2px center;
+  background-repeat: no-repeat;
+  background-size: 12px 12px;
+  /*
+    background-image : url('data:image/svg+xml,<svg height="14px" version="1.1" viewBox="0 0 16 16" width="16px" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" id="Icons with numbers" stroke="none" stroke-width="1"><g fill="#ffffff" id="Group" transform="translate(-720.000000, -432.000000)"><path d="M721,446 L733,446 L733,443 L735,443 L735,446 L735,448 L721,448 Z M721,443 L723,443 L723,446 L721,446 Z M726,433 L730,433 L730,440 L732,440 L728,445 L724,440 L726,440 Z M726,433" id="Rectangle 217"/></g></g></svg>');
+    */
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"  >\
+    <path fill="rgba(255,255,255,0.8)" d="M5.01 8.1L9.85 14.44L14.77 8.17L11.67 8.14L11.72 1.45L8.14 1.43L8.09 8.12L5.01 8.1Z"></path>\
+    <path stroke="rgba(255,255,255,0.8)" opacity="1" fill-opacity="0" stroke-width="3" d="M16.76 8.63L16.76 16.76L2.93 16.76L2.93 8.63"></path>\
+    </svg>');
+
+}
+
+#left-panel #layer-list .list ul li.layer button.opacity-button {
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  right: 54px;
+  top: 50%;
+  margin-top: -9px;
+  /*
+  margin-top: -22px;
+  top: 50%;
+  */
+  text-align: left;
+  padding-left: 20px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 12px 12px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg viewBox="0 0 15 15" width="15px" height="15px" xmlns="http://www.w3.org/2000/svg">\
+    <g fill="rgba(0,0,0,0.5)">\
+    <rect x="0" y="0" width="15" height="15" style="fill:rgba(255,255,255,0.5);"></rect>\
+    <rect x="0" y="0" width="5" height="5" ></rect>\
+    <rect x="10" y="0" width="5" height="5"></rect>\
+    <rect x="5" y="5" width="5" height="5" ></rect>\
+    <rect x="0" y="10" width="5" height="5"></rect>\
+    <rect x="10" y="10" width="5" height="5"></rect>\
+    </g>\
+    </svg>');
+}
+
+#left-panel #layer-list .list ul li.layer button.info-button {
+  right: 32px;
+  /*
+  top: 50%;
+  margin-top: -22px;
+  */
+  top: 50%;
+  margin-top: -9px;
+  width: 18px;
+  height: 18px;
+  background-color: transparent;
+  background-size: 16px 16px;
+  /*
+  background-image: url('data:image/svg+xml,<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24" version="1.1"><g id="surface1"><path style=" stroke:none;fill-rule:nonzero;fill:rgba(255,255,255,1);fill-opacity:1;" d="M 14.570312 16.820312 L 14.570312 20.035156 C 14.570312 20.179688 14.519531 20.304688 14.410156 20.410156 C 14.304688 20.519531 14.179688 20.570312 14.035156 20.570312 L 10.820312 20.570312 C 10.679688 20.570312 10.554688 20.519531 10.445312 20.410156 C 10.339844 20.304688 10.285156 20.179688 10.285156 20.035156 L 10.285156 16.820312 C 10.285156 16.679688 10.339844 16.554688 10.445312 16.445312 C 10.554688 16.339844 10.679688 16.285156 10.820312 16.285156 L 14.035156 16.285156 C 14.179688 16.285156 14.304688 16.339844 14.410156 16.445312 C 14.519531 16.554688 14.570312 16.679688 14.570312 16.820312 Z M 18.804688 8.785156 C 18.804688 9.269531 18.734375 9.71875 18.597656 10.136719 C 18.457031 10.558594 18.300781 10.898438 18.128906 11.164062 C 17.953125 11.425781 17.707031 11.691406 17.390625 11.960938 C 17.074219 12.226562 16.816406 12.421875 16.621094 12.542969 C 16.425781 12.664062 16.152344 12.820312 15.804688 13.019531 C 15.4375 13.222656 15.132812 13.511719 14.886719 13.886719 C 14.640625 14.261719 14.519531 14.5625 14.519531 14.785156 C 14.519531 14.9375 14.464844 15.082031 14.355469 15.222656 C 14.25 15.359375 14.125 15.429688 13.980469 15.429688 L 10.769531 15.429688 C 10.632812 15.429688 10.519531 15.347656 10.425781 15.179688 C 10.332031 15.015625 10.285156 14.847656 10.285156 14.679688 L 10.285156 14.074219 C 10.285156 13.335938 10.574219 12.636719 11.15625 11.980469 C 11.738281 11.324219 12.375 10.839844 13.070312 10.527344 C 13.597656 10.285156 13.972656 10.035156 14.195312 9.777344 C 14.417969 9.519531 14.53125 9.179688 14.53125 8.757812 C 14.53125 8.382812 14.324219 8.054688 13.910156 7.769531 C 13.492188 7.480469 13.011719 7.339844 12.46875 7.339844 C 11.886719 7.339844 11.40625 7.46875 11.023438 7.726562 C 10.710938 7.949219 10.230469 8.464844 9.589844 9.269531 C 9.472656 9.410156 9.335938 9.480469 9.175781 9.480469 C 9.066406 9.480469 8.957031 9.445312 8.839844 9.375 L 6.644531 7.699219 C 6.527344 7.613281 6.457031 7.5 6.433594 7.367188 C 6.414062 7.230469 6.4375 7.105469 6.507812 6.992188 C 7.9375 4.617188 10.007812 3.429688 12.722656 3.429688 C 13.4375 3.429688 14.15625 3.566406 14.878906 3.84375 C 15.601562 4.121094 16.253906 4.492188 16.835938 4.957031 C 17.414062 5.417969 17.886719 5.988281 18.253906 6.664062 C 18.621094 7.335938 18.804688 8.042969 18.804688 8.785156 Z M 18.804688 8.785156 "/></g></svg>');
+  */
+  background-image: url('data:image/svg+xml,<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24" version="1.1"><g>\
+  <circle cx="12" cy="5" r="3" style="fill:rgba(255,255,255,1);" />\
+  <rect x="10" y="12" width="4" height="9" style="fill:rgba(255,255,255,1);" />\
+  </g></svg>');
+  
+}
+
+#left-panel #layer-list .list ul li.layer button.visible-button {
+  left: 2px;
+  background-size: 16px 16px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  top: 50%;
+  margin-top: -9px;
+  background-image: url('data:image/svg+xml,<svg fill="none" height="22" stroke="rgba(255,255,255,1)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>');
+}
+
+#left-panel #layer-list .list ul li.layer.hidden button.visible-button {
+  left: 2px;
+  background-image: url('data:image/svg+xml,<svg fill="none" height="22" stroke="rgba(128,128,128,1)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><path d="M22,2 L2,22 z"/></svg>');
+}
+
+#left-panel #layer-list .list ul li.layer button.up-button {
+  right: 98px;
+  width: 18px;
+  height: 18px;
+  top: 50%;
+  margin-top: -9px;
+  /*
+    background-image: url('data:image/svg+xml,<svg height="8" fill="rgba(255,255,255,1)" width="8" xmlns="http://www.w3.org/2000/svg"><path d="M0 7 L8 7 L4 1 z"/></svg>');
+    */
+  background-size: 16px 16px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20" fill="rgba(255,255,255,1)">\
+<path d="M17.63 9.85L10.38 3.22L3.13 9.85L7.72 9.85L7.72 16.88L13.04 16.87L13.04 9.85L17.63 9.85Z"></path>\
+</svg>');
+}
+
+#left-panel #layer-list .list ul li.layer button.down-button {
+  right: 76px;
+  width: 18px;
+  height: 18px;
+  top: 50%;
+  margin-top: -9px;
+  /*
+    background-image: url('data:image/svg+xml,<svg height="8" fill="rgba(255,255,255,1)" width="8" xmlns="http://www.w3.org/2000/svg"><path d="M0 1 L8 1 L4 7 z"/></svg>');
+    */
+  background-size: 16px 16px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20" fill="rgba(255,255,255,1)">\
+<path d="M3.13 10.25L10.38 16.87L17.63 10.25L13.03 10.25L13.03 3.22L7.71 3.22L7.71 10.25L3.13 10.25Z"></path>\
+</svg>');
+}
+
+#left-panel #layer-list .list ul li.layer:first-child button.up-button {
+  display: none;
+}
+
+#left-panel #layer-list .list ul li.layer:last-child button.down-button {
+  display: none;
+}
+
+#left-panel #layer-list .list ul li.layer .opacity-slider-frame {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  height: 20px;
+  line-height: 20px;
+  width: 90%;
+  margin-left: -45%;
+  margin-top: -5px;
+  background: #555;
+  font-size: 10px;
+  color: #fff;
+  padding-left: 2px;
+  box-shadow: 0px 0px 2px 1px rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  z-index: 10;
+}
+
+#left-panel #layer-list .list ul li.layer .opacity-slider-frame .value {
+  display: inline-block;
+  font-size: 13px;
+}
+
+#left-panel #layer-list .list ul li.layer .opacity-slider-frame .opacity-slider {
+  position: absolute;
+  left: 85px;
+  right: 6px;
+  top: 2px;
+  bottom: 2px;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame {
+  position: relative;
+  overflow-y: hidden;
+  max-height: 0;
+  transition: max-height 300ms;
+  margin-left: 8px;
+  margin-right: 12px;
+  margin-top: 4px;
+  background: rgba(90, 90, 90, 0.8);
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  padding: 3px;
+  border-radius: 3px;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame.-ma-expand {
+  max-height: 999999px;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame .header {
+  background: none;
+  border: none;
+  position: relative;
+  line-height: 24px;
+  height: 24px;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame .header>div {
+  position: relative;
+  margin-right: 23px;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame .header button {
+  right: 0;
+  top: 50%;
+  margin-top: -10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background-color: #666;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame .header button:hover {
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame .header button.menu-button {
+  right: 0;
+  background-size: 16px 16px;
+  background-image: url('data:image/svg+xml,<svg height="32" width="32" fill="rgba(255,255,255,1)" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="8" width="20" height="3" rx="2" ry="2" /><rect x="6" y="20" width="20" height="3" rx="2" ry="2" /><rect x="6" y="14" width="20" height="3"  rx="2" ry="2" /></svg>');
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame .header button.save-button {
+  right: 22px;
+  background-size: 14px 14px;
+  /*
+    background-image : url('data:image/svg+xml,<svg height="14px" version="1.1" viewBox="0 0 16 16" width="16px" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" id="Icons with numbers" stroke="none" stroke-width="1"><g fill="#ffffff" id="Group" transform="translate(-720.000000, -432.000000)"><path d="M721,446 L733,446 L733,443 L735,443 L735,446 L735,448 L721,448 Z M721,443 L723,443 L723,446 L721,446 Z M726,433 L730,433 L730,440 L732,440 L728,445 L724,440 L726,440 Z M726,433" id="Rectangle 217"/></g></g></svg>');
+    */
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"  >\
+    <path fill="rgba(255,255,255,1)" d="M5.01 8.1L9.85 14.44L14.77 8.17L11.67 8.14L11.72 1.45L8.14 1.43L8.09 8.12L5.01 8.1Z"></path>\
+    <path stroke="rgba(255,255,255,1)" opacity="1" fill-opacity="0" stroke-width="3" d="M16.76 8.63L16.76 16.76L2.93 16.76L2.93 8.63"></path>\
+    </svg>');
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame .header input[type="text"] {
+  height: 22px;
+  line-height: 22px;
+  width: 100%;
+  border-radius: 2px;
+  padding-left: 24px;
+  background-repeat: no-repeat;
+  background-position: 5px center;
+  background-size: 14px 14px;
+  background-image: url('data:image/svg+xml,<svg height="18px" version="1.1" viewBox="0 0 18 18" width="18px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="rgba(222,222,222,1)" id="Core" transform="translate(-339.000000, -381.000000)"><g id="search" transform="translate(339.000000, 381.000000)"><path d="M12.5,11 L11.7,11 L11.4,10.7 C12.4,9.6 13,8.1 13,6.5 C13,2.9 10.1,0 6.5,0 C2.9,0 0,2.9 0,6.5 C0,10.1 2.9,13 6.5,13 C8.1,13 9.6,12.4 10.7,11.4 L11,11.7 L11,12.5 L16,17.5 L17.5,16 L12.5,11 L12.5,11 Z M6.5,11 C4,11 2,9 2,6.5 C2,4 4,2 6.5,2 C9,2 11,4 11,6.5 C11,9 9,11 6.5,11 L6.5,11 Z" id="Shape"/></g></g></g></svg>');
+}
+
+.-gsibv-popup-menu {
+  position: absolute;
+  z-index: 30000;
+  background: rgba(55, 55, 55, 0.95);
+  padding: 3px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.-gsibv-popup-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.-gsibv-popup-menu ul li {
+  display: block;
+  padding:2px;
+}
+
+.-gsibv-popup-menu ul li.separator {
+  border-bottom: 1px dotted rgba(198, 198, 198, 0.3);
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.-gsibv-popup-menu ul li a {
+  display: block;
+  text-decoration: none;
+  color: #fff;
+  font-size: 9pt;
+  padding: 3px;
+  cursor: pointer;
+}
+
+.-gsibv-popup-menu ul li a:hover {
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.-gsibv-popup-menu ul li a label {
+  display: block;
+  font-size: 9pt;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame .contents {
+  margin-top: 2px;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame * {
+  font-size: 9pt;
+  margin: 0;
+  padding: 0;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt.-ma-filter-nohit, 
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dd.-ma-filter-nohit {
+  display: none;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt {
+  border-bottom: 1px dotted #666;
+  position: relative;
+  min-height: 18px;
+  border-radius: 3px;
+}
+
+
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt:last-of-type {
+  border-bottom: none;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt a {
+  display: block;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  color: #fff;
+  padding: 2px 18px 2px 20px;
+  border-radius: 3px;
+  background-size: 10px 10px;
+  background-repeat: no-repeat;
+  background-position: 4px 50%;
+  background-image: url('data:image/svg+xml,<svg height="16px" version="1.1" viewBox="0 0 16 16" width="16px" xmlns="http://www.w3.org/2000/svg" ><title/><defs/><g fill="none" fill-rule="evenodd" id="Icons with numbers" stroke="none" stroke-width="1"><g fill="rgba(255,255,255,1)" id="Group" transform="translate(-384.000000, -192.000000)"><path d="M385,203.950806 L389,208 L385,208 Z M392,196 L396,200 L389.978638,207.044189 L386,203 Z M394.084619,193.781497 C394.709458,193.156658 395.90929,193.343426 396.764518,194.198654 L397.538782,194.972918 C398.394011,195.828147 398.580778,197.027979 397.95594,197.652817 L396.720394,198.888363 L392.849074,195.017043 Z M394.084619,193.781497" id="Triangle 313"/></g></g></svg>');
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt a.no-directory {
+  background-image:none;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt a:hover {
+  box-shadow: inset 0 0 1px 1px rgb(79, 178, 218);
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt a.readonly {
+  cursor: default;
+  background-image:none;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt a.readonly:hover {
+  box-shadow: none;
+}
+
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt a div.path {
+  font-size: 9px;
+  color: rgb(179, 233, 193);
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt button.edit-all-button {
+  position: absolute;
+  text-decoration: none;
+  color: #fff;
+  padding: 0;
+  left: auto;
+  right: 20px;
+  top: 50%;
+  margin: 0;
+  margin-top: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-size: 10px 10px;
+  background-position: 50% 50%;
+  background-image: url('data:image/svg+xml,<svg height="16px" version="1.1" viewBox="0 0 16 16" width="16px" xmlns="http://www.w3.org/2000/svg" ><title/><defs/><g fill="none" fill-rule="evenodd" id="Icons with numbers" stroke="none" stroke-width="1"><g fill="rgba(255,255,255,1)" id="Group" transform="translate(-384.000000, -192.000000)"><path d="M385,203.950806 L389,208 L385,208 Z M392,196 L396,200 L389.978638,207.044189 L386,203 Z M394.084619,193.781497 C394.709458,193.156658 395.90929,193.343426 396.764518,194.198654 L397.538782,194.972918 C398.394011,195.828147 398.580778,197.027979 397.95594,197.652817 L396.720394,198.888363 L392.849074,195.017043 Z M394.084619,193.781497" id="Triangle 313"/></g></g></svg>');
+}
+
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt button.edit-button::before {
+  content:"";
+  display:none;
+}
+
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt button.sort-button {
+  position: absolute;
+  text-decoration: none;
+  color: #fff;
+  padding: 0;
+  left: auto;
+  right: 39px;
+  top: 50%;
+  margin: 0;
+  margin-top: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-size: 10px 10px;
+  background-position: 50% 50%;
+  background-image: url('data:image/svg+xml,<svg height="16px" version="1.1" viewBox="0 0 16 16" width="16px" xmlns="http://www.w3.org/2000/svg" ><g fill="rgba(255,255,255,1)" stroke="none"><path d="M6 8 L6 16 L10 15 L10 8Z M0 2 L16 2 L8 10Z" /></g></svg>');
+
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt button.sort-button.active {
+  background-color: rgb(79, 178, 218);
+}
+
+
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt button.visible-button {
+  position: absolute;
+  text-decoration: none;
+  color: #fff;
+  padding: 0;
+  left: auto;
+  right: 2px;
+  top: 50%;
+  margin: 0;
+  margin-top: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-size: 16px 16px;
+  background-position: 50% 50%;
+  background-image: url('data:image/svg+xml,<svg fill="none" height="22" stroke="rgba(255,255,255,1)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>');
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt.hidden button.visible-button {
+  background-image: url('data:image/svg+xml,<svg fill="none" height="22" stroke="rgba(128,128,128,1)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><path d="M22,2 L2,22 z"/></svg>');
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt a.directory {
+  background-color: rgba(77, 77, 77, 0.9);
+  background-image: none;
+  margin-right: 0;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt a.directory span.num {
+  display: inline-block;
+  background-color: green;
+  padding: 0 6px 0 6px;
+  border-radius: 5px;
+  margin-left: 4px;
+  position: absolute;
+  right: 2px;
+  line-height: 16px;
+  height: 16px;
+  top: 50%;
+  margin-top: -8px;
+  display: none;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt a.directory:before {
+  display: block;
+  position: absolute;
+  content: "";
+  background-image: url('data:image/svg+xml,\
+    <svg height="12" fill="rgba(255,255,255,0.8)" width="12" xmlns="http://www.w3.org/2000/svg">\
+    <path d="M4 2 V10 L8 6 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center center;
+  transform: rotate(0);
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 0px;
+  margin-top: -10px;
+  transition: transform 400ms;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dt a.directory.-ma-expand:before {
+  transform: rotate(90deg);
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dd {
+  margin-left: 10px;
+  max-height: 0px;
+  overflow-y: hidden;
+  transition: max-height 200ms;
+}
+
+#left-panel #layer-list .list ul li.layer .layer-edit-list-frame dd.-ma-expand {
+  max-height: 9999px;
+  transition: max-height 200ms;
+}
+
+.content {
+  position: absolute;
+  left: 0;
+  top: 36px;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+}
+
+.map {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  background: #fff;
+  /*
+    background-image: url('data:image/svg+xml,<svg height="8" fill="rgba(255,255,255,0.1)" viewBox="0 0 8 8" width="8" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="4" height="4" /><rect x="4" y="4" width="4" height="4" /></svg>');
+    */
+}
+
+
+.-gisbv-popup-content .mapboxgl-popup-content {
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2);
+}
+
+.-gisbv-popup-content .mapboxgl-popup-close-button {
+  color: rgba(0, 0, 0, 0);
+  width: 18px;
+  height: 18px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?><svg width="18" height="18" stroke-linecap="round" stroke-width="2" stroke="rgba(64,64,64,1)" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path d="M6,6 L12,12 M12,6 L6,12 z"/></svg>');
+}
+
+.-gisbv-popup-content * {
+  font-size: 10pt;
+  margin: 0;
+  padding: 0;
+}
+
+.-gisbv-popup-content h3 {
+  padding: 4px 8px 4px 8px;
+  background: #ccc;
+}
+
+.-gisbv-popup-content table {
+  font-size: 10px;
+  margin: 4px 10px 4px 10px;
+}
+
+.-gisbv-popup-content table * {
+  font-size: 10px;
+}
+
+.-gisbv-popup-content table th {
+  font-size: 10px;
+  text-align: left;
+  background: #eee;
+}
+
+.-gsibv-layerinfo-popup {
+  font-size: 9pt;
+  max-width: 300px;
+  padding: 8px;
+  background: rgba(255,255,255,0.8);
+  z-index: 30000;
+  border-radius: 2px;
+  color: rgba(33, 33, 33, 1);
+  box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.-gsibv-layerinfo-popup a {
+  color: rgba(55, 55, 55, 1);
+}
+.-gsibv-layerinfo-popup a:hover {
+  color: rgb(79, 178, 218);
+}
+
+.-gsibv-layerinfo-popup .gsi_layerinfo_title {
+  font-weight: bold;
+}
+
+.gsi_layerinfo_copy {
+  margin-top: 4px;
+  margin-top: 4px;
+  color: rgb(0, 95, 24);
+}
+
+.style-editor-frame {
+  position: absolute;
+  background-color: rgba(43, 43, 43, 0.9);
+  left: 300px;
+  top: 66px;
+  bottom: 0;
+  z-index: 10;
+  max-width: 0;
+  border-top: 1px solid rgba(55, 55, 55, 1);
+  border-bottom: 1px solid rgba(55, 55, 55, 1);
+  border-right: 1px solid rgba(55, 55, 55, 1);
+  overflow-x: hidden;
+  overflow-y: hidden;
+  border-radius: 0 3px 0 0 / 0 3px 0 0;
+  box-shadow: 2px -2px 1px 1px rgba( 0, 0, 0, 0.1);
+  width: 300px;
+}
+
+@media screen and (max-width: 600px) {
+  .style-editor-frame {
+    left: 100px;
+  }
+}
+
+.style-editor-frame .size-frame {
+  position: absolute;
+  bottom: 0px;
+  top: 32px;
+  left: 0px;
+  width: 300px;
+  padding-right: 8px;
+}
+
+
+.style-editor-frame h2 {
+  width: 300px;
+  background-color: rgba(55, 55, 55, 0.9);
+  border-top: 1px solid rgba(66, 66, 66, 0.9);
+  border-bottom: 1px solid rgba(44, 44, 44, 0.9);
+  color: #fff;
+  font-size: 9pt;
+  padding: 2px 14px 2px 4px;
+  margin: 0;
+  font-weight: bold;
+  word-break: break-all;
+  position: relative;
+}
+
+.style-editor-frame h2 .close-button {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  margin-top: -9px;
+  border-radius: 50%;
+  background-color: transparent;
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg width="24" height="24" stroke-linecap="round" stroke-width="3" stroke="rgba(255,255,255,1)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">\
+    <path d="M6,6 L18,18 M18,6 L6,18 z"/>\
+    </svg>');
+}
+
+.style-editor-frame h2 .separator {
+  color: #999;
+  margin: 0 3px 0 3px;
+  word-break: break-all;
+}
+
+.style-editor-frame h2 .title {
+  color: #fff;
+  font-size: 10pt;
+  word-break: break-all;
+}
+
+.style-editor-frame h2 .title span.strong{
+  color: red;
+  display: inline-block;
+  margin-left:4px;
+}
+
+.style-editor-frame .header {
+  /*
+    background-color: rgba(55, 55, 55, 0.9);
+    
+    border-top: 1px solid rgba(66, 66, 66, 0.9);
+    border-bottom: 1px solid rgba(44, 44, 44, 0.9);
+    */
+  color: #fff;
+  font-size: 9pt;
+  line-height: 23px;
+  height: 23px;
+  padding-left: 4px;
+}
+
+.style-editor-frame .draw-frame {
+  position: relative;
+  margin: 4px 4px 8px 4px;
+  padding: 2px;
+  border-radius: 3px;
+}
+
+.style-editor-frame .draw-frame .draw-header {
+  position: relative;
+  line-height: 20px;
+  height: 20px;
+  background: rgba(90, 90, 90, 0.8);
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.style-editor-frame .draw-frame .draw-header.symbol button.add-button {
+  display: none;
+}
+
+.style-editor-frame .draw-frame .draw-header.symbol button.remove-button {
+  display: none;
+}
+
+.style-editor-frame .draw-frame .draw-header.fill button.add-button {
+  display: none;
+}
+
+.style-editor-frame .draw-frame .draw-header.fill button.remove-button {
+  display: none;
+}
+
+.style-editor-frame .draw-frame .draw-header button {
+  width: 18px;
+  height: 18px;
+  top: 50%;
+  margin-top: -9px;
+  position: absolute;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: none;
+  background-size: 14px 14px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  cursor: pointer;
+}
+
+.style-editor-frame .draw-frame .draw-header button.disable {
+  opacity: 0.2;
+  cursor: default;
+}
+
+.style-editor-frame .draw-frame .draw-header button:hover {
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.style-editor-frame .draw-frame .draw-header button.disable:hover {
+  box-shadow: none;
+}
+
+.style-editor-frame .draw-frame .draw-header button.add-button {
+  left: 3px;
+  background-size: 15px 15px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20"  height="20" opacity="1" fill="rgba(255,255,255,1)" fill-opacity="1">\
+    <path d="M10.72 3.91L5.19 3.91L5.19 16.09L14.81 16.09L14.81 7.19L16.25 7.19L16.25 17.5L3.75 17.5L3.75 2.5L10.72 2.5L10.72 3.91ZM11.68 6.37L11.68 2.5L16.25 6.37L11.68 6.37Z" />\
+    </svg>');
+}
+
+.style-editor-frame .draw-frame .draw-header button.remove-button {
+  left: 23px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg width="20" height="20" stroke-linecap="round" fill="rgba(255,255,255,0)" stroke-width="2" stroke="rgba(255,255,255,1)" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">\
+    <path d="M10,2 L10,4 Z M3,4 L17,4 Z M4,8 L16,8 L14,18 L6,18 L4,8 Z"/>\
+    </svg>');
+}
+
+.style-editor-frame .draw-frame .draw-header button.up-button {
+  right: 63px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20" fill="rgba(255,255,255,1)">\
+<path d="M17.63 9.85L10.38 3.22L3.13 9.85L7.72 9.85L7.72 16.88L13.04 16.87L13.04 9.85L17.63 9.85Z"></path>\
+</svg>');
+}
+
+.style-editor-frame .draw-frame .draw-header button.down-button {
+  right: 43px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20" fill="rgba(255,255,255,1)">\
+<path d="M3.13 10.25L10.38 16.87L17.63 10.25L13.03 10.25L13.03 3.22L7.71 3.22L7.71 10.25L3.13 10.25Z"></path>\
+</svg>');
+}
+
+.style-editor-frame .draw-frame .draw-header button.front-button {
+  right: 23px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20" fill="rgba(255,255,255,1)">\
+<path d="M17.06 10.72L9.81 4.09L2.55 10.72L7.15 10.72L7.15 17.75L12.47 17.75L12.47 10.72L17.06 10.72Z"></path>\
+<path d="M17.31 4.31L2.5 4.31L2.5 2.43L17.31 2.43L17.31 4.31Z"></path>\
+</svg>');
+}
+
+.style-editor-frame .draw-frame .draw-header button.back-button {
+  right: 3px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20" fill="rgba(255,255,255,1)"><path d="M2.75 9.46L10 16.09L17.25 9.46L12.65 9.46L12.65 2.43L7.33 2.43L7.33 9.46L2.75 9.46Z"></path>\
+<path d="M2.5 15.88L17.31 15.88L17.31 17.75L2.5 17.75L2.5 15.88Z"></path>\
+</svg>');
+}
+
+.style-editor-frame .edit-frame {
+  position: relative;
+  /*
+    margin:3px 0px 6px 4px;
+    background-color: rgba(90, 90, 90, 0.8);
+    */
+  border-radius: 3px;
+  border-bottom: 1px dotted #666;
+}
+
+.style-editor-frame .edit-frame:last-child {
+  border-bottom: none;
+}
+
+.style-editor-frame .edit-frame * {
+  color: #fff;
+}
+
+.style-editor-frame .edit-frame h3 {
+  margin: 0 0 0 0;
+  padding: 3px 0 3px 0px;
+  font-size: 9pt;
+}
+
+.style-editor-frame .edit-frame .edit-table-frame {
+  border-radius: 3px;
+  background: rgba(70, 70, 70, 0.8);
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  margin-top: 2px;
+  padding: 4px;
+}
+
+.style-editor-frame .edit-frame table.table {
+  border-collapse: separate;
+  border-spacing: 5px;
+  width: 100%;
+}
+
+.style-editor-frame .edit-frame table.table td.table {
+  padding: 0px 2px 0px 2px;
+  margin: 0;
+  text-align: left;
+  font-size: 9pt;
+}
+
+.style-editor-frame .edit-frame table.table td.detail-button-frame {
+  text-align: left;
+}
+
+.style-editor-frame .edit-frame table.table td.detail-button-frame .detail-button {
+  padding-left: 20px;
+  position: relative;
+}
+
+.style-editor-frame .edit-frame table.table td.detail-button-frame .detail-button::before {
+  display: block;
+  position: absolute;
+  content: "";
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M4 2 V10 L8 6 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center center;
+  transform: rotate(0);
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 0px;
+  margin-top: -10px;
+  transition: transform 400ms;
+}
+
+.style-editor-frame .edit-frame table.table td.detail-button-frame .detail-button.-ma-expand::before {
+  transform: rotate(90deg);
+}
+
+.style-editor-frame .edit-frame table.table td.table label {
+  font-size: 9pt;
+}
+
+.style-editor-frame .edit-frame .-gsibv-disable {
+  color: #999;
+  display: none;
+}
+
+.style-editor-frame .edit-frame .-gsibv-disable input {
+  color: #999;
+}
+
+.style-editor-frame .edit-frame table.table th.table {
+  font-weight: normal;
+  border-radius: 3px;
+  font-size: 8pt;
+  padding: 4px 2px 0px 2px;
+  line-height: 1.2em;
+  text-align: left;
+  vertical-align: top;
+  word-break: break-all;
+  width: 1px;
+  width: 85px;
+}
+
+.style-editor-frame .edit-frame input[type=text] {
+  line-height: 18px;
+  height: 20px;
+  font-size: 9pt;
+}
+
+.style-editor-frame .edit-frame input.color {
+  width: 100%;
+  text-align: left;
+  padding-left: 2px;
+}
+
+.style-editor-frame .edit-frame input.array {
+  width: 100%;
+  text-align: left;
+  padding-left: 2px;
+}
+
+.style-editor-frame .edit-frame input.width {
+  width: 100%;
+  max-width: 130px;
+  text-align: left;
+  padding-left: 2px;
+}
+
+.style-editor-frame .edit-frame select {
+  position: relative;
+  line-height: 18px;
+  height: 20px;
+  font-size: 9pt;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 0;
+  width: 100%;
+  /*
+    background-image : url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)"\
+        width="12" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L10 2 L6 10 z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+*/
+}
+
+.style-editor-frame .edit-frame input.offset-parts {
+  width: 50px;
+  text-align: left;
+  padding-left: 2px;
+}
+
+.-gsi-size-stops-table {
+  border-collapse: separate;
+  border-spacing: 2px;
+  border-radius: 3px;
+  background: rgba(90, 90, 90, 0.8);
+  box-shadow: 0 0px 1px 1px rgba(0, 0, 0, 0.1);
+  padding: 3px;
+  border-radius: 3px;
+  width: 100%;
+}
+
+.-gsi-size-stops-table th {
+  text-align: center;
+  font-weight: normal;
+  background-color: rgba(77, 77, 77, 0.9);
+  border-radius: 3px;
+  padding: 0 3px 0 3px;
+  font-size: 8pt;
+  width: 50%;
+}
+
+.-gsi-size-stops-table td {
+  text-align: center;
+  font-size: 9pt;
+}
+
+.-gsibv-input-hint {
+  opacity: 0;
+  padding: 8px;
+  font-size: 8pt;
+  border-radius: 3px;
+  color: #fff;
+  z-index: 10;
+  border-radius: 3px;
+  background: rgba(55, 55, 55, 0.98);
+  box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.-gsibv-input-hint.visible {
+  opacity: 1;
+}
+
+.-gsibv-ui-colorinput {
+  position: relative;
+  overflow: visible;
+}
+
+.-gsibv-ui-colorinput>a.clear-button {
+  position: absolute;
+  cursor: pointer;
+  z-index: 1;
+  right: 2px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background-color: transparent;
+  background-size: 12px 12px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  box-shadow: none;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg width="24" height="24" stroke-linecap="round" stroke-width="3" stroke="rgba(255,255,255,1)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">\
+    <path d="M6,6 L18,18 M18,6 L6,18 z"/>\
+    </svg>');
+}
+
+.-gsibv-ui-selectex {
+  position: relative;
+}
+
+.-gsibv-ui-selectex a .image-container {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 50%;
+  margin-top: -6px;
+  left: 3px;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 1px 1px;
+}
+
+.-gsibv-ui-selectex a {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)"\
+        width="12" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L10 2 L6 10 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  padding: 3px;
+  background-color: #5a5a5a;
+  border-radius: 3px;
+}
+
+.-gsibv-ui-selectex a.no-select {
+  color: #ccc;
+}
+
+.-gsibv-ui-selectex a:hover {
+  box-shadow: inset 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.-gsibv-ui-selectex-popup {
+  background-color: #5a5a5a;
+}
+
+.-gsibv-ui-selectex-popup a {
+  cursor: pointer;
+  display: block;
+  position: relative;
+}
+
+.-gsibv-ui-selectex-popup a:hover {
+  box-shadow: inset 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.-gsibv-ui-selectex-popup a .image-container {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 50%;
+  margin-top: -6px;
+  left: 3px;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 1px 1px;
+}
+
+.-gsibv-ui-imageselector {
+  position: relative;
+  overflow: visible;
+}
+
+.-gsibv-ui-imageselector>a.clear-button {
+  position: absolute;
+  z-index: 1;
+  right: 18px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background-color: transparent;
+  background-size: 12px 12px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  box-shadow: none;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg width="24" height="24" stroke-linecap="round" stroke-width="3" stroke="rgba(255,255,255,1)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">\
+    <path d="M6,6 L18,18 M18,6 L6,18 z"/>\
+    </svg>');
+}
+
+.-gsibv-ui-imageselector>a.clear-button:hover {
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.-gsibv-ui-imageselector>a.main {
+  position: relative;
+  display: block;
+  height: 22px;
+  line-height: 22px;
+  padding-left: 4px;
+  width: 100%;
+  padding-right: 18px;
+  border-radius: 3px;
+  background-color: #5a5a5a;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  color: #fff;
+  text-decoration: none;
+  font-size: 9pt;
+}
+
+.-gsibv-ui-imageselector>a.main:hover {
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.-gsibv-ui-imageselector>a.main::before {
+  content: "";
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)"\
+        width="12" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L10 2 L6 10 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: 0 center;
+}
+
+.-gsibv-ui-imageselector-popup {
+  min-width: 270px;
+  background-color: #5a5a5a;
+  box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  padding: 3px;
+  overflow-y: hidden;
+  z-index: 100;
+  width: 100%;
+  left: 0px;
+  bottom: 0px;
+  height:280px;
+  max-height: 0;
+}
+
+.-gsibv-ui-imageselector-popup .header{
+
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:32px;
+}
+.-gsibv-ui-imageselector-popup .header .image-bgcheck-frame {
+  color : #fff;
+  position: relative;
+  float:right;
+  height:32px;
+  line-height:32px;
+}
+
+.-gsibv-ui-imageselector-popup .header select{
+  position:relative;
+  line-height: 24px;
+  height:24px;
+  margin-top:4px;
+  margin-left:4px;
+}
+
+.-gsibv-ui-imageselector-popup .contents{
+  position: absolute;
+  top:32px;
+  bottom:0;
+  left:0;
+  right:0;
+}
+
+.-gsibv-ui-imageselector-popup .contents>ul {
+  margin: 0;
+  padding: 0;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  list-style-type: none;
+}
+
+
+
+.-gsibv-ui-imageselector-popup .contents>ul li {
+  display: block;
+  height: 100%;
+  padding: 2px;
+}
+
+.-gsibv-ui-imageselector-popup .contents>ul li.selected a {
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.-gsibv-ui-imageselector-popup .contents>ul li a {
+  display: block;
+  text-decoration: none;
+  color: #000;
+  font-size: 8pt;
+  width: 80px;
+  text-align: center;
+  border-radius: 4px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  padding: 5px;
+}
+
+.-gsibv-ui-imageselector-popup .contents>ul li a:hover {
+  background-color: #6a6a6a;
+}
+
+.-gsibv-ui-imageselector-popup .contents>ul li a .imgframe {
+  text-align: center;
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 4px;
+  background-image: url('data:image/svg+xml,<svg height="4" fill="rgba(255,255,255,0.2)" viewBox="0 0 4 4" width="4" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="2" height="2" /><rect x="2" y="2" width="2" height="2" /></svg>');
+}
+
+.-gsibv-ui-imageselector-popup .contents>ul.bright li a .imgframe {
+  background-color:#fff;
+  background-image: url('data:image/svg+xml,<svg height="4" fill="rgba(0,0,0,0.1)" viewBox="0 0 4 4" width="4" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="2" height="2" /><rect x="2" y="2" width="2" height="2" /></svg>');
+}
+
+
+.-gsibv-ui-imageselector-popup .contents>ul li a .imgframe * {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+}
+
+.-gsibv-ui-imageselector-popup .contents>ul li a .titleframe {
+  text-align: center;
+  color: #fff;
+  display: block;
+  padding: 0;
+  margin-top: 2px;
+  width: 70px;
+  word-break: break-all;
+  white-space: nowrap;
+  line-height: 22px;
+  height: 22px;
+  overflow: hidden;
+}
+
+.-gsibv-input-number-upbutton {
+  display: block;
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  line-height: 8px;
+  right: 0;
+  bottom: 50%;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml,<svg height="8" fill="rgba(255,255,255,0.8)" width="8" xmlns="http://www.w3.org/2000/svg"><path d="M2 6 L6 6 L4 2 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center 3px;
+}
+
+.-gsibv-input-number-downbutton {
+  display: block;
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  line-height: 8px;
+  border-radius: 3px;
+  right: 0;
+  top: 50%;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml,<svg height="8" fill="rgba(255,255,255,0.8)" width="8" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L6 2 L4 6 z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center 1px;
+}
+
+.-gsibv-input-number-upbutton:hover {
+  box-shadow: inset 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.-gsibv-input-number-downbutton:hover {
+  box-shadow: inset 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.-gsibv-dialog-blind {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 10000;
+}
+
+.-gsibv-dialog {
+  position: absolute;
+  border-radius: 3px;
+  box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.2);
+  background-color: #444;
+  font-size: 9pt;
+  color: #fff;
+}
+
+.-gsibv-dialog .container {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  top: 3px;
+  bottom: 3px;
+}
+
+.-gsibv-dialog .container .header {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  line-height: 22px;
+  height: 22px;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 9pt;
+  border-bottom: 1px solid #666;
+}
+.-gsibv-dialog .container .header div {
+  line-height: 20px;
+
+}
+
+.-gsibv-dialog .container .header .close-button {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  right: 2px;
+  top: 50%;
+  margin-top: -8px;
+  background: none;
+  border-radius: 50%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?><svg width="18" height="18" stroke-linecap="round" stroke-width="2" stroke="rgba(255,255,255,1)" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path d="M6,6 L12,12 M12,6 L6,12"/></svg>');
+}
+
+.-gsibv-dialog .container .contents-frame {
+  position: absolute;
+  top: 22px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  overflow: hidden;
+}
+
+.-gsibv-dialog.has-footer .container .contents-frame {
+  bottom: 26px;
+}
+
+.-gsibv-dialog .container .contents {
+  position: relative;
+}
+
+.-gsibv-dialog .container .footer {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  height: 26px;
+  text-align: center;
+}
+
+.-gsibv-dialog .container .footer button {
+  line-height: 24px;
+  height: 24px;
+  padding: 0 4px 0 4px;
+  margin: 0px 2px 1px 2px;
+  min-width: 80px;
+}
+
+.-gsibv-dialog.alert {
+  left: 50%;
+  top: 50%;
+  min-width: 280px;
+}
+
+.-gsibv-dialog.alert .contents {
+  padding: 6px 8px 12px 8px;
+}
+.-gsibv-dialog.confirm {
+  left: 50%;
+  top: 50%;
+  min-width: 380px;
+}
+
+
+.mobile .-gsibv-dialog.confirm  {
+  min-width: 280px;
+}
+
+.-gsibv-dialog.confirm .contents {
+  max-height:300px;
+  overflow-y: auto;
+  padding: 6px 8px 12px 8px;
+  background-color:#fff;
+  color:#000;
+  border-radius:2px;
+}
+
+.-gsibv-dialog.dsloret {
+  left: 50%;
+  top: 50%;
+  width: 80%;
+  max-height:90%;
+}
+
+.-gsibv-dialog.dsloret .header {
+  height:auto;
+  font-size:110%;
+}
+
+.-gsibv-dialog.dsloret .header .close-button{
+  top:2px;
+  margin-top:0;
+}
+
+.-gsibv-dialog.dsloret .contents {
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  right:0;
+  overflow: auto;
+  padding: 6px 8px 12px 8px;
+  background-color:#fff;
+  color:#000;
+  border-radius:2px;
+}
+
+.-gsibv-dialog.dsloret .contents .message {
+  position: relative;
+}
+
+
+.-gsibv-dialog.dsloret .contents .message table{
+	border-collapse: collapse;
+  border:0;
+}
+
+.-gsibv-dialog.dsloret .contents .message table td{
+  vertical-align: top;
+}
+.-gsibv-dialog.dsloret .contents .message table *{
+  border:0;
+  padding:0;
+}
+
+.-gsibv-dialog.dsloret .contents .message table.inner{
+  border-collapse: collapse;
+  min-width:280px;
+  max-width: 280px;
+}
+
+.-gsibv-dialog.dsloret .contents .message table.inner th{
+	background-color:rgba(32,32,32,0.8);
+	background-color:#f4f4f4;
+	color:#222;
+	padding: 0.2em 0.4em 0.2em 0.4em;
+	border: 1px solid #442;
+  width:80px;
+  text-align: left;
+  font-size:10.5pt;
+}
+.-gsibv-dialog.dsloret .contents .message table.inner th.table-header{
+  text-align: center;
+}
+
+
+.-gsibv-dialog.dsloret .contents .message table.inner td{
+	padding: 0.2em 0.6em 0.2em 0.6em;
+	border: 1px solid #442;
+  font-size:10.5pt;
+}
+
+.-gsibv-dialog.dsloret .contents .message table td img {
+  border: 1px solid #442;
+}
+
+.-gsibv-dialog.confirm .footer {
+  padding-top:3px;
+}
+
+.-gsibv-dialog.help .header {
+  padding-left: 23px;
+  background-size: 15px 15px;
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24" version="1.1"><g id="surface1"><path style=" stroke:none;fill-rule:nonzero;fill:rgba(255,255,255,1);fill-opacity:1;" d="M 14.570312 16.820312 L 14.570312 20.035156 C 14.570312 20.179688 14.519531 20.304688 14.410156 20.410156 C 14.304688 20.519531 14.179688 20.570312 14.035156 20.570312 L 10.820312 20.570312 C 10.679688 20.570312 10.554688 20.519531 10.445312 20.410156 C 10.339844 20.304688 10.285156 20.179688 10.285156 20.035156 L 10.285156 16.820312 C 10.285156 16.679688 10.339844 16.554688 10.445312 16.445312 C 10.554688 16.339844 10.679688 16.285156 10.820312 16.285156 L 14.035156 16.285156 C 14.179688 16.285156 14.304688 16.339844 14.410156 16.445312 C 14.519531 16.554688 14.570312 16.679688 14.570312 16.820312 Z M 18.804688 8.785156 C 18.804688 9.269531 18.734375 9.71875 18.597656 10.136719 C 18.457031 10.558594 18.300781 10.898438 18.128906 11.164062 C 17.953125 11.425781 17.707031 11.691406 17.390625 11.960938 C 17.074219 12.226562 16.816406 12.421875 16.621094 12.542969 C 16.425781 12.664062 16.152344 12.820312 15.804688 13.019531 C 15.4375 13.222656 15.132812 13.511719 14.886719 13.886719 C 14.640625 14.261719 14.519531 14.5625 14.519531 14.785156 C 14.519531 14.9375 14.464844 15.082031 14.355469 15.222656 C 14.25 15.359375 14.125 15.429688 13.980469 15.429688 L 10.769531 15.429688 C 10.632812 15.429688 10.519531 15.347656 10.425781 15.179688 C 10.332031 15.015625 10.285156 14.847656 10.285156 14.679688 L 10.285156 14.074219 C 10.285156 13.335938 10.574219 12.636719 11.15625 11.980469 C 11.738281 11.324219 12.375 10.839844 13.070312 10.527344 C 13.597656 10.285156 13.972656 10.035156 14.195312 9.777344 C 14.417969 9.519531 14.53125 9.179688 14.53125 8.757812 C 14.53125 8.382812 14.324219 8.054688 13.910156 7.769531 C 13.492188 7.480469 13.011719 7.339844 12.46875 7.339844 C 11.886719 7.339844 11.40625 7.46875 11.023438 7.726562 C 10.710938 7.949219 10.230469 8.464844 9.589844 9.269531 C 9.472656 9.410156 9.335938 9.480469 9.175781 9.480469 C 9.066406 9.480469 8.957031 9.445312 8.839844 9.375 L 6.644531 7.699219 C 6.527344 7.613281 6.457031 7.5 6.433594 7.367188 C 6.414062 7.230469 6.4375 7.105469 6.507812 6.992188 C 7.9375 4.617188 10.007812 3.429688 12.722656 3.429688 C 13.4375 3.429688 14.15625 3.566406 14.878906 3.84375 C 15.601562 4.121094 16.253906 4.492188 16.835938 4.957031 C 17.414062 5.417969 17.886719 5.988281 18.253906 6.664062 C 18.621094 7.335938 18.804688 8.042969 18.804688 8.785156 Z M 18.804688 8.785156 "/></g></svg>');
+
+}
+.-gsibv-dialog.help .container .contents {
+  position: absolute;
+  top: 4px;
+  left: 2px;
+  right: 2px;
+  bottom: 22px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 1);
+  padding-right: 6px;
+}
+
+.-gsibv-dialog.help .container .contents .help-page {
+  color: #000;
+}
+
+.-gsibv-dialog.help .container button.button {
+  position: absolute;
+  height: 20px;
+  bottom: 0px;
+  background: transparent;
+  box-shadow: none;
+  background-repeat: no-repeat;
+  background-position: left center;
+  border-radius: 3px;
+  padding: 0 6px 0 6px;
+}
+
+.-gsibv-dialog.help .container button.prev-button {
+  left: 2px;
+  padding-left: 20px;
+  background-image: url('data:image/svg+xml,<svg height="20" fill="rgba(255,255,255,0.9)" width="20" \
+    xmlns="http://www.w3.org/2000/svg"><path d="M16 4 L16 16 L6 10 z"/></svg>');
+}
+
+.-gsibv-dialog.help .container button.next-button {
+  right: 2px;
+  padding-right: 20px;
+  background-position: right center;
+  background-image: url('data:image/svg+xml,<svg height="20" fill="rgba(255,255,255,0.9)" width="20" \
+    xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L4 16 L14 10 z"/></svg>');
+}
+
+.-gsibv-dialog.help .container button:hover {
+  background-color: rgba(78, 78, 78, 0.7);
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.-gsibv-dialog.savedatadialog {
+  left: 50%;
+  top: 50%;
+  min-width: 300px;
+}
+
+.-gsibv-dialog.savedatadialog .contents {
+  padding: 4px;
+}
+
+.-gsibv-dialog.savedatadialog .contents table {
+  width: 100%;
+}
+
+.-gsibv-dialog.savedatadialog .contents table th {
+  white-space: nowrap;
+  width: 1px;
+  text-align: left;
+  font-weight: normal;
+}
+
+.-gsibv-dialog.savedatadialog .contents table td input {
+  width: 100%;
+  padding-left: 3px;
+}
+
+.-gsibv-dialog.savedatadialog .container .header {
+  padding-left: 23px;
+  background-size: 15px 15px;
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"  >\
+    <path fill="rgba(255,255,255,1)" d="M5.01 8.1L9.85 14.44L14.77 8.17L11.67 8.14L11.72 1.45L8.14 1.43L8.09 8.12L5.01 8.1Z"></path>\
+    <path stroke="rgba(255,255,255,1)" opacity="1" fill-opacity="0" stroke-width="3" d="M16.76 8.63L16.76 16.76L2.93 16.76L2.93 8.63"></path>\
+    </svg>');
+}
+
+.-gsibv-dialog.savedatadialog .container .footer {
+  height: 30px;
+}
+
+.-gsibv-dialog.savedatadialog .footer button {
+  width: 45%;
+}
+
+.-gsibv-dialog.opendatadialog {
+  left: 50%;
+  top: 50%;
+  min-width: 300px;
+}
+
+.-gsibv-dialog.opendatadialog .contents {
+  padding: 4px;
+}
+
+.-gsibv-dialog.opendatadialog .contents table {
+  width: 100%;
+}
+
+.-gsibv-dialog.opendatadialog .contents table th {
+  white-space: nowrap;
+  width: 1px;
+  text-align: left;
+  font-weight: normal;
+}
+
+.-gsibv-dialog.opendatadialog .contents table td {
+  position: relative;
+}
+
+.-gsibv-dialog.opendatadialog .contents table td .file {
+  width: 100%;
+  padding-left: 3px;
+  display: inline-block;
+  overflow: hidden;
+  line-height: 20px;
+  height: 20px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  margin-top: -10px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #5a5a5a;
+  border-radius: 3px;
+  padding: 1px 6px 1px 6px;
+  border-radius: 3px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+
+.-gsibv-dialog.opendatadialog .contents table td .file:hover {
+  box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.-gsibv-dialog.opendatadialog .contents table td .file div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  font-size: 8pt;
+  text-decoration: none;
+  color: #fff;
+  line-height: 20px;
+  padding-left: 3px;
+}
+
+.-gsibv-dialog.opendatadialog .contents table td .file div.nofile {
+  color: #999;
+}
+
+.-gsibv-dialog.opendatadialog .contents table td select {
+  padding-left: 3px;
+}
+
+.-gsibv-dialog.opendatadialog .contents table td .file input[type=file] {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0;
+  font-size: 100px;
+  cursor: pointer;
+}
+
+.-gsibv-dialog.opendatadialog .container .header {
+  padding-left: 23px;
+  background-size: 15px 15px;
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg height="20px" version="1.1" viewBox="0 0 512 512" width="20px" xmlns="http://www.w3.org/2000/svg" fill="rgba(255,255,255,1)">\
+<path d="M430.1,192H81.9c-17.7,0-18.6,9.2-17.6,20.5l13,183c0.9,11.2,3.5,20.5,21.1,20.5h316.2c18,0,20.1-9.2,21.1-20.5l12.1-185.3   C448.7,199,447.8,192,430.1,192z"/>\
+<path d="M426.2,143.3c-0.5-12.4-4.5-15.3-15.1-15.3c0,0-121.4,0-143.2,0c-21.8,0-24.4,0.3-40.9-17.4C213.3,95.8,218.7,96,190.4,96    c-22.6,0-75.3,0-75.3,0c-17.4,0-23.6-1.5-25.2,16.6c-1.5,16.7-5,57.2-5.5,63.4h343.4L426.2,143.3z"/>\
+></svg>');
+  /*
+    background-image : url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"  >\
+    <path fill="rgba(255,255,255,1)" d="M5.01 8.1L9.85 14.44L14.77 8.17L11.67 8.14L11.72 1.45L8.14 1.43L8.09 8.12L5.01 8.1Z"></path>\
+    <path stroke="rgba(255,255,255,1)" opacity="1" fill-opacity="0" stroke-width="3" d="M16.76 8.63L16.76 16.76L2.93 16.76L2.93 8.63"></path>\
+    </svg>');
+    */
+}
+
+.-gsibv-dialog.opendatadialog .container .footer {
+  height: 30px;
+}
+
+.-gsibv-dialog.opendatadialog .footer button {
+  width: 45%;
+}
+
+.-gsibv-dialog.newdatadialog {
+  left: 50%;
+  top: 50%;
+  min-width: 300px;
+}
+
+.-gsibv-dialog.newdatadialog .contents {
+  padding: 4px;
+}
+
+.-gsibv-dialog.newdatadialog .contents table {
+  width: 100%;
+}
+
+.-gsibv-dialog.newdatadialog .contents table th {
+  white-space: nowrap;
+  width: 1px;
+  text-align: left;
+  font-weight: normal;
+}
+
+.-gsibv-dialog.newdatadialog .contents table td {
+  position: relative;
+  padding: 2px;
+}
+
+.-gsibv-dialog.newdatadialog .contents table td select {
+  padding-left: 3px;
+}
+
+.-gsibv-dialog.newdatadialog .contents table td input {
+  width: 100%;
+  padding-left: 3px;
+}
+
+.-gsibv-dialog.newdatadialog .contents table td .file input[type=file] {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0;
+  font-size: 100px;
+  cursor: pointer;
+}
+
+.-gsibv-dialog.newdatadialog .container .header {
+  padding-left: 23px;
+  background-size: 15px 15px;
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20"  height="20" opacity="1" fill="rgba(255,255,255,1)" fill-opacity="1">\
+    <path d="M10.72 3.91L5.19 3.91L5.19 16.09L14.81 16.09L14.81 7.19L16.25 7.19L16.25 17.5L3.75 17.5L3.75 2.5L10.72 2.5L10.72 3.91ZM11.68 6.37L11.68 2.5L16.25 6.37L11.68 6.37Z" />\
+    <rect x="6.5" y="8.5" width="6" height="1.5" />\
+    <rect x="6.5" y="12" width="6" height="1.5" />\
+    </svg>');
+  /*
+    background-image : url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"  >\
+    <path fill="rgba(255,255,255,1)" d="M5.01 8.1L9.85 14.44L14.77 8.17L11.67 8.14L11.72 1.45L8.14 1.43L8.09 8.12L5.01 8.1Z"></path>\
+    <path stroke="rgba(255,255,255,1)" opacity="1" fill-opacity="0" stroke-width="3" d="M16.76 8.63L16.76 16.76L2.93 16.76L2.93 8.63"></path>\
+    </svg>');
+    */
+}
+
+.-gsibv-dialog.newdatadialog .container .footer {
+  height: 30px;
+}
+
+.-gsibv-dialog.newdatadialog .footer button {
+  width: 45%;
+}
+
+
+.-gsibv-binarytile-loading-frame {
+  position: absolute;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  background-color: rgba( 0, 0, 0, 0.3);
+  z-index:999999;
+
+}
+.-gsibv-binarytile-loading-frame .progress-message{
+  position: absolute;
+  width:100%;
+  text-align:center;
+  top:50%;
+  line-height:20px;
+  font-size:12px;
+  margin-top:-20px;
+  color:#fff;
+  /*
+  text-shadow: 
+  1px 1px 0 rgba( 0, 0, 0, 0.5),
+  -1px 1px 0 rgba( 0, 0, 0, 0.5),
+  1px -1px 0 rgba( 0, 0, 0, 0.5),
+  -1px -1px 0 rgba( 0, 0, 0, 0.5);
+  */
+}
+
+.-gsibv-binarytile-loading-frame .progress-bg{
+  position: absolute;
+  left:50%;
+  width:300px;
+  height:14px;
+  top:50%;
+  margin-left:-150px;
+
+  background-color: #5a5a5a;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+.-gsibv-binarytile-loading-frame .progress-text{
+  
+  position: absolute;
+  text-align: center;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  color:#fff;
+  font-size: 9px;
+  line-height:14px;
+
+}
+
+.-gsibv-binarytile-loading-frame .progress-cancel-button{
+
+  text-align: center;
+  left:50%;
+  width:120px;
+  margin-left:-60px;
+  margin-top:24px;
+  top:50%;
+  position: absolute;
+}
+  
+
+.-gsibv-binarytile-loading-frame .progress-current{
+  
+  position: absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  background: radial-gradient(rgba(79, 178, 218,0.9), rgba(79, 178, 218,0.8));
+
+  border-radius: 2px;
+}
+
+
+
+
+.-gsibv-binarytile-loading-frame2 {
+  position: absolute;
+  top:38px;
+  right:2px;
+  background-color: rgba( 0, 0, 0, 0.5);
+  z-index:5;
+  padding: 1px 4px 1px 4px;
+  border-radius: 2px;
+
+}
+.-gsibv-binarytile-loading-frame2 .progress-message{
+  position: relative;
+  font-size:11px;
+  color:#fff;
+  z-index:2;
+  line-height:16px;
+  /*
+  text-shadow: 
+  1px 1px 0 rgba( 0, 0, 0, 0.5),
+  -1px 1px 0 rgba( 0, 0, 0, 0.5),
+  1px -1px 0 rgba( 0, 0, 0, 0.5),
+  -1px -1px 0 rgba( 0, 0, 0, 0.5);
+  */
+}
+
+.-gsibv-binarytile-loading-frame2 .progress-current{
+  
+  position: absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  z-index:1;
+  background: radial-gradient(rgba(79, 178, 218,0.9), rgba(79, 178, 218,0.8));
+
+  border-radius: 2px;
+}
+.-gsibv-binarytile-loading-frame2 .progress-text{
+  
+  text-align: right;
+  width: 50px;
+  display: inline-block;
+  position: relative;
+  font-size:12px;
+  color:#fff;
+
+}
+
+
+
+
+
+.-gsibv-dialog.layertree .header {
+  padding-left: 23px;
+  background-size: 13px 13px;
+  background-repeat: no-repeat;
+  background-position: 2px 2px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" encoding="UTF-8"?>\
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" version="1.1">\
+  <rect stroke-width="5" stroke="rgba(255,255,255,0.9)" fill="rgba(0,0,0,0)" x="0" y="0" rx="5" ry="5" width="24" height="24" />\
+  <path fill="rgba(255,255,255,0.9)" d="M0 24 L8 10 L 24 24" />\
+  <circle fill="rgba(255,255,255,0.9)" cx="16" cy="8" r="3"/>\
+  </svg>');
+
+}
+
+.-gsibv-dialog.layertree .container .pankuzu {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  padding: 4px 2px 6px 2px;
+  
+  border-bottom: 1px solid #555;
+  font-size:8.5pt;
+  word-break: break-all;
+  word-wrap : break-word;
+  overflow-wrap : break-word;
+  line-height: 1.3em;
+}
+
+.-gsibv-dialog.layertree .container .pankuzu span.current-dir{
+  color:#fff;
+  font-size:8.5pt;
+}
+.-gsibv-dialog.layertree .container .pankuzu span.sep{
+
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.3)" width="12" \
+    xmlns="http://www.w3.org/2000/svg"><path d="M3 3 L3 9 L8 6 Z"/></svg>');
+}
+
+.-gsibv-dialog.layertree .container .pankuzu a{
+  color:#fff;
+  font-size:8.5pt;
+  text-decoration: underline;
+}
+.-gsibv-dialog.layertree .container .pankuzu a:hover{
+  color:rgb(79, 178, 218);
+}
+
+.-gsibv-dialog.layertree .container .contents {
+  position: absolute;
+  top: 24px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  border-radius: 2px;
+  padding-right: 6px;
+}
+
+
+.-gsibv-dialog.layertree .container .contents ul {
+  list-style-type: none;
+  margin:0;
+  padding:0;
+}
+
+.-gsibv-dialog.layertree .container .contents ul li{
+  display:block;
+  position: relative;
+  margin:0;
+  padding:0;
+  border-bottom:1px dotted #555;
+  font-size:9pt;
+  background-size: 12px 12px;
+  background-position: 4px center;
+  background-repeat: no-repeat;
+}
+
+.-gsibv-dialog.layertree .container .contents ul li.directory{
+  
+  background-size: 16px 16px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg height="20px" version="1.1" viewBox="0 0 512 512" width="20px" xmlns="http://www.w3.org/2000/svg" fill="rgba(79, 178, 218,1)">\
+<path d="M430.1,192H81.9c-17.7,0-18.6,9.2-17.6,20.5l13,183c0.9,11.2,3.5,20.5,21.1,20.5h316.2c18,0,20.1-9.2,21.1-20.5l12.1-185.3   C448.7,199,447.8,192,430.1,192z"/>\
+<path d="M426.2,143.3c-0.5-12.4-4.5-15.3-15.1-15.3c0,0-121.4,0-143.2,0c-21.8,0-24.4,0.3-40.9-17.4C213.3,95.8,218.7,96,190.4,96    c-22.6,0-75.3,0-75.3,0c-17.4,0-23.6-1.5-25.2,16.6c-1.5,16.7-5,57.2-5.5,63.4h343.4L426.2,143.3z"/>\
+></svg>');
+}
+.-gsibv-dialog.layertree .container .contents ul li.wait{
+  padding:4px 0 4px 20px;
+  color:#666;
+}
+.-gsibv-dialog.layertree .container .contents ul li a{
+  display:block;
+  color:#fff;
+  text-decoration: none;
+  padding:4px 0 4px 24px;
+  word-break: break-all;
+  position: relative;
+}
+.-gsibv-dialog.layertree .container .contents ul li.hasinfo a{
+  display:block;
+  color:#fff;
+  text-decoration: none;
+  padding:4px 0 4px 24px;
+  word-break: break-all;
+  position: relative;
+  margin-right:26px;
+}
+.-gsibv-dialog.layertree .container .contents ul li.hasarea a{
+  display:block;
+  color:#fff;
+  text-decoration: none;
+  padding:4px 0 4px 24px;
+  word-break: break-all;
+  position: relative;
+  margin-right:48px;
+}
+
+.-gsibv-dialog.layertree .container .contents ul li a:hover{
+  box-shadow: inset 0 0 1px 1px rgb(79, 178, 218);
+}
+
+.-gsibv-dialog.layertree .container .contents ul li a.info{
+  position:absolute;
+  display:block;
+  color:#fff;
+  text-decoration: none;
+  padding:0;
+  word-break: break-all;
+  width:20px;
+  height:20px;
+  line-height: 20px;
+  top:50%;
+  margin-top:-10px;
+  margin-right: 0px;
+  border-radius: 50%;
+  text-align: center;
+  background-color:rgb(29, 65, 122);
+  color:#fff;
+}
+.-gsibv-dialog.layertree .container .contents ul li a.area{
+  position:absolute;
+  display:block;
+  color:#fff;
+  text-decoration: none;
+  padding:0;
+  word-break: break-all;
+  /*width:30px;*/
+  width:20px;
+  height:20px;
+  line-height: 20px;
+  top:50%;
+  margin-top:-10px;
+  margin-right: 0px;
+  border-radius: 5px;
+  border-radius: 50%;
+  text-align: center;
+  /*background-color:rgb(206, 0, 0);*/
+  color:#fff;
+  font-size:9px;
+  /*border: 1px solid #ccc;*/
+  height: 20px;
+  width: 20px;
+  color: #eee;
+  background-color:#fff;
+  background-image: url(../image/system/area.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+}
+
+.-gsibv-mapboxctrl-leftpanelbutton {
+
+	background-repeat: no-repeat;
+	background-position: center;
+  background-image:url(../image/thumb/std.png);
+}
+
+.-gsibv-mapboxctrl-reset-pitch {
+	background-repeat: no-repeat;
+	background-position: center;
+    background-image: url('data:image/svg+xml,<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20" width="20" height="20" fill="rgba(44,44,44,1)"><path d="M12.6 5.39L16.86 15.38L3.9 15.38L8.29 5.39L12.6 5.39Z"></path><path d="M9.58 5.39L7.21 15.02"></path><path d="M10.38 5.59L10.38 15.21"></path><path d="M11.58 5.59L13.27 15.21"></path><path d="M14.05 8.57L6.65 8.57"></path><path d="M15.37 11.79C13.72 11.79 10.44 11.79 5.52 11.79"></path></svg>');
+
+
+}
+
+.-gsibv-mapboxctrl-reset-pitch.disabled {
+    background-image: url('data:image/svg+xml,<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20" width="20" height="20" fill="rgba(44,44,44,0.3)"><path d="M12.6 5.39L16.86 15.38L3.9 15.38L8.29 5.39L12.6 5.39Z"></path><path d="M9.58 5.39L7.21 15.02"></path><path d="M10.38 5.59L10.38 15.21"></path><path d="M11.58 5.59L13.27 15.21"></path><path d="M14.05 8.57L6.65 8.57"></path><path d="M15.37 11.79C13.72 11.79 10.44 11.79 5.52 11.79"></path></svg>');
+}
+
+.-gsibv-mapboxctrl-reset-rotate {
+	background-repeat: no-repeat;
+	background-position: center;
+    background-image: url('data:image/svg+xml,<?xml version="1.0"?><svg width="20" height="20" fill="rgba(44,44,44,1)" xmlns="http://www.w3.org/2000/svg"><rect transform="translate(2.74976 16.6609) scale(1 0.917401) translate(-2.74976 -16.6609) matrix(0.998406 -0.0564405 0.0564405 0.998406 -0.51964 0.546204) matrix(0.484338 0.848048 -0.775104 0.529919 11.8655 -4.07058)" id="svg_1" height="9.793955" width="9.506042" y="4.166028" x="5.582767" /></svg>');
+}
+.-gsibv-mapboxctrl-reset-rotate.disabled {
+    background-image: url('data:image/svg+xml,<?xml version="1.0"?><svg width="20" height="20" fill="rgba(44,44,44,0.3)" xmlns="http://www.w3.org/2000/svg"><rect transform="translate(2.74976 16.6609) scale(1 0.917401) translate(-2.74976 -16.6609) matrix(0.998406 -0.0564405 0.0564405 0.998406 -0.51964 0.546204) matrix(0.484338 0.848048 -0.775104 0.529919 11.8655 -4.07058)" id="svg_1" height="9.793955" width="9.506042" y="4.166028" x="5.582767" /></svg>');
+}
+
+
+
+.-gsibv-colorpicker {
+  position: absolute;
+  background-color: #5a5a5a;
+  box-shadow: 0px 0px 3px 3px rgba(0,0,0,0.2);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 3px;
+  z-index:999;
+  
+}
+.-gsibv-colorpicker .sv-container {
+  position: absolute;
+  overflow:visible;
+
+}
+
+.-gsibv-colorpicker .close-button {
+  position: absolute;
+  right:0;
+  top:0;
+  width:16px;
+  height: 16px;
+  margin-top:-6px;
+  margin-right:-6px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-image:url('data:image/svg+xml,<?xml version="1.0" ?><svg width="18" height="18" stroke-linecap="round" stroke-width="2" stroke="rgba(255,255,255,1)" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path d="M6,6 L12,12 M12,6 L6,12 z"/></svg>');
+
+}
+
+.-gsibv-colorpicker .clear-button {
+  position: absolute;
+  right:6px;
+  bottom:6px;
+  height: 18px;
+  line-height: 18px;
+  font-size:9pt;
+  color:#fff;
+}
+
+
+.-gsibv-colorpicker .sample {
+
+  position: absolute;
+  border: 1px solid rgb(70, 70, 70);
+  border-radius: 3px;
+  background-image: url('data:image/svg+xml,<svg height="4" fill="rgba(255,255,255,0.2)" viewBox="0 0 4 4" width="4" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="2" height="2" /><rect x="2" y="2" width="2" height="2" /></svg>');
+
+}
+
+.-gsibv-colorpicker .sample div{
+  border-radius: 3px;
+}
+
+
+.-gsibv-colorpicker .input-frame  table{
+  
+  border-collapse:collapse;
+  border-spacing:0px;
+}
+
+.-gsibv-colorpicker .input-frame  table input{
+  width:100%;
+  font-size:9pt;
+  line-height:15px;
+  padding:2px;
+  text-align: center;
+}
+
+.-gsibv-colorpicker .input-frame  table th{
+  color:#fff;
+  font-weight: normal;
+  font-size:9pt;
+  white-space: nowrap;
+  padding:0 2px 0 0;
+}
+.-gsibv-colorpicker .input-frame  table td{
+  padding:0;
+}
+
+
+
+
+.-gsibv-layerinfowindow {
+  z-index: 11000;
+  position:absolute;
+  background-color: rgba(255,255,255,0.9);
+  box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.2);
+  color:#000;
+  border-radius: 3px;
+  font-size: 9pt;
+  padding:5px;
+}
+
+
+.-gsibv-layerinfowindow-content{
+  
+  position:relative;
+  max-width:300px;
+  max-height:400px;
+  overflow-y: auto;
+}
+
+
+
+.-gsibv-mapboxctrl-gps {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size:24px 24px;
+  background-image:url(../image/control/gps_off.png);
+  width:40px;
+  height:40px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+.-gsibv-mapboxctrl-gps:hover {
+  background-color: #fff  !important; 
+}
+
+
+.-gsibv-mapboxctrl-gps.on {
+  background-image:url(../image/control/gps_on.png);
+  background-color:rgb(79, 178, 218);
+}
+.-gsibv-mapboxctrl-gps.on:hover {
+  background-color:rgb(79, 178, 218)  !important; 
+}
+
+
+.-gsibv-mapboxctrl-gps-mark {
+  position:absolute;
+  background-color:rgb(79, 178, 218);
+  border:1px solid #ddd;
+  border-radius: 50%;
+  width:20px;
+  height:20px;
+  top:50%;
+  left:50%;
+  margin-left:-10px;
+  margin-top:-10px;
+  z-index: 10;
+}
+
+.-gsibv-relief-contents {
+  position: absolute  !important; 
+  left:0;
+  top:0;
+  bottom:0;
+  right:0;
+}
+
+.-gsibv-relief-contents .-header {
+  position:absolute;
+  left:0;
+  top:0;
+  right:0;
+
+}
+
+.-gsibv-relief-contents .-header .-toolbar{
+  
+  padding: 1px 0 1px 1px;
+}
+
+
+.-gsibv-relief-contents .-header .-toolbar button{
+
+  height:24px;
+  margin-right:1px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  vertical-align: bottom;
+}
+
+
+
+.-gsibv-relief-contents .-header .-toolbar button.open{
+
+  width:24px;
+  background-size: 18px 18px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg height="20px" version="1.1" viewBox="0 0 512 512" width="20px" xmlns="http://www.w3.org/2000/svg" fill="rgba(255,255,255,1)">\
+<path d="M430.1,192H81.9c-17.7,0-18.6,9.2-17.6,20.5l13,183c0.9,11.2,3.5,20.5,21.1,20.5h316.2c18,0,20.1-9.2,21.1-20.5l12.1-185.3   C448.7,199,447.8,192,430.1,192z"/>\
+<path d="M426.2,143.3c-0.5-12.4-4.5-15.3-15.1-15.3c0,0-121.4,0-143.2,0c-21.8,0-24.4,0.3-40.9-17.4C213.3,95.8,218.7,96,190.4,96    c-22.6,0-75.3,0-75.3,0c-17.4,0-23.6-1.5-25.2,16.6c-1.5,16.7-5,57.2-5.5,63.4h343.4L426.2,143.3z"/>\
+></svg>');
+}
+
+.-gsibv-relief-contents .-header .-toolbar button.save{
+
+  width:24px;
+  background-size: 18px 18px;
+background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"  >\
+    <path fill="rgba(255,255,255,1)" d="M5.01 8.1L9.85 14.44L14.77 8.17L11.67 8.14L11.72 1.45L8.14 1.43L8.09 8.12L5.01 8.1Z"></path>\
+    <path stroke="rgba(255,255,255,1)" opacity="1" fill-opacity="0" stroke-width="3" d="M16.76 8.63L16.76 16.76L2.93 16.76L2.93 8.63"></path>\
+    </svg>');
+}
+
+
+.-gsibv-relief-contents .-header .-toolbar2{
+  
+  padding: 2px 0 3px 1px;
+}
+
+
+.-gsibv-relief-contents .-header .-toolbar2 button{
+  margin-left: 5px;;
+}
+
+.-gsibv-relief-contents .-content {
+  position:absolute;
+  left:0;
+  top:50px;
+  bottom:26px;
+  right:0;
+  border-radius: 3px;
+
+}
+.-gsibv-relief-contents .-content .listcontainer {
+
+  position:absolute;
+  left:2px;
+  top:2px;
+  bottom:2px;
+  right:2px;
+  overflow:auto;
+}
+
+
+.-gsibv-relief-contents .-content .listcontainer table.colors{
+  margin: 0 0 0 8px;
+  
+  position:relative;
+}
+
+.-gsibv-relief-contents .-content .listcontainer table td{
+
+  line-height: 22px;
+  overflow-y: visible;
+}
+.-gsibv-relief-contents .-content .listcontainer table td.gradationbar{
+  position:relative;
+  width:16px;
+
+}
+.-gsibv-relief-contents .-content .listcontainer table td.gradationbar .bar{
+  position: absolute;
+  background: url("./image/system/transparent_bg.png");
+  border:1px soide #aaa;
+  left:1px;
+  right:1px;
+  top:1px;
+  bottom:1px;
+  overflow:hidden;
+}
+
+.-gsibv-relief-contents .-content .listcontainer table td.gradationbar .bar canvas{
+  border-radius: 3px;
+}
+
+.-gsibv-relief-contents .-content .listcontainer table td a.button{
+  height:22px;
+  width:22px;
+  line-height: 22px;
+  vertical-align: top;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.-gsibv-relief-contents .-content .listcontainer table td a.color{
+  display: block;
+  height:22px;
+  width:38px;
+  line-height: 22px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border-radius: 3px;
+}
+
+
+.-gsibv-relief-contents .-content .listcontainer table td a.color.transparent{
+  background-color:transparent;
+  background-repeat: repeat;
+
+  background-image: url('data:image/svg+xml,<svg height="4" fill="rgba(255,255,255,0.2)" viewBox="0 0 4 4" width="4" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="2" height="2" /><rect x="2" y="2" width="2" height="2" /></svg>');
+}
+
+.-gsibv-relief-contents .-content .listcontainer table td a.button.remove{
+  
+  background-size: 16px 16px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg width="24" height="24" stroke-linecap="round" stroke-width="3" stroke="rgba(255,255,255,1)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">\
+    <path d="M6,6 L18,18 M18,6 L6,18 z"/>\
+    </svg>');
+}
+
+.-gsibv-relief-contents .-content .listcontainer table td a.button.append{
+  margin-bottom:-22px;
+  position: absolute;
+  background-size: 16px 16px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg width="24" height="24" stroke-linecap="round" stroke-width="3" stroke="rgba(255,255,255,1)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">\
+    <path d="M6,12 L18,12 M12,6 L12,18 z"/>\
+    </svg>');
+}
+
+.-gsibv-relief-contents .-content .listcontainer table td input.elevation{
+  width:5em;
+  line-height: 22px;
+  height:22px;
+  padding-left:2px;
+}
+
+.-gsibv-relief-contents .-footer {
+  position:absolute;
+  left:0;
+  bottom:0;
+  right:0;
+  vertical-align: bottom;
+}
+.-gsibv-relief-contents  .-tani{
+  padding-left:8px;
+  font-size:9px;
+}
+
+.-gsibv-relief-contents .-footer .-container{
+  padding:2px;
+}
+
+.-gsibv-relief-contents .-footer button{
+  display:block;
+  width:100%;
+  line-height: 22px;
+  text-align: center;
+
+}
+
+
+.-gsibv-relief-newpanel {
+  position: absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+} 
+.-gsibv-relief-contents .-loading-panel {
+
+  position: absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  background:rgba(55, 55, 55, 0.95);
+}
+
+.-gsibv-relief-contents .-loading-panel::after {
+  content: "標高を取得しています";
+  color:#fff;
+  display:block;
+  position:absolute;
+  width:150px;
+  line-height:24px;
+  top:50%;
+  left:50%;
+  text-align:center;
+  margin-top:-12px;
+  margin-left:-75px;
+  background-repeat: no-repeat;
+  background-position: 0px center;
+  padding-left:20px;
+  background-image: url(../image/loading2.gif);
+}
+.-gsibv-relief-newpanel .-container{
+  
+  position: absolute;
+  left:4px;
+  right:4px;
+  top:4px;
+  bottom:4px;
+  padding:6px;
+  border-radius: 3px;
+  background:rgba(55, 55, 55, 0.95);
+}
+
+
+.-gsibv-relief-newpanel .-container dl{
+  margin:0;
+  padding:0;
+}
+.-gsibv-relief-newpanel .-container dt{
+  margin:0;
+  padding:0;
+}
+.-gsibv-relief-newpanel .-container dd{
+  margin:4px 0 12px 0;
+  padding:0 0 0 12px;
+}
+
+
+.-gsibv-relief-newpanel .-container dd.disable{
+  opacity: 0.3;
+}
+
+.-gsibv-relief-newpanel .-container dd table td input{
+  width:5em;
+  padding-left:3px;
+  margin-right:2px;
+}
+
+
+.-gsibv-relief-newpanel .-container dd table td a.color{
+
+  display: block;
+  height:22px;
+  width:38px;
+  line-height: 22px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border-radius: 3px;
+}
+
+.-gsibv-relief-newpanel .-container dd table td a.color.transparent{
+  background-color:transparent;
+  background-repeat: repeat;
+
+  background-image: url('data:image/svg+xml,<svg height="4" fill="rgba(255,255,255,0.2)" viewBox="0 0 4 4" width="4" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="2" height="2" /><rect x="2" y="2" width="2" height="2" /></svg>');
+}
+
+.-gsibv-relief-newpanel .-container .option-frame {
+  margin-bottom:12px;
+}
+.-gsibv-relief-newpanel .-container .button-frame  {
+  text-align: center;
+}
+.-gsibv-relief-newpanel .-container .button-frame button {
+  width:45%;
+  margin:0 1px 0 1px;
+}
+
+
+.-gsibv-relief-patternselectpanel {
+	position: absolute;
+	z-index: 10000000;
+	background: rgba(55, 55, 55, 0.95);
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+  border-radius: 3px;  
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+
+}
+
+.-gsibv-relief-patternselectpanel ul {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+.-gsibv-relief-patternselectpanel ul li {
+	display: block;
+	padding: 0px;
+	margin: 0px;
+	border-bottom: 1px dotted #666;
+}
+
+.-gsibv-relief-patternselectpanel ul li a {
+	display: block;
+	padding: 0px;
+	margin: 0px;
+	padding: 2px;
+}
+
+.-gsibv-relief-patternselectpanel ul li a:hover {
+box-shadow: 0 0 1px 1px rgb(79, 178, 218);
+
+}
+
+.-gsibv-relief-patternselectpanel ul li a canvas {
+	border: 1px solid #666;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+
+
+
+
+/***********************************************
+作図
+***********************************************/
+
+.-gsibv-sakuzu-dialog {
+
+}
+
+
+.-gsibv-sakuzu-dialog .contents {
+  position: absolute !important;
+  left : 0;
+  top: 0;
+  right:0;
+  bottom:0;
+}
+.-gsibv-sakuzu-dialog .controls {
+  position: relative;
+  
+  width:100%;
+  padding:3px 0 3px 2px;
+}
+
+.-gsibv-sakuzu-dialog .controls .separator{
+  
+  display: inline-block;
+  width:1px;
+  height:16px;
+	background: rgba(0,0,0,0.31);
+  margin-right:3px;
+  margin-bottom:4px;
+}
+
+.-gsibv-sakuzu-dialog .controls button{
+  display: inline-block;
+  width:24px;
+  height:24px;
+  margin-right: 3px;
+  padding:0;
+  background-color: transparent;
+  background-position: center center;
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+
+}
+.-gsibv-sakuzu-dialog .controls button:hover {
+  background-color: #666;
+  opacity: 1;
+}
+
+.-gsibv-sakuzu-dialog .controls button.active:hover{
+  background-color:rgba(79, 178, 218,0.9);
+}
+
+.-gsibv-sakuzu-dialog .controls button.active{
+  background-color:rgb(79, 178, 218);
+  
+}
+
+.-gsibv-sakuzu-dialog .controls button.disable{
+  opacity:0.2;
+  cursor: default;
+}
+
+.-gsibv-sakuzu-dialog .controls button.disable:hover{
+  background-color:transparent;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+
+.-gsibv-sakuzu-dialog .controls button.save {
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"  >\
+  <path fill="rgba(255,255,255,1)" d="M5.01 8.1L9.85 14.44L14.77 8.17L11.67 8.14L11.72 1.45L8.14 1.43L8.09 8.12L5.01 8.1Z"></path>\
+  <path stroke="rgba(255,255,255,1)" opacity="1" fill-opacity="0" stroke-width="3" d="M16.76 8.63L16.76 16.76L2.93 16.76L2.93 8.63"></path>\
+  </svg>');
+}
+  
+.-gsibv-sakuzu-dialog .controls button.open {
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg height="20px" version="1.1" viewBox="0 0 512 512" width="20px" xmlns="http://www.w3.org/2000/svg" fill="rgba(255,255,255,1)">\
+<path d="M430.1,192H81.9c-17.7,0-18.6,9.2-17.6,20.5l13,183c0.9,11.2,3.5,20.5,21.1,20.5h316.2c18,0,20.1-9.2,21.1-20.5l12.1-185.3   C448.7,199,447.8,192,430.1,192z"/>\
+<path d="M426.2,143.3c-0.5-12.4-4.5-15.3-15.1-15.3c0,0-121.4,0-143.2,0c-21.8,0-24.4,0.3-40.9-17.4C213.3,95.8,218.7,96,190.4,96    c-22.6,0-75.3,0-75.3,0c-17.4,0-23.6-1.5-25.2,16.6c-1.5,16.7-5,57.2-5.5,63.4h343.4L426.2,143.3z"/>\
+></svg>');
+}
+
+.-gsibv-sakuzu-dialog .controls button.marker {
+  background-size: 24px 24px;
+  background-image:url(../image/sakuzu/icon_mark.png);
+}
+.-gsibv-sakuzu-dialog .controls button.line {
+  background-size: 24px 24px;
+  background-image:url(../image/sakuzu/icon_line.png);
+}
+.-gsibv-sakuzu-dialog .controls button.polygon {
+  background-size: 24px 24px;
+  background-image:url(../image/sakuzu/icon_polygon.png);
+}
+
+
+.-gsibv-sakuzu-dialog .list-frame {
+  position: absolute;
+  left:0;
+  right:0;
+  top:30px;
+  bottom:0;
+}
+
+.-gsibv-sakuzu-dialog .list-frame ul {
+  list-style: none;
+  margin:0;
+  padding:0;
+  display: block;
+}
+
+.-gsibv-sakuzu-dialog .list-frame li {
+  display: block;
+  position: relative;
+  padding: 4px 1px 3px 1px;
+  border-bottom: 1px dotted #555;
+}
+
+.-gsibv-sakuzu-dialog .list-frame li.active {
+  background-color: rgba(79, 178, 218,0.2);
+
+}
+
+
+.-gsibv-sakuzu-dialog .list-frame li.active::after {
+  content: "　";
+  display: block;
+  position:absolute;
+  left:1px;
+  top:4px;
+  height:18px;
+  width:18px;
+  border-radius: 50%;
+  background-size: 18px 18px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image:url(../image/sakuzu/icon_edit.png);
+}
+
+
+
+.-gsibv-sakuzu-dialog .list-frame li.active > button.view {
+  display:none;
+}
+
+.-gsibv-sakuzu-dialog .list-frame li > .title{
+  position:relative;
+  
+  line-height:18px;
+  margin:0px 90px 2px 24px;
+  word-break: break-all;
+}
+
+.-gsibv-sakuzu-dialog .list-frame li > .num{
+  position:absolute;
+  line-height:18px;
+  height:18px;
+  top:4px;
+  right:72px;
+  z-index: 1;
+  font-size:9pt;
+  padding:0 5px 0 5px;
+  border-radius: 8px;
+  background-color:rgb(79, 178, 218);
+  border:none;
+  color:#fff;
+  text-align: center;
+}
+
+.-gsibv-sakuzu-dialog .list-frame li > button{
+  
+  height:18px;
+  position: absolute;
+  top:4px;
+  right:1px;
+  border-radius: 50%;
+  background-color:transparent;
+  border:none;
+  background-position: center center;
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+  z-index:1;
+}
+.-gsibv-sakuzu-dialog .list-frame li > button:hover {
+  background-color: #666;
+  opacity: 1;
+}
+
+.-gsibv-sakuzu-dialog .list-frame li > button.disable {
+  opacity:0.2;
+  cursor: default;
+}
+.-gsibv-sakuzu-dialog .list-frame li > button.disable:hover {
+  background-color:transparent;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.-gsibv-sakuzu-dialog .list-frame li > button.edit{
+  width:32px;
+  font-size:10px;
+  right:36px;
+  border-radius: 3px;
+}
+.-gsibv-sakuzu-dialog .list-frame li > button.edit::after {
+  content: "編集";
+  color:#fff;
+  height:18px;
+  position: absolute;
+  width:32px;
+  font-size:10px;
+  left:0px;
+  top:0px;
+  white-space: nowrap;
+  line-height: 18px;
+}
+.-gsibv-sakuzu-dialog .list-frame li > button.view {
+  left:1px;
+  width:18px;
+  right: auto;
+  background-image: url('data:image/svg+xml,<svg fill="none" height="22" stroke="rgba(255,255,255,1)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>');
+
+}
+.-gsibv-sakuzu-dialog .list-frame li > button.view.hidden {
+  background-image: url('data:image/svg+xml,<svg fill="none" height="22" stroke="rgba(128,128,128,1)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="22" xmlns="http://www.w3.org/2000/svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><path d="M22,2 L2,22 z"/></svg>');
+
+}
+/*
+.-gsibv-sakuzu-dialog .list-frame li > button.remove{
+  width:18px;
+  background-image: url('data:image/svg+xml,<?xml version="1.0" ?>\
+    <svg width="24" height="24" stroke-linecap="round" stroke-width="3" stroke="rgba(255,255,255,1)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">\
+    <path d="M6,6 L18,18 M18,6 L6,18"/>\
+    </svg>');
+
+}
+*/
+
+
+.-gsibv-sakuzu-dialog .list-frame li > button.remove{
+width:32px;
+font-size:10px;
+border-radius: 3px;
+}
+.-gsibv-sakuzu-dialog .list-frame li > button.remove::after {
+content: "削除";
+color:#fff;
+height:18px;
+position: absolute;
+width:32px;
+font-size:10px;
+left:0px;
+top:0px;
+white-space: nowrap;
+line-height: 18px;
+}
+
+
+
+.draw-edit-panel {
+
+  padding:3px 3px 5px 3px;
+
+}
+
+.draw-edit-panel table {
+  width:100%;
+}
+
+.draw-edit-panel th {
+  color:#fff;
+  font-size:8pt;
+  font-weight: normal;
+  white-space: nowrap;
+  width:10px;
+  padding-right:8px;
+  text-align: left;
+}
+
+.draw-edit-panel td {
+  vertical-align: middle;
+  padding:0;
+}
+
+.draw-edit-panel td select,
+.draw-edit-panel td input{
+  line-height: 20px;
+  height:20px;
+  width:100px;
+  margin:1px 0 1px 0;
+}
+
+.draw-edit-panel td textarea {
+  width:100%;
+  height:50px;
+}
+
+.draw-edit-panel td select.radius-unit {
+  width:auto;
+}
+
+.draw-edit-panel td input.title{
+  width:100%;
+}
+
+.draw-edit-panel td .color-panel {
+  position: relative;
+  background-color: #5a5a5a;
+  margin:1px 0 1px 0;
+  width:56px;
+  height:20px;
+  line-height: 20px;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  background-image: url('data:image/svg+xml,<svg height="4" fill="rgba(255,255,255,0.2)" viewBox="0 0 4 4" width="4" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="2" height="2" /><rect x="2" y="2" width="2" height="2" /></svg>');
+
+}
+
+.draw-edit-panel td .color-panel .inner {
+  position: absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  border-radius: 3px;
+
+}
+
+
+.draw-edit-panel td.opacity-frame {
+  padding:2px 8px 2px 8px;
+}
+.draw-edit-panel td .opacity-slider {
+  position: relative;
+  width:100%;
+  height:16px;
+  line-height: 16px;
+}
+
+
+.draw-edit-controls {
+
+}
+
+
+.draw-edit-controls button{
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  background-color: #5a5a5a;
+  border-radius: 3px;
+  padding: 1px 6px 1px 6px;
+  border-radius: 3px;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+  font-size: 9pt;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+
+.draw-edit-panel td .icon-panel{
+  display: inline-block;
+  height:20px;
+  min-width: 20px;
+  cursor: pointer;
+}
+
+.draw-edit-panel td .icon-panel img{
+  height:20px;
+  vertical-align: bottom;
+}
+
+
+.-sakuzu-marker-icon-selector {
+  position: absolute;
+  z-index:20020;
+  background: #fff;
+  width:210px;
+  height:220px;
+  overflow-y:auto;
+  padding:2px;
+  border-radius: 3px;
+  box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.2);
+  background-color: #444;
+}
+
+.-sakuzu-marker-icon-selector div{
+  display:inline-block;
+  vertical-align: bottom;
+  padding:2px;
+}
+
+.-sakuzu-marker-icon-selector div img{
+  vertical-align: bottom;
+  height:20px;
+  cursor: pointer;
+}
+
+
+.-sakuz-draw-tooltip {
+  position:absolute;
+  z-index:1000;
+  display: inline-block;
+  min-width:120px;
+  background:rgba(43, 43, 43, 0.7);
+  margin-left:6px;
+
+  padding:4px;
+  border-radius: 5px;
+}
+
+.-sakuz-draw-tooltip::before {
+  content:"";
+  position:absolute;
+  top:12px;
+  left:-12px;
+  margin-top:-6px;
+  border:6px solid transparent;
+  border-right:6px solid rgba(43, 43, 43, 0.7);
+}
+
+.-sakuz-draw-tooltip div.distance{
+  color:#f8d5e4;
+}
+
+.-sakuz-draw-tooltip p{
+  margin:0;
+  padding:0;
+  color:rgba(255,255,255,0.8);
+  font-size:9pt;
+  white-space: nowrap;
+}
+
+
+.-sakuz-draw-tooltip.error {
+  background:rgba(242, 222, 222,0.8);
+}
+.-sakuz-draw-tooltip.error::before {
+  border-right:6px solid rgba(242, 222, 222,0.8);
+
+}
+.-sakuz-draw-tooltip.error p{
+  color:rgb(185, 74, 72);
+}
+
+
+.-sakuz-draw-tooltip p .mini{
+  font-size:8pt;
+}

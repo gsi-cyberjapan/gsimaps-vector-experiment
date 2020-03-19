@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, ,user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="description" content="自分で地図をデザインすることができる新たな地図閲覧サイトです。白地図や、写真に地名を重ねた地図など、学校教育現場や防災分野で活用できる地図を簡単に作成できます。">
+  <meta name="keywords" content="地理院地図ベクター,地理院地図ベクタ,地理院地図ベクトル,地理院地図">
+  
+  
+  <!-- PWA android-->
+  <link rel="manifest" href="manifest.json">
+  <!-- PWA ios-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="地理院地図Vector">
+  <link rel="apple-touch-icon" href="image/logo-192.png">
+    
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('serviceworker.js').then(function(registration) {
+    });
+  }
+  </script>
+
+
+  <title>地理院地図Vector｜国土地理院</title>
+  <script src='./mapbox/1.8.1/mapbox-gl.js'></script>
+  <link href='./mapbox/1.8.1/mapbox-gl.css' rel='stylesheet' />
+  
+  <script src='./js/perfect-scrollbar.min.js'></script>
+  <link href='./js/perfect-scrollbar.css' rel='stylesheet' />
+
+  <script type="text/javascript" src="./js/encoding/encoding.js"></script>
+
+
+  <script type="text/javascript" src="./js/src/util/ma.js"></script>
+  <script type="text/javascript" src="./js/src/util/ma.ui.js"></script>
+  
+  <script type="text/javascript" src="./js/src/gsibv.js"></script>
+  <script type="text/javascript" src="./js/src/util/addresssearcher.js"></script>
+  <script type="text/javascript" src="./js/src/util/demloader.js"></script>
+
+  <!-- MAP -->
+  <script type="text/javascript" src="./js/src/map/map.js"></script>
+  <script type="text/javascript" src="./js/src/map/spritemanager.js"></script>
+  <script type="text/javascript" src="./js/src/map/control-centercross.js"></script>
+  <script type="text/javascript" src="./js/src/map/control-mouseposition.js"></script>
+  <script type="text/javascript" src="./js/src/map/hatch-imagemanager.js"></script>
+  <script type="text/javascript" src="./js/src/map/imagemanager.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-raster.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-binaryvectortile.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-kml.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-geojson.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-tilegeojson.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-multi.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-tileimage.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-freerelief.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-tilevector.js"></script>
+  <script type="text/javascript" src="./js/src/map/control-layer.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-searchresult.js"></script>
+  <script type="text/javascript" src="./js/proj4js-combined.js"></script>
+  <script type="text/javascript" src="./js/src/map/util.js"></script>
+  <script type="text/javascript" src="./js/src/map/control.js"></script>
+  <script type="text/javascript" src="./js/src/map/control-gps.js"></script>
+  <script type="text/javascript" src="./js/src/map/hanreiloader.js"></script>
+  <script type="text/javascript" src="./js/togeojson.js"></script>
+
+  <!-- DATA -->
+  <script type="text/javascript" src="./js/src/data/vectortilesource.js"></script>
+  <script type="text/javascript" src="./js/src/data/vectortiledata.js"></script>
+  <script type="text/javascript" src="./js/src/data/vectortiledata-maboxlayer-generator.js"></script>
+  <script type="text/javascript" src="./js/src/data/layerinfo.js"></script>
+  <script type="text/javascript" src="./js/src/data/layersjson.js"></script>
+  <script type="text/javascript" src="./js/src/data/vectortiledata-drawstyle.js"></script>
+  <script type="text/javascript" src="./js/src/data/vectortiledata-symbolstyle.js"></script>
+  <script type="text/javascript" src="./js/src/data/vectortiledata-fillstyle.js"></script>
+  <script type="text/javascript" src="./js/src/data/vectortiledata-linestyle.js"></script>
+
+  <!-- UI -->
+  <script type="text/javascript" src="./js/src/ui/ui.js"></script>
+  <script type="text/javascript" src="./js/src/ui/popup/popup.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/dialog.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/help.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/savedata.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/opendata.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/openfile.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/savefile.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/newdata.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/layertree.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/freerelief.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/dsloret.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/layerinfowindow.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/sakuzueditinfo.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/sakuzu.js"></script>
+  <script type="text/javascript" src="./js/src/ui/input/input.js"></script>
+  <script type="text/javascript" src="./js/src/ui/input/color.js"></script>
+  <script type="text/javascript" src="./js/src/ui/input/colorpicker.js"></script>
+  <script type="text/javascript" src="./js/src/ui/input/size.js"></script>
+  <script type="text/javascript" src="./js/src/ui/input/offset.js"></script>
+  <script type="text/javascript" src="./js/src/ui/select/select.js"></script>
+  <script type="text/javascript" src="./js/src/ui/select/image.js"></script>
+  <script type="text/javascript" src="./js/src/ui/select/anchor.js"></script>
+  <script type="text/javascript" src="./js/src/ui/layertreeview.js"></script>
+  <script type="text/javascript" src="./js/src/ui/recommendselector.js"></script>
+  <script type="text/javascript" src="./js/src/ui/displaylayerlist.js"></script>
+  <script type="text/javascript" src="./js/src/ui/searchpanel.js"></script>
+  <script type="text/javascript" src="./js/src/ui/contextmenu.js"></script>
+  <script type="text/javascript" src="./js/src/ui/leftpanel.js"></script>
+  <script type="text/javascript" src="./js/src/ui/mainmenu.js"></script>
+  <script type="text/javascript" src="./js/src/ui/edit/editlayerview.js"></script>
+  <script type="text/javascript" src="./js/src/ui/edit/sortmanager.js"></script>
+  <script type="text/javascript" src="./js/src/ui/edit/styleeditor.js"></script>
+  <script type="text/javascript" src="./js/src/ui/edit/base.js"></script>
+  <script type="text/javascript" src="./js/src/ui/edit/symbol.js"></script>
+  <script type="text/javascript" src="./js/src/ui/edit/fill.js"></script>
+  <script type="text/javascript" src="./js/src/ui/edit/line.js"></script>
+
+  <!-- 作図 -->
+  <script type="text/javascript" src="./js/src/map/draw/feature.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/line.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/polygon.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/multipolygon.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/marker.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/divmarker.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/circle.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/circlemarker.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/manager.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/layer.js"></script>
+
+  <script type="text/javascript" src="./js/src/map/draw/control.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/tooltip.js"></script>
+  
+  <script type="text/javascript" src="./js/src/map/draw/drawer/feature.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/drawer/marker.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/drawer/line.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/drawer/polygon.js"></script>
+
+  <script type="text/javascript" src="./js/src/map/draw/edit/feature.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/edit/marker.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/edit/divmarker.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/edit/line.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/edit/polygon.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/edit/multipolygon.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/edit/circle.js"></script>
+
+  <!-- その他 -->
+  <script type="text/javascript" src="./js/src/util/file.js"></script>
+  <script type="text/javascript" src="./js/src/util/additional.js"></script>
+  <!-- 住所取得用muni.js -->
+  <script type="text/javascript" src="https://maps.gsi.go.jp/js/muni.js"></script>
+
+  <link href='./css/common.css' rel='stylesheet' />
+  <link href='./css/help.css' rel='stylesheet' />
+  <script type="text/javascript" src="./data/config.js"></script>
+  <script type="text/javascript" src="./data/config-mobile.js"></script>
+  <script type="text/javascript" src="./data/sakuzu/config.js"></script>
+  <script type="text/javascript" src="./data/lang-ja.js"></script>
+  <script type="text/javascript" src="./data/lang-en.js"></script>
+  <script type="text/javascript" src="./js/gsimaps-bvtile.js"></script>
+  
+
+
+  <script type="text/javascript">
+    if (!GSIBV.application) { window.onload = function () { document.getElementById("incompatible").style.display = 'block'; }; }
+  </script>
+
+</head>
+<body>
+  
+  <div id="incompatible">
+    大変申し訳ありません。
+    Chrome,Firefox,Safari,Edgeの最新バージョンでご覧ください。
+  </div>
+
+  <div id="main">
+
+    <div id="header">
+      <a href="" class="logo">
+        <div class="logo-1">地理院地図Vector</div>
+        <div class="logo-2">（試験公開）</div>
+      </a>
+      <div class="query-frame">
+        <form name="search" onsubmit="return false;"><input type="text" name="q" value="" placeholder="例：国土地理院 / つくば市北郷 / 36度0分0秒 140度0分0秒  / 36.00 140.00 / 54SUE83694920"></form>
+      </div>
+      <a class="menu-button" href="javascript:void(0);"></a>
+    </div>
+
+    <div class="search-result-frame">
+      <div class="header">
+        <div class="title">
+          <div class="message"></div>
+          <a class="message2" href="http://newspat.csis.u-tokyo.ac.jp/geocode/" target="_blank" style="font-size: 7pt;">協力:東大CSIS</a>
+        </div>
+        <table>
+          <tr>
+            <td><select name="pref"></select></td>
+            <td><select name="city"></select></td>
+          </tr>
+        </table>
+        <a href="javascript:void(0);" class="close-button"></a>
+      </div>
+
+      <div class="result">
+        <ul>
+          <li><a href="javascript:void(0);">
+              <div class="title"></div>
+              <div class="addr"></div>
+            </a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="print-header">
+        <table>
+          <tbody>
+            <tr>
+              <td style="text-align: left;"><img src="image/print/title.png"></td>
+              <td style="width: 240px;"><span class="no_print">用紙サイズ：</span>
+                <select class="no_print size">
+                  <option value="A4_portrait">A4縦(標準)</option>
+                  <option value="A4_landscape">A4横(標準)</option>
+                  <option value="A3_portrait">A3縦(標準)</option>
+                  <option value="A3_landscape">A3横(標準)</option>
+                </select>
+              </td>
+              <td style="width: 64px;"><button class="no_print print">印刷</button></td>
+              <td style="width: 120px;"><button class="no_print back" style="white-space: nowrap;">元の画面に戻る</button></td>
+            </tr>
+            <tr>
+              <td colspan="4" class="no_print" style="text-align: left;">「用紙サイズ」で選択したサイズや向きで印刷するには、プリンターのプロパティで用紙サイズや向きを設定する必要があります。</td></tr>
+              <tr>
+                <td colspan="4" class="no_print" style="text-align: right;"><input class="normalcheck white" type="checkbox" id="gsi_print_directionsign"><label for="gsi_print_directionsign">方位記号を追加</label></td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="content">
+      <div class="map"></div>
+    </div>
+
+    <div id="left-panel">
+      <a class="toggle-button" href="javascript:void(0);"></a>
+      <div class="scroll">
+        <div id="recommend" class="panel">
+          <div class="header">おすすめの地図</div>
+          <div class="list">
+            <ul>
+              <li>
+                <a href="javascript:void(0);">
+                  <div class="state-visible"></div>
+                  <img src="./image/thumb/std.png">
+                  <div class="title"></div>
+                </a>
+              </li>
+            </ul>
+            <div class="note"></div>
+          </div>
+          <button class="detail-button">詳細</button>
+          <button class="style-add-button">地図デザインの追加</button>
+          <button class="select-layer-button">地図や写真を追加</button>
+        </div>
+        <div id="layer-list" class="panel">
+          <div class="header"><span>表示中の地図</span>
+            <!--button class="new-data-button" title="新しいスタイルを作成"></button>
+            <button class="open-data-button" title="スタイルファイルを読み込む"></button>
+            <button class="select-layer-button" href="javascript:void(0);">地図や写真を追加</button-->
+          </div>
+          <div class="list">
+            <ul>
+              <li class="layer">
+                <div class="layer-info">
+                  <!--span class="type">----</span-->
+                  <div class="control">
+                    <button title="表示切替" class="button visible-button"></button>
+                    <button title="透過率指定" class="button opacity-button"></button>
+                    <button title="情報表示" class="button info-button"></button>
+                    <button title="このレイヤーを削除" class="button remove-button"></button>
+                    <button title="このレイヤーを上に移動" class="button up-button"></button>
+                    <button title="このレイヤーを下に移動" class="button down-button"></button>
+                  </div>
+                  <div class="pankuzu"></div>
+                  <div class="title">----</div>
+                  <button title="保存" class="button save-button">保存</button>
+                  <button title="編集" class="button edit-button">編集</button>
+                  <div class="opacity-slider-frame"><span class="caption">不透明度</span><span class="value"></span>% <div class="opacity-slider"></div>
+                  </div>
+                </div>
+                <div class="layer-edit-list-frame">
+                  <div class="header">
+                    <div>
+                      <input type="text" name="filter-query" placeholder="例：国道 / 城跡 / 広葉樹林">
+                    </div>
+                    <!--button title="編集したスタイルを保存" class="save-button"></button-->
+                    <button title="メニューを開く" class="menu-button"></button>
+                  </div>
+                  <div class="contents"></div>
+                </div>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="context-menu">
+      <a class="toggle-button" href="javascript:void(0);"></a>
+      <div class="context-menu-content">
+        <div class="controls">
+          <a class="button center active" href="javascript:void(0);">地図中心位置の情報</a>
+          <a class="button click" href="javascript:void(0);">クリック位置の情報</a>
+        </div>
+        <table>
+          <tr>
+            <td>
+              <table>
+                <tr class="addr row">
+                  <th>
+                    <div class="key addr">住所</div>
+                  </th>
+                  <td>
+                    <div class="value addr"></div>
+                  </td>
+                </tr>
+                <tr class="pos row">
+                  <th>
+                    <div class="key pos">位置</div>
+                  </th>
+                  <td>
+                    <div>
+                      <div class="value dms"></div>
+                      <div class="value latlng"></div>
+                      <div class="key zoom">ズーム</div>
+                      <div class="value zoom"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="utm row">
+                  <th>
+                    <div class="key utmpoint">UTMポイント</div>
+                  </th>
+                  <td>
+                    <div class="value utmpoint"></div>
+                  </td>
+                </tr>
+                <tr class="elevation row">
+                  <th>
+                    <div class="key elevation">標高</div>
+                  </th>
+                  <td>
+                    <div class="value elevation"></div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td class="features-frame">
+              <div class="features">
+                <h3></h3>
+                <table>
+                  <tr>
+                    <th></th>
+                    <td></td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="context-menu-layer-info">
+      <a href="javascript:void(0);" class="button close-button"></a>
+      <div class="scroll-frame">
+        <div class="view info">
+          <h3>情報</h3>
+          <div>
+            <table>
+              <tr>
+                <th>ソース</th>
+                <td>road</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="view filter">
+          <h3>filter</h3>
+          <div><textarea></textarea></div>
+        </div>
+        <div class="view paint">
+          <h3>paint</h3>
+          <div><textarea></textarea></div>
+        </div>
+        <div class="view layout">
+          <h3>layout</h3>
+          <div><textarea></textarea></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="template">
+      
+      <!-- 指定緊急避難場所 免責事項・ご利用上の注意 -->
+      <div class="evac">
+        <div>
+        地理院地図に掲載されている指定緊急避難場所データ（以下、「本データ」といいます）を利用される場合は、<a href="http://www.gsi.go.jp/kikakuchousei/kikakuchousei40182.html" target="blank">国土地理院コンテンツ利用規約</a>のほか、以下のご利用上の注意をご確認いただき、内容に同意された場合のみご利用ください。
+        </div>
+        <div style="margin: 5px 18px 0px 0px;">
+          <div>【ご利用上の注意】</div>
+            <ol>
+              <li value="1">本データは、災害対策基本法第49条の4に基づき市町村長が指定した指定緊急避難場所の情報を各市町村に提供いただき、当該市町村に確認の上、地図上に表示したものです。最新の状況などは当該市町村にご確認ください。</li>
+              <li value="2">本データを、ダウンロードや印刷等を行い国土地理院サーバ外で利用される場合は、本データの更新にあわせて最新の情報をご利用ください（参照：<a href="https://hinan.gsi.go.jp/hinanjocjp/hinanbasho/koukaidate.html" target="blank">市町村別公開日・更新日一覧</a>）。</li>
+              <li value="3">指定緊急避難場所は、災害種別ごとに指定されています。本データをダウンロードや印刷等を行い国土地理院サーバ外で利用される場合、指定された災害種別を利用者が正確に理解できるよう、十分にご留意ください。</li>
+            </ol>
+        </div>
+        <div style="margin: 0px 18px 0px 0px;">
+          <div>【データについて】</div>
+            <ol>
+              <li value="1"><a href="http://www.gsi.go.jp/bousaichiri/hinanbasho.html" target="blank">「指定緊急避難場所」について</a></li>
+              <li value="2"><a href="http://www.gsi.go.jp/bousaichiri/hinanbasho-help.html" target="blank">利用方法</a></li>
+              <li value="3"><a href="https://hinan.gsi.go.jp/hinanjocjp/hinanbasho/koukaidate.html" target="blank">市町村別公開日・更新日一覧</a></li>
+              <li value="4"><a href="https://geoinfo2.gsi.go.jp/contact/Inquiry2.aspx?pcode=1004&amp;bcode=100411&amp;mcode=10041101" target="blank">お問い合わせ</a></li>
+            </ol>
+        </div>
+      </div>
+
+      <!-- Edit -->
+      <div class="edit-frame edit-line">
+        <h3 class="edit-line">
+          <input type="checkbox" name="line-visible" class="normalcheck"><label class="line-visible">線を表示</label>
+        </h3>
+        <div class="edit-table-frame">
+        <table class="table">
+          <tr class="edit-line">
+            <th class="table line-color-title">線色</th>
+            <td class="table">
+              <input type="text" name="line-color" class="color" value="">
+            </td>
+          </tr>
+          <tr class="edit-line">
+            <th class="table line-width-title">線の幅</th>
+            <td class="table line-width">
+            </td>
+          </tr>
+          <tr class="edit-line">
+            <th class="table line-dasharray-title">線の破線</th>
+            <td class="table">
+              <input type="text" name="line-dasharray" class="array" value="">
+            </td>
+          </tr>
+          <tr class="edit-line">
+            <th class="table line-offset-title">オフセットの幅</th>
+            <td class="table line-offset">
+              <!--input type="text" name="line-offset" class="width" value=""-->
+            </td>
+          </tr>
+          <tr class="edit-line">
+            <th class="table line-cap-title">終端の形状</th>
+            <td class="table line-cap">
+            </td>
+          </tr>
+          <tr class="edit-line">
+            <th class="table line-role-title">線の役割</th>
+            <td class="table line-role">
+            </td>
+          </tr>
+        </table>
+        </div>
+
+      </div>
+
+
+
+      <div class="edit-frame edit-symbol">
+        <h3 class="edit-text">
+            <input type="checkbox" name="text-visible" class="normalcheck"><label class="text-visible">テキストを表示する</label>
+            
+        </h3>
+        <div class="edit-table-frame">
+        <table class="table">
+          <tr class="edit-text">
+            <th class="table text-color-title">文字の色</th>
+            <td class="table">
+              <input type="text" name="text-color" class="color" value="">
+            </td>
+          </tr>
+          <tr class="edit-text">
+            <th class="table text-size-title">文字サイズ</th>
+            <td class="table text-size">
+            </td>
+          </tr>
+          <tr class="edit-text">
+            <th class="table text-halo-color-title">縁取りの色</th>
+            <td class="table">
+              <input type="text" name="text-halo-color" class="color" value="">
+            </td>
+          </tr>
+          <tr class="edit-text">
+            <th class="table text-halo-width-title">縁取りサイズ</th>
+            <td class="table text-halo-width">
+            </td>
+          </tr>
+          
+          <tr class="edit-text">
+            <td colspan="2" class="detail-button-frame"><a href="javascript:void(0);" class="button detail-button text-detail-button">その他のテキスト設定</a></td>
+          </tr>
+          
+            
+          <tr class="edit-text detail">
+            <th class="table text-anchor-title">文字アンカー</th>
+            <td class="table text-anchor"></td>
+          </tr>
+          <tr class="edit-text detail">
+            <th class="table text-offset-title">文字オフセット</th>
+            <td class="table text-offset">
+            </td>
+          </tr>
+          <tr class="edit-text detail">
+            <th class="table text-vertical-title">文字縦書き</th>
+            <td class="table text-vertical">
+            </td>
+          </tr>
+          <!--
+          <tr class="edit-text detail">
+            <th class="table">文字の回転</th>
+            <td class="table text-rotate">
+                <input type="checkbox" name="icon-visible" class="normalcheck"><label class="icon-visible">自動</label>
+            </td>
+          </tr>
+          -->
+          <tr class="edit-text detail">
+            <th class="table text-pitch-alignment-title">ピッチ時の文字の向き</th>
+            <td class="table text-pitch-alignment">
+            </td>
+          </tr>
+          <tr class="edit-text detail">
+            <th class="table text-rotation-alignment-title">回転時の文字の向き</th>
+            <td class="table text-rotation-alignment">
+            </td>
+          </tr>
+        </table>
+        </div>
+        
+        <h3 class="edit-icon">
+            <input type="checkbox" name="icon-visible" class="normalcheck"><label class="icon-visible">アイコンを表示する</label>
+            
+        </h3>
+        
+        <div class="edit-table-frame">
+        <table class="table">
+          <!--tr class="edit-icon">
+            <th class="table icon-image-title">アイコン画像</th>
+            <td class="table icon-image">
+            </td>
+          </tr-->
+          <tr class="edit-icon">
+            <th class="table icon-size-title">アイコン倍率</th>
+            <td class="table icon-size">
+            </td>
+          </tr>
+          <tr class="edit-icon">
+            <td colspan="2" class="detail-button-frame"><a href="javascript:void(0);" class="button detail-button icon-detail-button">その他のアイコン設定</a></td>
+          </tr>
+          <tr class="edit-icon detail">
+            <th class="table icon-anchor-title">アイコンアンカー</th>
+            <td class="table icon-anchor">
+            </td>
+          </tr>
+          <!--
+          <tr class="edit-icon detail">
+            <th class="table">アイコンオフセット</th>
+            <td class="table">
+            </td>
+          </tr>
+          -->
+          <tr class="edit-icon detail">
+              <th class="table icon-pitch-alignment-title">ピッチ時のアイコンの向き</th>
+              <td class="table icon-pitch-alignment">
+              </td>
+            </tr>
+            <tr class="edit-icon detail">
+              <th class="table icon-rotation-alignment-title">回転時のアイコンの向き</th>
+              <td class="table icon-rotation-alignment">
+              </td>
+            </tr>
+            
+        </table>
+        </div>
+      </div>
+
+
+
+      <div class="edit-frame edit-fill">
+        <h3 class="edit-fill">
+          <input type="checkbox" name="fill-visible" class="normalcheck"><label class="fill-visible">塗り潰しを表示</label>
+        </h3>
+        <div class="edit-table-frame">
+        <table class="table">
+          <tr class="edit-fill">
+            <th class="table fill-style-title">塗り潰し方法</th>
+            <td class="table fill-style">
+            </td>
+          </tr>
+          <tr class="edit-fill">
+            <th class="table fill-color-title">塗り潰し色</th>
+            <td class="table">
+              <input type="text" name="fill-color" class="color" value="">
+            </td>
+          </tr>
+          <tr class="edit-fill edit-fill-hatch-bgcolor">
+            <th class="table fill-hatch-bgcolor-title">ハッチ背景色</th>
+            <td class="table">
+              <input type="text" name="fill-hatch-bgcolor" class="color" value="">
+            </td>
+          </tr>
+        </table>
+        </div>
+        
+        <h3 class="edit-outline">
+          <input type="checkbox" name="outline-visible" class="normalcheck"><label class="outline-visible">枠線を表示</label>
+        </h3>
+        <div class="edit-table-frame">
+        <table class="table">
+          <tr class="edit-outline">
+            <th class="table outline-color-title">枠線色</th>
+            <td class="table">
+              <input type="text" name="outline-color" class="color" value="">
+            </td>
+          </tr>
+          <tr class="edit-outline">
+            <th class="table outline-width-title">枠線の幅</th>
+            <td class="table">
+              <input type="text" name="outline-width" class="width" value="">
+            </td>
+          </tr>
+          <tr class="edit-outline">
+            <th class="table outline-dasharray-title">枠線の破線</th>
+            <td class="table">
+              <input type="text" name="outline-dasharray" class="array" value="">
+            </td>
+          </tr>
+        </table>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  
+</body>
+</html>
