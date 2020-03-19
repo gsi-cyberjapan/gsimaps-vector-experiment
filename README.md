@@ -29,7 +29,8 @@
 
 <table>
 	<tr><th>URL</th><td>https://cyberjapandata.gsi.go.jp/xyz/experimental_bvmap/{z}/{x}/{y}.pbf<br>
-	※タイルアップ中のため現在は https://cyberjapandata.gsi.go.jp/xyz/experimental_bvmap_tmp/{z}/{x}/{y}.pbf</tr>
+	※タイルアップロード中のため現在は以下を参照しています。<br>
+		https://cyberjapandata.gsi.go.jp/xyz/experimental_bvmap_tmp/{z}/{x}/{y}.pbf</tr>
 	<tr><th class="titletd">データソース</td><td>数値地図（国土基本情報）- 地図情報　等</td></tr>
 	<th>ズームレベル</td><td>4～16<br>
 	※ズームレベル17の情報は、ズームレベル16に含んだうえでオーバーズームして表示</td></tr>
