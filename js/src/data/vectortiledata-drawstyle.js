@@ -165,6 +165,8 @@ GSIBV.VectorTileData.LayoutType = {
     "text-offset": {},
     "text-allow-overlap": {},
     "text-ignore-placement": {},
+    "icon-allow-overlap": {},
+    "icon-ignore-placement": {},
     "text-optional": {},
     "symbol-placement": {},
     "symbol-z-order": {},
