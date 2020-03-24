@@ -859,8 +859,11 @@ GSIBV.Application = class extends MA.Class.Base {
 
   // 地理院地図データ一覧から選択された時
   _onGSIMAPLayerSelect(e) {
-    this._map.addLayer(e.params.layerInfo.layer);
-
+    if ( this._map.layerList.find(e.params.layerInfo.layer)) {
+      this._map.removeLayer(e.params.layerInfo.layer);
+    } else {
+      this._map.addLayer(e.params.layerInfo.layer);
+    }
   }
 
   // 範囲を選択された時
