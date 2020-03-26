@@ -17,12 +17,13 @@
 
 .help-page h4 {
   font-size: 11pt;
-  margin: -4px;
+  margin: 0;
   padding: 0;
 }
 
 .help-page ul {
   list-style-type: none;
+  margin: 4px 0 12px -10px;
 }
 
 .help-page a{
@@ -90,6 +91,11 @@
 
 .help-page a.link.gsi_twitter {
   background-image: url('//maps.gsi.go.jp/image/help/twitter.png');
+}
+
+
+.help-page a.link.gsi_movie {
+  background-image: url('//maps.gsi.go.jp/image/help/movie.png');
 }
 
 
