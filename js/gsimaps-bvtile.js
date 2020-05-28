@@ -917,6 +917,24 @@ GSIBV.HashManager = class extends MA.Class.Base {
     }, this));
     this._map.on("layerchange", MA.bind(function (e) {
       this._refresh();
+
+      // 指定緊急避難場所のコメント表示切替
+      
+      var skhbCommentVisible = false;
+
+      for ( var i=0; i<this._map.layerList.length; i++ ) {
+        var layer = this._map.layerList.get(i);
+        if ( layer.id.match(/^skhb[0-9].+$/) ) {
+          skhbCommentVisible = true;
+          break;
+        }
+      }
+      if ( skhbCommentVisible ) {
+        this.showSkhbComment();
+      } else {
+        this.hideSkhbComment();
+      }
+
     }, this));
 
     this._app.on("langchange", MA.bind(function (e) {
@@ -1144,6 +1162,25 @@ GSIBV.HashManager = class extends MA.Class.Base {
     return params;
   }
 
+  showSkhbComment() {
+    if ( !this._skhbComment ) {
+      
+      this._skhbComment = MA.DOM.create('div');
+      MA.DOM.addClass(this._skhbComment, "skhb-comment-frame");
+      this._skhbComment.innerHTML = GSIBV.CONFIG.SKHBMESSAGE;
+      
+      MA.DOM.select("#main")[0].appendChild( this._skhbComment);
+      
+    }
+  }
+
+  hideSkhbComment() {
+
+    if ( this._skhbComment ) {
+      this._skhbComment.parentNode.removeChild( this._skhbComment);
+      this._skhbComment = undefined;
+    }
+  }
 
 }
 
