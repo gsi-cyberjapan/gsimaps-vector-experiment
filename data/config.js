@@ -486,6 +486,14 @@ GSIBV.CONFIG.CONFIRM_LAYERS = {
 };
 
 
+// 指定緊急場所表示中メッセージ
+GSIBV.CONFIG.SKHBMESSAGE = 
+'<div class="evac_dialog_content">最新の状況などは当該市町村にご確認ください。<br>' 
+ + '<a href="http://www.gsi.go.jp/bousaichiri/hinanbasho.html" target="blank">「指定緊急避難場所」について</a>'
+ + '　<a href="https://hinan.gsi.go.jp/hinanjocjp/hinanbasho/koukaidate.html" target="blank">市町村別公開日・更新日一覧</a>'
+  + '</div>';
+
+
 GSIBV.CONFIG.PAPERSIZE = {
   "A4_portrait": { w: 650, h: 900 },  //A4縦
   "A4_landscape": { w: 950, h: 550 }, //A4横
