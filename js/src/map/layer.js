@@ -42,6 +42,10 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
 
   add(layer) {
 
+    
+
+
+    
     if (!(layer instanceof GSIBV.Map.Layer.Unknown)) {
       // 確認ダイアログ表示
       for( var key in GSIBV.CONFIG.CONFIRM_LAYERS ){
@@ -85,6 +89,41 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
       }
 
       return null;
+    } else {
+      //自然災害伝承碑の排他処理
+      var removeList = [];
+
+      if ( layer.id == "disaster_lore_all") {
+        for( var i=0; i<this._list.length; i++ ) {
+          var layerId = this._list[i].id;
+          if ( layerId.indexOf('disaster_lore_') == 0 ) {
+            removeList.push( this._list[i]);
+          }
+        }   
+      }  else if (layer.id.indexOf('disaster_lore_') == 0) {
+        for( var i=0; i<this._list.length; i++ ) {
+          var layerId = this._list[i].id;
+          if ( layerId == "disaster_lore_all" ) {
+            removeList.push( this._list[i]);
+          }
+        }   
+
+      }
+
+      // 指定緊急避難場所排他処理
+      if ( layer.id.match(/^skhb[0-9].+$/) ) {
+        for( var i=0; i<this._list.length; i++ ) {
+          var layerId = this._list[i].id;
+          if ( layerId.match(/^skhb[0-9].+$/) ) {
+            removeList.push( this._list[i]);
+            console.log( "test");
+          }
+        }   
+      }
+
+
+      for( var i=0; i<removeList.length; i++) this.remove(removeList[i]);
+
     }
 
     if (!layer._add(this._map)) return null;
