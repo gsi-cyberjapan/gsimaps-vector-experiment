@@ -153,31 +153,40 @@ GSIBV.VectorTileData.SymbolDrawStyle = class extends GSIBV.VectorTileData.DrawSt
 
     if (this._data["text-offset"] == "auto" || this._data["text-offset"] == undefined) {
       this._data["text-offset"] = "auto";
-      if (textAnchorField != undefined) {
-
-        result["text-offset"] = [
-          "case",
-          ["any",
-            ["==", ["get", textAnchorField], "LT"],
-            ["==", ["get", textAnchorField], "LC"],
-            ["==", ["get", textAnchorField], "LB"]
-          ],
-          ["literal", [0.5, 0]],
-          ["any",
-            ["==", ["get", textAnchorField], "RT"],
-            ["==", ["get", textAnchorField], "RC"],
-            ["==", ["get", textAnchorField], "RB"]
-          ],
-          ["literal", [-0.5, 0]],
-          ["any",
-            ["==", ["get", textAnchorField], "CT"]
-          ],
-          ["literal", [0, 0.5]],
-          ["any",
-            ["==", ["get", textAnchorField], "CB"]
-          ],
-          ["literal", [0, -0.5]],
-          ["literal", [0, 0]]
+      if (textAnchorField) {
+        if (textVerticalField == undefined){
+          textVerticalField = "1";
+        }
+        result["text-offset"] = ["case",
+          ["==", ["get", textVerticalField], 2],["case",
+            ["any",
+              ["==", ["get", textAnchorField], "CB"],
+              ["==", ["get", textAnchorField], "RB"],
+              ["==", ["get", textAnchorField], "LB"]], ["literal", [0.5, 0]],
+            ["any",
+              ["==", ["get", textAnchorField], "CT"],
+              ["==", ["get", textAnchorField], "RT"],
+              ["==", ["get", textAnchorField], "LT"]], ["literal", [-0.5, 0]],
+            ["any",
+              ["==", ["get", textAnchorField], "LC"]], ["literal", [0, 0.5]],
+            ["any",
+              ["==", ["get", textAnchorField], "RC"]], ["literal", [0, -0.5]],
+            ["literal", [0, 0]]
+          ], ["case",
+            ["any",
+              ["==", ["get", textAnchorField], "LT"],
+              ["==", ["get", textAnchorField], "LC"],
+              ["==", ["get", textAnchorField], "LB"]], ["literal", [0.5, 0]],
+            ["any",
+              ["==", ["get", textAnchorField], "RT"],
+              ["==", ["get", textAnchorField], "RC"],
+              ["==", ["get", textAnchorField], "RB"]], ["literal", [-0.5, 0]],
+            ["any",
+              ["==", ["get", textAnchorField], "CT"]], ["literal", [0, 0.5]],
+            ["any",
+              ["==", ["get", textAnchorField], "CB"]], ["literal", [0, -0.5]],
+            ["literal", [0, 0]]
+          ]
         ];
       } else {
         delete result["text-offset"];
@@ -199,11 +208,22 @@ GSIBV.VectorTileData.SymbolDrawStyle = class extends GSIBV.VectorTileData.DrawSt
 
     if (this._data["text-anchor"] == "auto" || this._data["text-anchor"] == undefined) {
       this._data["text-anchor"] = 'auto';
-      if (textVerticalField && textAnchorField) {
+      if (textAnchorField) {
+        if (textVerticalField == undefined){
+          textVerticalField = "1";
+        }
         result["text-anchor"] = ["case",
           ["==", ["get", textVerticalField], 2],
           ["case",
+            ["==", ["get", textAnchorField], "LT"], "top-right",
+            ["==", ["get", textAnchorField], "CT"], "right",
+            ["==", ["get", textAnchorField], "RT"], "bottom-right",
             ["==", ["get", textAnchorField], "LC"], "top",
+            ["==", ["get", textAnchorField], "CC"], "center",
+            ["==", ["get", textAnchorField], "RC"], "bottom",
+            ["==", ["get", textAnchorField], "LB"], "top-left",
+            ["==", ["get", textAnchorField], "CB"], "left",
+            ["==", ["get", textAnchorField], "RB"], "bottom-left",
             "center"
           ],
           ["case",
@@ -219,19 +239,6 @@ GSIBV.VectorTileData.SymbolDrawStyle = class extends GSIBV.VectorTileData.DrawSt
             "center"
           ]
         ];
-      } else if (textAnchorField) {
-        result["text-anchor"] = ["case",
-            ["==", ["get", textAnchorField], "LT"], "top-left",
-            ["==", ["get", textAnchorField], "CT"], "top",
-            ["==", ["get", textAnchorField], "RT"], "top-right",
-            ["==", ["get", textAnchorField], "LC"], "left",
-            ["==", ["get", textAnchorField], "CC"], "center",
-            ["==", ["get", textAnchorField], "RC"], "right",
-            ["==", ["get", textAnchorField], "LB"], "bottom-left",
-            ["==", ["get", textAnchorField], "CB"], "bottom",
-            ["==", ["get", textAnchorField], "RB"], "bottom-right",
-            "center"
-          ];
       } else {
         delete result["text-anchor"];
       }
