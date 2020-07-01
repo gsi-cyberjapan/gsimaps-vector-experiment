@@ -863,7 +863,22 @@ GSIBV.Application = class extends MA.Class.Base {
       this._map.removeLayer(e.params.layerInfo.layer);
     } else {
       this._map.addLayer(e.params.layerInfo.layer);
+      
+      // kmlの場合読込後移動
+      if ( e.params.layerInfo.layer.getLngLatBounds ) {
+        e.params.layerInfo.layer.on("loaded", MA.bind(function(e){
+          var layer = e.from;
+          var bounds = layer.getLngLatBounds();
+          if (!bounds ) return;
+          this._map.map.fitBounds(bounds,{
+            speed: 2,
+            curve: 1.5,
+            maxZoom: 15,
+            padding:100});
+        }, this));
+      }
     }
+
   }
 
   // 範囲を選択された時
