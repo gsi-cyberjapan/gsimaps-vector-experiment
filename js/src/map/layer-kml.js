@@ -138,6 +138,65 @@ GSIBV.Map.Layer.KML = class extends GSIBV.Map.Layer {
     return true;
   }
 
+  getLngLatBounds() {
+    if ( !this._geojson) return null;
+    var geojson = this._geojson;
+    var minLat = undefined;
+    var minLng = undefined;
+    var maxLat = undefined;
+    var maxLng = undefined;
+    
+    for (var i = 0; i < geojson.features.length; i++) {
+      var feature = geojson.features[i];
+      if ( !feature.geometry || !feature.geometry.coordinates) continue;
+      var coordinates = feature.geometry.coordinates;
+      
+      if (coordinates.length >= 2 && !MA.isArray( coordinates[0] ) ) {
+        var lat = coordinates[1];
+        var lng = coordinates[0];
+        if ( minLat == undefined || minLat > lat ) minLat = lat;
+        if ( minLng == undefined || minLng > lng ) minLng = lng;
+        if ( maxLat == undefined || maxLat < lat ) maxLat = lat;
+        if ( maxLng == undefined || maxLng < lng ) maxLng = lng;
+        continue;
+      }
+      for( var j = 0; j<coordinates.length; j++ ) {
+        var coord = coordinates[j];
+        if ( !MA.isArray( coord ) || coord.legth <1 ) continue;
+        if ( MA.isArray( coord[0] )) {
+          for( var k = 0; k<coord.length; k++ ) {
+            var coord2 = coord[k];
+            if (coord2.length >= 2 && !MA.isArray( coord2[0] ) ) {
+              var lat = coord2[1];
+              var lng = coord2[0];
+              if ( minLat == undefined || minLat > lat ) minLat = lat;
+              if ( minLng == undefined || minLng > lng ) minLng = lng;
+              if ( maxLat == undefined || maxLat < lat ) maxLat = lat;
+              if ( maxLng == undefined || maxLng < lng ) maxLng = lng;
+            }
+          }
+        } else if (coord.length >= 2) {
+          var lat = coord[1];
+          var lng = coord[0];
+          if ( minLat == undefined || minLat > lat ) minLat = lat;
+          if ( minLng == undefined || minLng > lng ) minLng = lng;
+          if ( maxLat == undefined || maxLat < lat ) maxLat = lat;
+          if ( maxLng == undefined || maxLng < lng ) maxLng = lng;
+
+        }
+      }
+
+    }
+
+    if ( minLng == undefined || maxLat == undefined || minLat == undefined || maxLng == undefined) return null;
+
+    var lnglatBounds = new mapboxgl.LngLatBounds(
+      new mapboxgl.LngLat(minLng, maxLat),
+      new mapboxgl.LngLat(maxLng, minLat)
+    );
+    return lnglatBounds;
+  }
+
   _remove(map) {
     if (!map) return;
     var imageManager = GSIBV.Map.ImageManager.instance;
@@ -162,7 +221,9 @@ GSIBV.Map.Layer.KML = class extends GSIBV.Map.Layer {
     if (!this._layers) return;
 
     for (var i = 0; i < this._layers.length; i++) {
-      map.moveLayer(this._layers[i].id);
+      if ( map.getLayer(this._layers[i].id)) {
+        map.moveLayer(this._layers[i].id);
+      }
     }
 
     map.repaint = true;
@@ -182,7 +243,7 @@ GSIBV.Map.Layer.KML = class extends GSIBV.Map.Layer {
       var dom = parser.parseFromString(kmlText, 'text/xml');//e.params.response, 'text/xml');
       var geojson = toGeoJSON.kml(dom);
       var loadIcons = [];
-      var loadIconsHash = [];
+      var loadIconsHash = {};
       this._geojson = geojson;
 
       if (geojson && geojson.features) {
@@ -190,6 +251,7 @@ GSIBV.Map.Layer.KML = class extends GSIBV.Map.Layer {
         for (var i = 0; i < geojson.features.length; i++) {
           var feature = geojson.features[i];
           if (!feature.properties) continue;
+          
 
           feature.properties["-gsibv-popupContent"] =
             (feature.properties["name"] ? "<h2>" + feature.properties["name"] + "</h2>" : "") +
@@ -238,6 +300,8 @@ GSIBV.Map.Layer.KML = class extends GSIBV.Map.Layer {
     } catch (e) {
       console.log(e);
     }
+
+    this.fire("loaded");
   }
   _onIconLoad(loadIcons, e) {
     var url = e.params.url;
