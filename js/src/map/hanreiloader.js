@@ -144,7 +144,7 @@ GSIBV.Map.HanreiLoader = class extends MA.Class.Base {
         if ( item.description && item.description != "")
           html+="<div>" + item.description + "</div>";
 
-        html+="<div>" + "r:"+ color.r + "," + "g:"+ color.g + "," + "b:"+ color.b + "</div>";
+        //html+="<div>" + "r:"+ color.r + "," + "g:"+ color.g + "," + "b:"+ color.b + "</div>";
         
         this._popup = new mapboxgl.Popup({closeOnClick: true})
           .setLngLat([latlng.lng, latlng.lat])
@@ -154,14 +154,14 @@ GSIBV.Map.HanreiLoader = class extends MA.Class.Base {
       }
     }
     
-    
+    /*
     var html ='<div>' + "r:"+ color.r + "," + "g:"+ color.g + "," + "b:"+ color.b + "</div>";
     
     this._popup = new mapboxgl.Popup({closeOnClick: true})
       .setLngLat([latlng.lng, latlng.lat])
       .setHTML(html)
       .addTo(this._map.map);
-
+    */
   }
 
   _createImageRGBLoader () {
