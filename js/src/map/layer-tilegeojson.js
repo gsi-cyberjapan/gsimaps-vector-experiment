@@ -1,92 +1,73 @@
 var L = {};
 var GSI = { GLOBALS: {} };
-L.LatLng = class {
 
+L.LatLng = class {
   constructor() {
     this.lat = arguments[0];
     this.lng = arguments[1];
   }
-
 }
-L.latLng = function (arg1, arg2) {
 
+L.latLng = function (arg1, arg2) {
   return new L.LatLng(arg1, arg2);
 };
 
 L.Feature = class {
-
   constructor() {
-
   }
   bindPopup(content) {
     this._popupContent = content;
     return this;
   }
-
   on() { }
   off() { }
 }
 
 L.FeatureGroup = class extends L.Feature {
-
   constructor(features) {
     super();
-
     this._features = [];
-
     if (features) {
       for (var i = 0; i < features.length; i++)
         this._features.push(features[i]);
     }
-
   }
-
-
-
 }
-
 
 L.featureGroup = function (options) {
   return new L.FeatureGroup(options);
 };
 
 L.Icon = class {
-
   constructor(options) {
     this._options = options;
   }
-
 }
 L.icon = function (options) {
   return new L.Icon(options);
 };
 
-
 L.DivIcon = class extends L.Icon {
-
   constructor(options) {
     super(options);
     this._options = options;
   }
-
 }
 L.divIcon = function (options) {
   return new L.DivIcon(options);
 };
 
 L.Marker = class extends L.Feature {
-
   constructor(latlng, options) {
     super(options);
     this._latlng = latlng;
     this._options = options;
   }
-
 }
-
 L.marker = function (latlng, options) {
   return new L.Marker(latlng, options);
 };
+
 
 GSIBV.Map.Layer.TYPES["tilegeojson"] = "タイルGeoJSON";
 GSIBV.Map.Layer.FILTERS.push(function (l) {
@@ -102,7 +83,6 @@ GSIBV.Map.Layer.FILTERS.push(function (l) {
       "maxzoom": l.maxZoom,
       "minNativeZoom": l.minNativeZoom,
       "maxNativeZoom": l.maxNativeZoom
-
     });
   }
 
@@ -118,14 +98,13 @@ GSIBV.Map.Layer.FILTERS.push(function (l) {
       "maxzoom": l.maxZoom,
       "minNativeZoom": l.minNativeZoom,
       "maxNativeZoom": l.maxNativeZoom
-
     });
   }
-
 
   return null;
 
 });
+
 
 GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
 
@@ -145,7 +124,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
 
     this._onMapMoveHandler = MA.bind(this._onMapMove, this);
   }
-
 
   getVisible() {
     var map = this._map.map;
@@ -209,6 +187,7 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
     }
     this._opacity = opacity;
   }
+
   _add(map) {
     super._add(map);
 
@@ -240,19 +219,17 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
     this._request.on("error", MA.bind(this._onStyleLoadError, this));
     /*
     this._request.on("finish", MA.bind( function(){
-        //map.map.on("moveend", this._onMapMoveHandler );
-        //this._refresh();
+      // map.map.on("moveend", this._onMapMoveHandler );
+      // this._refresh();
     }, this ));
     */
     this._request.load();
 
     return true;
 
-
   }
 
   _onStyleLoad(e) {
-
     try {
       eval("this._style =" + e.params.response + ";");
       if (this._style) {
@@ -268,25 +245,39 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       console.log(e);
     }
   }
+
   _onStyleLoadError() {
     console.log("error ");
     this._request.abort();
 
-    var m = this._url.match(/([^:]*:\/\/([^\/]+)\/)/i);
-    if (m) {
-      var url = m[1] + "js/style.js";
-      this._request = new MA.HTTPRequest({
-        "url": url,
-        "type": "text"
-      });
+    var url = "./data/style.js";
+    this._request = new MA.HTTPRequest({
+      "url": url,
+      "type": "text"
+    });
 
-      this._request.on("load", MA.bind(this._onStyleLoad, this));
-      this._request.on("finish", MA.bind(function () {
-        this._map.map.on("moveend", this._onMapMoveHandler);
-        this._refresh();
-      }, this));
-      this._request.load();
-    }
+    this._request.on("load", MA.bind(this._onStyleLoad, this));
+    this._request.on("finish", MA.bind(function () {
+      this._map.map.on("moveend", this._onMapMoveHandler);
+      this._refresh();
+    }, this));
+    this._request.load();
+
+    // var m = this._url.match(/([^:]*:\/\/([^\/]+)\/)/i);
+    // if (m) {
+    //   var url = m[1] + "js/style.js";
+    //   this._request = new MA.HTTPRequest({
+    //     "url": url,
+    //     "type": "text"
+    //   });
+
+    //   this._request.on("load", MA.bind(this._onStyleLoad, this));
+    //   this._request.on("finish", MA.bind(function () {
+    //     this._map.map.on("moveend", this._onMapMoveHandler);
+    //     this._refresh();
+    //   }, this));
+    //   this._request.load();
+    // }
   }
 
   _remove(map) {
@@ -316,7 +307,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       for (var i = 0; i < tile.layers.length; i++) {
         map.moveLayer(tile.layers[i].id);
       }
-
     }
 
     map.repaint = true;
@@ -341,7 +331,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       this._destroyTile(this._tiles[key]);
     }
     this._tiles = {};
-
   }
 
   _refresh() {
@@ -366,9 +355,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
 
     zoom = Math.floor(zoom);
 
-    
-
-
     var mapBounds = map.getBounds();
 
     var northWest = mapBounds.getNorthWest();
@@ -379,7 +365,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
     var rb = this._getTileNo(southEast.lat, southEast.lng, zoom);
 
     var center = this._getTileNo(centerLatLng.lat, centerLatLng.lng, zoom);
-
 
     var min = {
       x: Math.min(lt.x, rb.x),
@@ -408,6 +393,7 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
 
     if (!this._tiles) this._tiles = {};
 
+
     // 不要なタイル削除
     var removeTiles = [];
     for (var key in this._tiles) {
@@ -432,6 +418,7 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       }
     }
 
+
     // タイル読み込み
     loadTiles.sort(function (a, b) {
       if (a.distance < b.distance) return -1;
@@ -445,8 +432,8 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
 
   }
 
-  _loadTile(tile) {
 
+  _loadTile(tile) {
     tile.req = new MA.HTTPRequest({
       "url": tile.url,
       "type": "json"
@@ -494,7 +481,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
 
             }
 
-
           }
 
           if (this._style && this._style.geojsonOptions && this._style.geojsonOptions.onEachFeature) {
@@ -517,7 +503,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
 
           }
 
-
           var style = null;
           if (this._style && this._style.geojsonOptions && this._style.geojsonOptions.style) {
             style = this._style.geojsonOptions.style(feature);
@@ -534,8 +519,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
             for (var key in style) {
               properties["_" + key] = style[key];
             }
-
-
 
           }
 
@@ -607,7 +590,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       }
 
 
-
     } catch (e) {
       console.log(e);
     }
@@ -623,7 +605,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
     feature.properties["_textanchor"] = "top-left";
 
     if (!leafletLayer) {
-
       return;
     }
 
@@ -637,11 +618,10 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
     for (var i = 0; i < features.length; i++) {
       var llayer = features[i];
       if (llayer instanceof L.Marker) {
-
         if (llayer._popupContent) {
           feature.properties["-gsibv-popupContent"] = llayer._popupContent;
-
         }
+
         if (llayer._options.icon instanceof L.DivIcon) {
           var html = llayer._options.icon._options.html;
           //font-size
@@ -659,7 +639,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
           }
 
 
-
           var m = null;
 
           m = html.match(/font\-size[\s]*\:[\s]*([^;\s]+)/i);
@@ -668,7 +647,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
               feature.properties["_fontSize"] = parseFloat(m[1]);
             else
               feature.properties["_fontSize"] = parseFloat(m[1]) * 1.33;
-
           }
 
           m = html.match(/color[\s]*\:[\s]*([^;\s]+)/i);
@@ -676,13 +654,10 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
             feature.properties["_color"] = m[1];
           }
 
-
           m = html.match(/transform[\s]*\:[\s]*rotate\(([^;\s)]+)\)/i);
           if (m) {
             feature.properties["_rotate"] = parseFloat(m[1]);
           }
-
-
 
           m = html.match(/transform\-origin[\s]*\:[\s]*([^;\s]+)([\s]+([^;\s]+))*/i);
           if (m) {
@@ -718,7 +693,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
           }
 
 
-
         } else if (llayer._options.icon instanceof L.Icon) {
           for (var key in feature.properties) {
             if (key.indexOf("_") == 0) {
@@ -730,7 +704,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
           if (llayer._options.icon._options.iconSize) {
             feature.properties["_iconWidth"] = llayer._options.icon._options.iconSize[0];
             feature.properties["_iconHeight"] = llayer._options.icon._options.iconSize[1];
-
           }
         }
 
@@ -772,7 +745,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
         }
       }
       if (loadIcons.length <= 0) {
-
 
 
         var resetSource = false;
@@ -825,7 +797,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
         "fill-color": ["case", ["has", "_fillColor"], ["get", "_fillColor"], "rgba(0,0,0,0)"]
       }
     });
-
 
     tile.layers.push({
       "id": this.mapid + "-" + tile.id + "-dashline",
@@ -885,7 +856,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
 
     tile.layers.push(symbolLayer);
 
-
     tile.layers.push({
       "id": this.mapid + "-" + tile.id + "-label",
       "source": sourceId,
@@ -911,7 +881,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
         "text-max-width": 100
       }
     });
-
 
 
     for (var i = 0; i < tile.layers.length; i++) {
@@ -950,7 +919,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
   }
 
   _setSymbolImage(tile) {
-
     var map = this._map.map;
 
     map.setLayoutProperty(this.mapid + "-" + tile.id + "-symbol", "icon-image", ["concat", "-gsibv-image-", ["get", "_iconUrl"]]);
@@ -958,7 +926,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
   }
 
   _initTile(tile, center) {
-
     tile.url = this._url;
     tile.url = tile.url.replace("{x}", tile.coords.x);
     tile.url = tile.url.replace("{y}", tile.coords.y);
