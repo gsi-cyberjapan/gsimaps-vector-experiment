@@ -481,6 +481,46 @@ button:hover {
   background-image: url('data:image/svg+xml,<?xml version="1.0" ?><svg height="18px" version="1.1" viewBox="0 0 18 18" width="18px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="rgba(222,222,222,1)" id="Core" transform="translate(-339.000000, -381.000000)"><g id="search" transform="translate(339.000000, 381.000000)"><path d="M12.5,11 L11.7,11 L11.4,10.7 C12.4,9.6 13,8.1 13,6.5 C13,2.9 10.1,0 6.5,0 C2.9,0 0,2.9 0,6.5 C0,10.1 2.9,13 6.5,13 C8.1,13 9.6,12.4 10.7,11.4 L11,11.7 L11,12.5 L16,17.5 L17.5,16 L12.5,11 L12.5,11 Z M6.5,11 C4,11 2,9 2,6.5 C2,4 4,2 6.5,2 C9,2 11,4 11,6.5 C11,9 9,11 6.5,11 L6.5,11 Z" id="Shape"/></g></g></g></svg>');
 }
 
+
+#header .query-frame.with-banner {
+  right: 186px;
+}
+
+#header .banner {
+  display: block;
+  position: absolute;
+  right: 38px;
+  top: 2px;
+  width: 143px;
+  height: 32px;
+  background-image: url(../image/banner-back.png);
+  background-size: 143px 32px;
+  border-radius: 2px;
+  cursor:pointer;
+}
+
+#header .banner div.banner_logo_1 {
+  width:100%;
+  text-align: center;
+  line-height: 20px;
+  font-size:14px;
+  padding-top:2px;
+  letter-spacing:1px;
+  font-weight:bold;
+  color:#ddeeff;
+  text-shadow: #0064D1 0.1em 0.1em 0.1em, #0064D1 -0.1em 0.1em 0.1em, #0064D1 0.1em -0.1em 0.1em, #0064D1 -0.1em -0.1em 0.1em;
+}
+
+#header .banner div.banner_logo_2 {
+  width:100%;
+  text-align: center;
+  line-height: 8px;
+  font-size:8px;
+  color:#0064D1;
+  text-shadow: #ddeeff 0.1em 0.1em 0.1em, #ddeeff -0.1em 0.1em 0.1em, #ddeeff 0.1em -0.1em 0.1em, #ddeeff -0.1em -0.1em 0.1em;
+}
+
+
 .-gsibv-tooltip {
   position: absolute;
   z-index: 99000;

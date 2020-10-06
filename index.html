@@ -149,7 +149,7 @@
   <script type="text/javascript">
     if (!GSIBV.application) { window.onload = function () { document.getElementById("incompatible").style.display = 'block'; }; }
   </script>
-
+  
 </head>
 <body>
   
@@ -165,8 +165,15 @@
         <div class="logo-1">地理院地図Vector</div>
         <div class="logo-2">（試験公開）</div>
       </a>
-      <div class="query-frame">
+      <div class="query-frame with-banner" style="right:186px;">
         <form name="search" onsubmit="return false;"><input type="text" name="q" value="" placeholder="例：国土地理院 / つくば市北郷 / 36度0分0秒 140度0分0秒  / 36.00 140.00 / 54SUE83694920"></form>
+      </div>
+      <div class="banner" 
+        onclick="window.open(
+          'https://github.com/gsi-cyberjapan/gsimaps-vector-stylesamples#%E5%9C%B0%E7%90%86%E9%99%A2%E5%9C%B0%E5%9B%B3vector%E4%BB%AE%E7%A7%B0%E3%81%A7%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%82%81%E3%82%8B%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB%E3%81%AE%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E9%9B%86'
+        )" >
+        <div class="banner_logo_1">色々な地図 公開中</div>
+        <div class="banner_logo_2">川だけ地図, 鉄道地図, etc...</div>
       </div>
       <a class="menu-button" href="javascript:void(0);"></a>
     </div>
