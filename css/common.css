@@ -823,6 +823,16 @@ button:hover {
   color: #bbb;
 }
 
+#context-menu .tog{
+  display: inline-block;
+  white-space: nowrap;
+  border-radius: 3px;
+  padding: 1px 3px 1px 3px;
+  width: 100%;
+  color: #333;
+  background-color: #0ff;
+}
+
 #context-menu td.features-frame {
   position: relative;
   min-width: 100px;
@@ -973,6 +983,22 @@ button:hover {
 #context-menu .controls a.button.active {
   background-color: #5a5a5a;
   color: #fff;
+}
+
+#context-menu div.button {
+  width: 2em;
+  border-radius:3px;
+  text-align: center;
+	cursor:pointer;
+	color:#eee;
+	font-weight: bold;
+	background-color: #2b7396;
+	border: 1px solid #555;
+}
+
+#context-menu div.button:hover {
+	background: rgb(51,204,204);
+	color:#111;
 }
 
 .context-menu-layer-info {
