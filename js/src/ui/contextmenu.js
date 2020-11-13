@@ -9,6 +9,7 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
     super(options);
     this._options = options;
     this._mode = 'mapcenter';
+    this._dispAddrMode = 0;
   }
 
   get height() {
@@ -82,15 +83,37 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
     this._centerModeButton = MA.DOM.find(this._container, ".button.center")[0];
     this._clickModeButton = MA.DOM.find(this._container, ".button.click")[0];
 
+    this._containerTable = MA.DOM.select(".context-menu-content table")[0];
+    this._dispAddrButton = MA.DOM.find(this._containerTable, ".button.addr")[0];
+    this._valueAddr = MA.DOM.find(this._containerTable, ".value.addr")[0];
+
     MA.DOM.on(this._centerModeButton, "click", MA.bind(this._onCenterModeClick, this));
     MA.DOM.on(this._clickModeButton, "click", MA.bind(this._onClickModeClick, this));
-
+    MA.DOM.on(this._dispAddrButton, "click", MA.bind(this._onaddrdispClick, this));
+    MA.DOM.on(this._valueAddr, "click", MA.bind(this._onaddrdispClick, this));
+    
     MA.DOM.on(this._toggleButton, "click", MA.bind(this._onToggleClick, this));
     //var resetRotate = new ButtonControl();
     //map.addControl(resetRotate, 'bottom-right');
     this._onLangChange();
     if (visible) this.show();
     this._updateHint();
+  }
+
+  _onaddrdispClick(){
+    if (this._dispAddrMode == 0){
+      this._dispAddrMode = 1;
+    }
+    else{
+      this._dispAddrMode = 0;
+    }
+
+    if (this._mode == "mapcenter"){
+      this._getPointInfo(this._map.map.getCenter());
+    }
+    else{
+      this._getPointInfo(this._map.mousePositionControl._latlng);
+    }
   }
 
   _onCenterModeClick() {
@@ -270,6 +293,7 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
       this._addrLoader.on("load", MA.bind(function (e) {
         var data = {};
         data["addr"] = (e.params.title ? e.params.title : "");
+        data["addrYomi"] = (e.params.titleYomi ? e.params.titleYomi : "");
         /*
         if ( GSIBV.application.lang == "ja")
           data["addr"] = (e.params.title ? e.params.title : "");
@@ -348,13 +372,20 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
 
 
     if (data["addr"] != undefined) {
+      var tog = MA.DOM.find(this._containerTable, ".button.addr")[0];
       var elem = MA.DOM.find(this._container, ".addr.value")[0];
-      if (data["addr"] == "") {
-        //elem.innerHTML = "<ruby>------<rt>&nbsp;</rt></ruby>";
-        elem.innerHTML = "------";
-      } else {
-        //elem.innerHTML = "<ruby>" + data["addr"] + "<rp>(</rp><rt>" + data["addrYomi"] + "</rt><rp>)</rp></rp></ruby>"; // + "<span>(" + data["addrYomi"]+ ")</span>";
-        elem.innerHTML =  data["addr"];
+      if (this._dispAddrMode == 0){
+        tog.innerHTML = "あ";
+        elem.innerHTML = data["addr"];
+      }
+      else{
+        tog.innerHTML = "漢";
+        if (!data["addrYomi"]){
+          elem.innerHTML = "------";
+        }
+        else{
+          elem.innerHTML = data["addrYomi"];
+        }
       }
     }
 
