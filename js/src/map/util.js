@@ -830,22 +830,39 @@ GSIBV.Map.Util.AddrLoader = class extends MA.Class.Base {
     }
 
     var title = null;
+    var titleYomi = null;
     var titleEng = null;
     if (hitFeature) {
       var properties = hitFeature.properties;
       try {
-        var code = parseInt(properties["行政コード"]);
-        var muni = GSI.MUNI_ARRAY[""+code];
-        if ( muni ) {
-          if ( title == null ) title = "";
-          var muniParts = muni.split( ",");
-          if ( muniParts.length >= 2) title += muniParts[1].trim();
-          if ( muniParts.length >= 4) title += muniParts[3].trim();
-          title += (properties["LV01"] ? properties["LV01"] : "")
+        title = properties["pref"] + properties["muni"];
+        if (properties["LV01"]){
+          title += properties["LV01"];
         }
-      } catch(ex) {
+
+        //読み
+        titleYomi = properties["pref_kana"] + properties["muni_kana"];
+        if (properties["Lv01_kana"]){
+          titleYomi += properties["Lv01_kana"];
+        }
+    } catch(ex) {
         console.log(ex);
       }
+
+      // try {
+      //   var code = parseInt(properties["行政コード"]);
+      //   var muni = GSI.MUNI_ARRAY[""+code];
+      //   if ( muni ) {
+      //     if ( title == null ) title = "";
+      //     var muniParts = muni.split( ",");
+      //     if ( muniParts.length >= 2) title += muniParts[1].trim();
+      //     if ( muniParts.length >= 4) title += muniParts[3].trim();
+      //     title += (properties["LV01"] ? properties["LV01"] : "")
+      //   }
+      // } catch(ex) {
+      //   console.log(ex);
+      // }
+
       /*
       var code = properties["行政コード"];
       //var muni = GSIBV.MUNI_ARRAY[code];
@@ -865,7 +882,8 @@ GSIBV.Map.Util.AddrLoader = class extends MA.Class.Base {
       */
 
     }
-    this.fire("load", { "feature": hitFeature, "title": title, "titleEng": titleEng });
+    this.fire("load", { "feature": hitFeature, "title": title, "titleYomi": titleYomi, "titleEng": titleEng });
+    //this.fire("load", { "feature": hitFeature, "title": title, "titleEng": titleEng });
   }
   _isPointInPolygon(point, polygon) {
     var wn = 0;
