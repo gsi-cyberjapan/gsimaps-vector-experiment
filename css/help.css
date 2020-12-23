@@ -112,3 +112,8 @@
 .help-page a.link.gsi {
   background-image: url('//maps.gsi.go.jp/image/help/gsi_top.png');
 }
+
+
+.help-page a.link.gsi_xpt {
+  background-image: url('//maps.gsi.go.jp/help/image/inquiry.png');
+}
