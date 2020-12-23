@@ -569,7 +569,7 @@ GSIBV.Application = class extends MA.Class.Base {
 
       var size = {
         width:400,
-        height:610
+        height:630
       }
 
       if ( windowSize.width-40 < size.width) size.width = windowSize.width-40;
