@@ -39,8 +39,13 @@
 </table>
 
 ### 属性等の仕様詳細
-* [地物コード及び表示ズームレベル一覧](https://maps.gsi.go.jp/help/pdf/vector/dataspec.pdf)
-* [地物等の属性一覧](https://maps.gsi.go.jp/help/pdf/vector/attribute.pdf)
+* 地物コード及び表示ズームレベル一覧
+
+	[PDF版](https://maps.gsi.go.jp/help/pdf/vector/dataspec.pdf)　[Excel版](https://maps.gsi.go.jp/help/pdf/vector/dataspec.xlsx)
+  
+* 地物等の属性一覧
+
+	[PDF版](https://maps.gsi.go.jp/help/pdf/vector/attribute.pdf)　[Word版](https://maps.gsi.go.jp/help/pdf/vector/attribute.docx)
 
 ## style.json
 * 地図のデザインを規定しているファイル。[Style Specification](https://docs.mapbox.com/mapbox-gl-js/style-spec/)をベースにしたうえで、若干の拡張を施しています。
