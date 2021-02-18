@@ -81,8 +81,9 @@
   * [地理院地図の「標準地図」にできる限り表現を近づけたstyle.json](https://maps.gsi.go.jp/vector/data/std3.json)
 
 ## 地理院地図Vector（仮称）
-- 地理院地図Vector　https://maps.gsi.go.jp/vector/
-  * 地理院地図Vectorは、[Mapbox GL JS](https://github.com/mapbox/mapbox-gl-js)をベースに構築されています。
+- 地理院地図Vector（国土地理院が運営しているもの）：https://maps.gsi.go.jp/vector/
+- 地理院地図Vector（本レポジトリを用いたデモ）：https://gsi-cyberjapan.github.io/gsimaps-vector-experiment/
+- 地理院地図Vectorは、[Mapbox GL JS](https://github.com/mapbox/mapbox-gl-js)をベースに構築されています。
   
 ## 提供の位置づけ
 国土地理院ベクトルタイル提供実験におけるデータの提供の位置づけは次のとおりです。
