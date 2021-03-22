@@ -25,8 +25,14 @@
 
 
   <title>地理院地図Vector｜国土地理院</title>
+  <!--
   <script src='./mapbox/1.8.1/mapbox-gl.js'></script>
   <link href='./mapbox/1.8.1/mapbox-gl.css' rel='stylesheet' />
+  <script src='./mapbox/1.12.0/mapbox-gl.js'></script>
+  <link href='./mapbox/1.12.0/mapbox-gl.css' rel='stylesheet' />
+  -->
+  <script src='./mapbox/1.13.0/mapbox-gl-gsi.js'></script>
+  <link href='./mapbox/1.13.0/mapbox-gl.css' rel='stylesheet' />
   
   <script src='./js/perfect-scrollbar.min.js'></script>
   <link href='./js/perfect-scrollbar.css' rel='stylesheet' />
@@ -49,6 +55,7 @@
   <script type="text/javascript" src="./js/src/map/hatch-imagemanager.js"></script>
   <script type="text/javascript" src="./js/src/map/imagemanager.js"></script>
   <script type="text/javascript" src="./js/src/map/layer.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-comparephoto.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-raster.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-binaryvectortile.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-kml.js"></script>
@@ -58,6 +65,9 @@
   <script type="text/javascript" src="./js/src/map/layer-tileimage.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-freerelief.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-tilevector.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-mapbox.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-hillshade.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-hillshade2.js"></script>
   <script type="text/javascript" src="./js/src/map/control-layer.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-searchresult.js"></script>
   <script type="text/javascript" src="./js/proj4js-combined.js"></script>
@@ -67,6 +77,8 @@
   <script type="text/javascript" src="./js/src/map/hanreiloader.js"></script>
   <script type="text/javascript" src="./js/togeojson.js"></script>
 
+  <script type="text/javascript" src="./js/src/ui/comparephoto.js"></script>
+  
   <!-- DATA -->
   <script type="text/javascript" src="./js/src/data/vectortilesource.js"></script>
   <script type="text/javascript" src="./js/src/data/vectortiledata.js"></script>
@@ -94,6 +106,7 @@
   <script type="text/javascript" src="./js/src/ui/dialog/layerinfowindow.js"></script>
   <script type="text/javascript" src="./js/src/ui/dialog/sakuzueditinfo.js"></script>
   <script type="text/javascript" src="./js/src/ui/dialog/sakuzu.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/saveimage.js"></script>
   <script type="text/javascript" src="./js/src/ui/input/input.js"></script>
   <script type="text/javascript" src="./js/src/ui/input/color.js"></script>
   <script type="text/javascript" src="./js/src/ui/input/colorpicker.js"></script>
@@ -150,6 +163,8 @@
   <script type="text/javascript" src="./js/src/util/additional.js"></script>
   <!-- 住所取得用muni.js -->
   <script type="text/javascript" src="https://maps.gsi.go.jp/js/muni.js"></script>
+  <!-- 時系列比較用設定 -->
+  <script type="text/javascript" src="./data/photo.js"></script>
 
   <link href='./css/common.css' rel='stylesheet' />
   <link href='./css/help.css' rel='stylesheet' />

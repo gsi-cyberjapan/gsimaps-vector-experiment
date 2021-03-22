@@ -8,8 +8,14 @@
   <meta name="keywords" content="地理院地図ベクター,地理院地図ベクタ,地理院地図ベクトル,地理院地図">
   
   <title>地理院地図Vector｜国土地理院</title>
+  <!--
   <script src='./mapbox/1.8.1/mapbox-gl.js'></script>
   <link href='./mapbox/1.8.1/mapbox-gl.css' rel='stylesheet' />
+  <script src='./mapbox/1.12.0/mapbox-gl.js'></script>
+  <link href='./mapbox/1.12.0/mapbox-gl.css' rel='stylesheet' />
+  -->
+  <script src='./mapbox/1.13.0/mapbox-gl-gsi.js'></script>
+  <link href='./mapbox/1.13.0/mapbox-gl.css' rel='stylesheet' />
   
   <script src='./js/perfect-scrollbar.min.js'></script>
   <link href='./js/perfect-scrollbar.css' rel='stylesheet' />
@@ -29,10 +35,12 @@
   <script type="text/javascript" src="./js/src/map/spritemanager.js"></script>
   <script type="text/javascript" src="./js/src/map/control-centercross.js"></script>
   <script type="text/javascript" src="./js/src/map/control-mouseposition.js"></script>
+  <script type="text/javascript" src="./js/src/map/control-areaselect.js"></script>
   <script type="text/javascript" src="./js/src/map/hatch-imagemanager.js"></script>
   <script type="text/javascript" src="./js/src/map/imagemanager.js"></script>
   <script type="text/javascript" src="./js/src/map/layer.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-raster.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-comparephoto.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-binaryvectortile.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-kml.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-geojson.js"></script>
@@ -41,6 +49,9 @@
   <script type="text/javascript" src="./js/src/map/layer-tileimage.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-freerelief.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-tilevector.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-mapbox.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-hillshade.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-hillshade2.js"></script>
   <script type="text/javascript" src="./js/src/map/control-layer.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-searchresult.js"></script>
   <script type="text/javascript" src="./js/proj4js-combined.js"></script>
@@ -77,6 +88,7 @@
   <script type="text/javascript" src="./js/src/ui/dialog/layerinfowindow.js"></script>
   <script type="text/javascript" src="./js/src/ui/dialog/sakuzueditinfo.js"></script>
   <script type="text/javascript" src="./js/src/ui/dialog/sakuzu.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/saveimage.js"></script>
   <script type="text/javascript" src="./js/src/ui/input/input.js"></script>
   <script type="text/javascript" src="./js/src/ui/input/color.js"></script>
   <script type="text/javascript" src="./js/src/ui/input/colorpicker.js"></script>
@@ -99,6 +111,8 @@
   <script type="text/javascript" src="./js/src/ui/edit/symbol.js"></script>
   <script type="text/javascript" src="./js/src/ui/edit/fill.js"></script>
   <script type="text/javascript" src="./js/src/ui/edit/line.js"></script>
+
+  <script type="text/javascript" src="./js/src/ui/comparephoto.js"></script>
 
   <!-- 作図 -->
   <script type="text/javascript" src="./js/src/map/draw/feature.js"></script>
@@ -136,6 +150,8 @@
   <script type="text/javascript" src="./js/src/util/additional.js"></script>
   <!-- 住所取得用muni.js -->
   <script type="text/javascript" src="https://maps.gsi.go.jp/js/muni.js"></script>
+  <!-- 時系列比較用設定 -->
+  <script type="text/javascript" src="./data/photo.js"></script>
 
   <link href='./css/common.css' rel='stylesheet' />
   <link href='./css/help.css' rel='stylesheet' />
@@ -345,6 +361,14 @@
                     <div class="value elevation"></div>
                   </td>
                 </tr>
+                <tr class="seamlessphoto row">
+                  <th>
+                    <div class="key seamlessphoto">全国最新写真(シームレス)撮影期間</div>
+                  </th>
+                  <td>
+                    <div class="value seamlessphoto">---</div>
+                  </td>
+                </tr>
               </table>
             </td>
             <td class="features-frame">
@@ -418,7 +442,93 @@
             </ol>
         </div>
       </div>
+      <!-- 画像として保存 -->
+      <div class="saveimage-areaselect">
+        <div class="radio-frame">
+          <input type="radio" class="normalcheck saveimage-area-mode" value="screen"><label class="screen">表示されている範囲全体</label>
+        </div>
+        <div class="radio-frame">
+          <input type="radio" class="normalcheck saveimage-area-mode" value="area"><label class="area">範囲を固定</label>
+          <input type="radio" class="normalcheck saveimage-area-mode" value="size"><label class="size">大きさを固定</label>
+        </div>
 
+        <div class="saveimage-size-frame">
+          <table>
+            <tr>
+              <th>大きさ：</th>
+              <td><input type="number" name="image-width"></td>
+              <th>x</th>
+              <td><input type="number" name="image-height"></td>
+            </tr>
+            <tr class="lat-frame">
+              <th>緯度：</th>
+              <td class="min-lat"></td>
+              <th>〜</th>
+              <td class="max-lat"></td>
+            </tr>
+            <tr class="lng-frame">
+              <th>経度：</th>
+              <td class="min-lng"></td>
+              <th>〜</th>
+              <td class="max-lng"></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="saveimage-area-frame">
+          <table>
+            <tr>
+              <th>緯度：</th>
+              <td class="min-lat"><input type="number" step="0.000001" name="min-lat"></td>
+              <th>〜</th>
+              <td class="max-lat"><input type="number" step="0.000001" name="max-lat"></td>
+            </tr>
+            <tr>
+              <th>経度：</th>
+              <td class="min-lng"><input type="number" step="0.000001" name="min-lng"></td>
+              <th>〜</th>
+              <td class="max-lng"><input type="number" step="0.000001" name="max-lng"></td>
+            </tr>
+            <tr>
+              <th>大きさ：</th>
+              <td colspan="3">
+                <span class="image-width"></span>
+                <span>x</span>
+                <span class="image-height"></span>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="saveimage-message"></div>
+      </div>
+      <div class="saveimage">
+        <div>
+          <input type="checkbox" class="normalcheck saveimage-credit" value="screen"><label class="screen">画像に「地理院地図」クレジットを表示</label>
+        </div>
+        <div>
+          <button class="saveimage-button">画像を保存</button>
+          <button class="saveworldfile-button">ワールドファイルを保存</button>
+        </div>
+        <div class="">
+          ※保存したファイルは、国土地理院コンテンツ利用規約に従ってご利用ください。<br>
+          <a href="https://maps.gsi.go.jp/help/use.html" target="_blank">地理院タイルのご利用について</a><br>
+          <a href="https://maps.gsi.go.jp/help/howtouse.html" target="_blank">ワールドファイルについて</a>
+        </div>
+        
+        <div class="filename-frame">
+          <div class="inner-frame">
+            <div>ファイル名を入力して下さい</div>
+            <div><input type="text" class="filename" ></div>
+            <table>
+              <tr>
+                <td><button class="save-execute">保存</button></td>
+                <td><button class="save-cancel">キャンセル</button></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
       <!-- Edit -->
       <div class="edit-frame edit-line">
         <h3 class="edit-line">
