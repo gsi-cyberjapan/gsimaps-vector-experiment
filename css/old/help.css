@@ -1,0 +1,114 @@
+/*
+  必ずhelp-pageクラスの下を設定して下さい。
+*/
+
+.help-page {
+  font-size: 10pt;
+  margin: 4px;
+  color: #000;
+}
+
+.help-page h3 {
+  font-size: 12pt;
+  margin: 0;
+  padding: 0 2px;
+	background-color:#ccedff;
+}
+
+.help-page h4 {
+  font-size: 11pt;
+  margin: 0;
+  padding: 0;
+}
+
+.help-page ul {
+  list-style-type: none;
+  margin: 4px 0 12px -10px;
+}
+
+.help-page a{
+
+}
+
+.help-page p { margin-top:0;}
+
+.help-page img { 
+	border:1px solid #999;
+	max-width:100%;
+}
+
+.help-page .help-page-gotop {
+	padding-left:16px;
+	position:relative;
+	display:block; margin-bottom:1em;
+}
+.help-page .help-page-gotop::before,
+.help-page .help-page-gotop::after{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    content: "";
+    vertical-align: middle;
+}
+.help-page .help-page-gotop::before{
+    width: 12px;
+    height: 12px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background: #036;
+}
+.help-page .help-page-gotop::after{
+    left: 5px;
+    box-sizing: border-box;
+    width: 3px;
+    height: 3px;
+    border: 3px solid transparent;
+    border-left: 3px solid #fff;
+}
+
+.help-page a.bgicon {
+  display:inline-block;
+  background-repeat: no-repeat;
+  line-height:22px;
+  padding-left:24px;
+  background-position: 2px center;
+  background-size: 16px 16px;
+}
+
+.help-page a.link.gsi_manual {
+  background-image: url('//maps.gsi.go.jp/image/help/help_icon.png');
+}
+
+.help-page a.link.gsi_help {
+  background-image: url('//maps.gsi.go.jp/image/help/help_icon.png');
+}
+
+.help-page a.link.gsi_use {
+  background-image: url('//maps.gsi.go.jp/image/help/use_icon.png');
+}
+
+.help-page a.link.gsi_twitter {
+  background-image: url('//maps.gsi.go.jp/image/help/twitter.png');
+}
+
+
+.help-page a.link.gsi_movie {
+  background-image: url('//maps.gsi.go.jp/image/help/movie.png');
+}
+
+
+.help-page a.link.github {
+  background-image: url('//maps.gsi.go.jp/image/help/github.png');
+}
+
+
+.help-page a.link.gsi_pn {
+  background-image: url('//maps.gsi.go.jp/image/help/partner_icon.png');
+}
+
+
+.help-page a.link.gsi {
+  background-image: url('//maps.gsi.go.jp/image/help/gsi_top.png');
+}
