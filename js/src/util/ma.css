@@ -1,0 +1,34 @@
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family:'Lucida Grande','Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, メイリオ, sans-serif;
+
+}
+
+.maui_ctrl {
+    box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.3);
+    color:#fff;
+    background-color:#555;
+    border:none;
+    border-radius: 2px;
+}
+
+a.button {
+    display:inline-block;
+    text-decoration: none;
+    font-size:11px;
+
+    padding:2px 6px 2px 6px;
+}
+
+a.button:hover {
+    box-shadow: 0px 0px 1px 1px rgba(255,255,255,0.5);
+}
+
+a.button:active {
+    box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.3);
+}
