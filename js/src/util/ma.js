@@ -180,8 +180,6 @@ MA.getTimestampText = function( prefix ) {
 };
 
 
-
-
 /***************************************
     MA.Class
 ***************************************/
@@ -263,6 +261,8 @@ MA.DOM.select = function (selector) {
 MA.DOM.find = function (target, selector) {
   return target.querySelectorAll(selector);
 };
+
+
 /***************************************
     MA.DOM.findParentByTagName
     DOM親タグ検索   
@@ -281,6 +281,8 @@ MA.DOM.findParentByTagName = function (target, tagName) {
   return null;
 
 };
+
+
 /***************************************
     MA.DOM.offset
     位置取得   
@@ -453,6 +455,7 @@ MA.DOM.fadeIn = function (target, ms, maxOpacity, callback) {
   }, 1);
 };
 
+
 /***************************************
     MA.DOM.zoomFadeIn
     zoomとフェードイン   
@@ -474,7 +477,6 @@ MA.DOM.zoomFadeIn = function (target, ms, maxOpacity, callback) {
     target.style.transform = "scale(1)";
   }, 1);
 };
-
 
 
 /***************************************
@@ -536,7 +538,6 @@ MA.DOM.isChild = function (parent, target) {
   return false;
 
 };
-
 
 
 MA.lineIntersects = function(ax, ay, bx, by, cx, cy, dx, dy) {
@@ -787,26 +788,26 @@ MA.Color = class extends MA.Class.Base {
         rgb = [max, min + (max - min) * (h / 60), min];
         break;
       case 1:
-        rgb = [min + (max - min) * (120 - h / 60), max, min];
+        rgb = [min + (max - min) * ((120 - h) / 60), max, min];
         break;
       case 2:
-        rgb = [min, max, min + (max - min) * (h - 120 / 60)];
+        rgb = [min, max, min + (max - min) * ((h - 120) / 60)];
         break;
       case 3:
-        rgb = [min, min + (max - min) * (240 - h / 60), max];
+        rgb = [min, min + (max - min) * ((240 - h) / 60), max];
         break;
       case 4:
-        rgb = [min + (max - min) * (h - 240 / 60), min, max];
+        rgb = [min + (max - min) * ((h - 240) / 60), min, max];
         break;
       case 5:
-        rgb = [max, min, min + (max - min) * (360 - h / 60)];
+        rgb = [max, min, min + (max - min) * ((360 - h) / 60)];
         break;
     }
 
     var a = 1;
     if (hsl.a || hsl.a == 0) a = hsl.a;
 
-    return { r: rgb[0] * 255, g: rgb[1] * 255, b: rgb[2] * 255, a: a };
+    return { r: Math.round(rgb[0] * 255), g: Math.round(rgb[1] * 255), b: Math.round(rgb[2] * 255), a: a };
   }
 
   /***************************************
