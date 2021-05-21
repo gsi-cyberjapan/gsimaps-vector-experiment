@@ -189,7 +189,8 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
       this._map.on("moveend", this._moveEndHandler);
       this._onMapMoveEnd();
 
-      this._elevationLoader = new GSIBV.Map.Util.ElevationLoader();
+      this._elevationLoader = new GSIBV.Map.Util.FooterElevationLoader();
+      //this._elevationLoader = new GSIBV.Map.Util.ElevationLoader();
 
       this._elevationLoader.on("start", MA.bind(function (e) {
         this._setView({ "elevation": "" });
@@ -293,7 +294,8 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
     this._getPointInfo(pos, map.getZoom());
 
     if (!this._elevationLoader) {
-      this._elevationLoader = new GSIBV.Map.Util.ElevationLoader();
+      this._elevationLoader = new GSIBV.Map.Util.FooterElevationLoader();
+      //this._elevationLoader = new GSIBV.Map.Util.ElevationLoader();
 
       this._elevationLoader.on("start", MA.bind(function (e) {
         this._setView({ "elevation": "" });
