@@ -742,6 +742,114 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
   }
 }
 
+/************************************************************************
+ GSIBV.Map.Util.FooterElevationLoader
+************************************************************************/
+GSIBV.Map.Util.FooterElevationLoader = class extends GSIBV.Map.Util.ElevationLoader {
+
+  constructor(options) {
+    super();
+
+    this._demUrlList = [
+      {
+        "title": "DEM5A",
+        "url": "https://cyberjapandata.gsi.go.jp/xyz/dem5a_png/{z}/{x}/{y}.png",
+        "minzoom": 15,
+        "maxzoom": 15,
+        "fixed": 1
+      },
+      {
+        "title": "DEM5B",
+        "url": "https://cyberjapandata.gsi.go.jp/xyz/dem5b_png/{z}/{x}/{y}.png",
+        "minzoom": 15,
+        "maxzoom": 15,
+        "fixed": 1
+      },
+      {
+        "title": "DEM5C",
+        "url": "https://cyberjapandata.gsi.go.jp/xyz/dem5c_png/{z}/{x}/{y}.png",
+        "minzoom": 15,
+        "maxzoom": 15,
+        "fixed": 1
+      },
+      {
+        "title": "DEM10B",
+        "url": "https://cyberjapandata.gsi.go.jp/xyz/dem_png/{z}/{x}/{y}.png",
+        "minzoom": 14,
+        "maxzoom": 14,
+        "fixed": 0
+      },
+      {
+        "title": "DEMGM",
+        "url": "https://cyberjapandata.gsi.go.jp/xyz/demgm_png/{z}/{x}/{y}.png",
+        "minzoom": 8,
+        "maxzoom": 8,
+        "fixed": 0
+      }
+    ];
+
+    this.pow2_8 = Math.pow(2, 8);
+    this.pow2_16 = Math.pow(2, 16);
+    this.pow2_23 = Math.pow(2, 23);
+    this.pow2_24 = Math.pow(2, 24);
+
+  }
+
+  _load(current, valueError) {
+    this._destroyImage();
+
+    if (this._current != current) return;
+
+    if (!this._current.urlList || this._current.urlList.length <= 0) {
+      // not found
+      this.fire("finish", {
+        h: undefined,
+        pos: current.pos
+      })
+      return;
+    }
+
+    var url = this._current.urlList.shift();
+    
+    if ( valueError && url.title=="DEMGM") {
+      this.fire("finish", {
+        h: undefined,
+        pos: current.pos
+      });
+      return;
+    }
+
+    if ( this._map.getZoom() > url.zoom && url.title=="DEMGM") {
+      this.fire("finish", {
+        h: undefined,
+        pos: current.pos
+      });
+      return;
+    }
+
+    var tileInfo = this._getTileInfo(this._current.pos.lat, this._current.pos.lng, url.zoom);
+
+    this._img = document.createElement("img");
+    this._img.setAttribute("crossorigin", "anonymous");
+
+    this._imgLoadHandler = MA.bind(this._onImgLoad, this, url, current, tileInfo, this._img);
+    this._imgLoadErrorHandler = MA.bind(this._onImgLoadError, this, url, current, tileInfo, this._img);
+
+    MA.DOM.on(this._img, "load", this._imgLoadHandler);
+    MA.DOM.on(this._img, "error", this._imgLoadErrorHandler);
+
+    function makeUrl(url, tileInfo) {
+      var result = url.url.replace("{x}", tileInfo.x);
+      result = result.replace("{y}", tileInfo.y);
+      result = result.replace("{z}", url.zoom);
+      return result;
+    }
+
+    this._img.src = makeUrl(url, tileInfo);
+
+  }
+
+}
 
 
 /************************************************************************
