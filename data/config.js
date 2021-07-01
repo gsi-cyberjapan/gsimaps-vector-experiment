@@ -596,7 +596,7 @@ GSIBV.CONFIG.MENU = [
   },
   {
     "id":"to-mobile",
-    "title": "スマホ版で表示"
+    "title": "モバイル版で表示"
   }
   
 ];
