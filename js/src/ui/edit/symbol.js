@@ -480,7 +480,7 @@ GSIBV.UI.Edit.Symbol = class extends GSIBV.UI.Edit.Base {
       "title":GSIBV.CONFIG.LANG.JA.UI.EDITINPUT["fitviewport"],
       "titleEng":GSIBV.CONFIG.LANG.EN.UI.EDITINPUT["fitviewport"]
     });
-    var rotationAlign = this.drawStyle.getValue("text-pitch-alignment");
+    var rotationAlign = this.drawStyle.getValue("text-rotation-alignment");
     if ( rotationAlign == undefined) rotationAlign = "auto";
     this._textRotationAlignment = new GSIBV.UI.Select.Select(
       MA.DOM.find(this._container, ".text-rotation-alignment")[0],
