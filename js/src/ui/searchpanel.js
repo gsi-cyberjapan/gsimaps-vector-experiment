@@ -346,9 +346,17 @@ GSIBV.UI.SearchPanel = class extends GSIBV.UI.Base {
     }, this, row, item));
 
     MA.DOM.on(row, "click", MA.bind(function (row, item) {
-
+      var z = 15;
+      if (item.properties.ilvl){
+        z = 5 + 2 * item.properties.ilvl;
+        if (z > 15){ z = 15; }
+      }
+      if (item.properties.zl){
+        z = item.properties.zl;
+        z--;
+      }
       this._map.map.setCenter(item.geometry.coordinates);
-      this._map.map.setZoom(15);
+      this._map.map.setZoom(z);
     }, this, row, item));
     return row;
   }
