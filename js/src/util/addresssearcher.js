@@ -1,5 +1,12 @@
 MA.Util.AddressSearcher = class extends MA.Class.Base {
 
+  chimei_addtional_params = {
+    "lang": "ja,en",
+    "zl": "T",
+    "ilvl": "T",
+    "sort_il": "1"
+  };
+  
   constructor() {
     super();
     this._addressSearchUrl = 'https://msearch.gsi.go.jp/address-search/AddressSearch';
@@ -14,10 +21,17 @@ MA.Util.AddressSearcher = class extends MA.Class.Base {
 
     this.fire("searchstart", { "q": q });
 
+    var parameter = {};
+    for (var key in this.chimei_addtional_params) {
+      parameter[key] = this.chimei_addtional_params[key];
+    }
+    parameter["q"] = q;
+
     this._addressSearchRequest = new MA.HTTPRequest({
       "type": "json",
       "url": this._addressSearchUrl,
-      "data": { "q": q }
+      // "data": { "q": q }
+      "data": parameter
     });
 
     this._addressSearchRequest.on("load", MA.bind(this._onSearch, this));
