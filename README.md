@@ -47,16 +47,22 @@
 
 	[PDF版](https://maps.gsi.go.jp/help/pdf/vector/attribute.pdf)　[Word版](https://maps.gsi.go.jp/help/pdf/vector/attribute.docx)
 
+### mokurokuの提供
+* 本提供実験によるベクトルタイルについて、「地理院タイル目録」を試験提供します。更新は不定期です。
+* URLは以下のとおりです（70MB程度の大きなファイルですのでネットワーク環境にご注意ください）。
+  `https://cyberjapandata.gsi.go.jp/xyz/experimental_bvmap/mokuroku.csv.gz`
+
+* 「地理院タイル目録」の仕様については、[mokuroku-spec](https://github.com/gsi-cyberjapan/mokuroku-spec)をご覧ください。
+
 ## style.json
 * 地図のデザインを規定しているファイル。[Style Specification](https://docs.mapbox.com/mapbox-gl-js/style-spec/)をベースにしたうえで、若干の拡張を施しています。
 * 仕様については、以下のファイルからご確認いただけます。
+  * [地理院地図Vector（仮称） style.jsonの仕様](https://maps.gsi.go.jp/help/pdf/vector/stylespec.pdf)
 
-	[地理院地図Vector（仮称） style.jsonの仕様](https://maps.gsi.go.jp/help/pdf/vector/stylespec.pdf)
+  ※地理院地図Vector（仮称） style.jsonの仕様は検討中のものであり、今後変更する可能性があります。
 	
-	※地理院地図Vector（仮称） style.jsonの仕様は検討中のものであり、今後変更する可能性があります。
-	
-* 2020年3月19日現在の地理院地図Vector「おすすめの地図」から閲覧できるstyle.jsonは以下表のとおりです。
-* 以下表のリンクを右クリックし、「名前をつけて保存」からダウンロードすることができます。
+* 2020年3月19日現在の地理院地図Vector「おすすめの地図」から閲覧できるstyle.jsonは下表のとおりです。
+* 下表のリンクを右クリックし、「名前をつけて保存」からダウンロードすることができます。
 * 保存したファイルは、地理院地図Vectorの「地図デザインの追加」-「地図デザインファイルを開く」から読み込むこともできます。
 <table>
 	<tr>
