@@ -920,7 +920,11 @@ GSIBV.Application = class extends MA.Class.Base {
 
   // 範囲を選択された時
   _onGSIMAPLayerArea(e) {
-    this._map.flyTo(e.params.area, e.params.area.zoom);
+    this._map.flyTo(e.params.layerInfo.area, e.params.layerInfo.area.zoom);
+    if (!this._map.layerList.find(e.params.layerInfo.layer)) {
+      this._map.addLayer(e.params.layerInfo.layer);
+    }
+    //this._map.flyTo(e.params.area, e.params.area.zoom);
   }
   // レイヤー削除要求
   _onRequestLayerRemove(e) {
