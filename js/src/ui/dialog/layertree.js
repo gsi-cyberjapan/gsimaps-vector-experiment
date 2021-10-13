@@ -257,7 +257,7 @@ GSIBV.UI.Dialog.LayerTree = class extends GSIBV.UI.Dialog.Modeless {
     this._showInfo(li,item);
   }
   _onAreaButtonClick( item) {
-    this.fire("area", { "area": item.area });
+    this.fire("area", { "layerInfo": item });
   }
 
   _showInfo(li,item) {
