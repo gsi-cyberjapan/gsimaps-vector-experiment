@@ -142,7 +142,7 @@ GSIBV.CONFIG.LANG.JA.UI.HINT = {
 
 GSIBV.CONFIG.LANG.JA.UI.LAYERTREE_HINT = {
   "ul li a.info" : "解説や凡例を表示します",
-  "ul li a.area" : "データがあるところに移動"
+  "ul li a.area" : "データがあるところに移動して表示"
 };
 
 
