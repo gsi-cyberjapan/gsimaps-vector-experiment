@@ -195,8 +195,8 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
         layer._drawList = [];
         
 
-        for( var j=0; j<layer._origDrawList.length; j++ ) {
-          layer._drawList.push( layer._origDrawList[j].clone() );
+        for( var k=0; k<layer._origDrawList.length; k++ ) {
+          layer._drawList.push( layer._origDrawList[k].clone() );
         }
       }
       item.fire("change");
@@ -248,17 +248,21 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
     var changed = false;
     var drawList = [];
     for (var i = 0; i < this._editList.length; i++) {
-      if ( !this._editList[i].edit ) continue;
+      if ( !this._editList[i].edit )continue;
+    
       this._editList[i].edit.refreshChangeState();
-      if (this._editList[i].edit.changed) {
+      if (this._editList[i].edit.changed == true){
+        changed = true;
+      }
+      //if (this._editList[i].edit.changed) {
 
         var target = this._editList[i].target;
         this._editList[i].edit.flush();
         target.update(this._editList[i].edit.drawStyle)
         //target.update( paint, layout,false );
         drawList.push( target);
-        changed = true;
-      }
+        //changed = true;
+      //}
     }
 
     if (changed) {
@@ -362,7 +366,8 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
         // 20190821 - end
         layer._drawList = [];
 
-        for( var k=0; k<drawList.length;k++) {
+        for( var k=0; k<drawList.length; k++) {
+
           var json = drawList[k].toData();
           json.info = info.toData();
           
@@ -380,7 +385,8 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
           var draw = new GSIBV.VectorTileData.Draw(layer._owner, layer);
           draw.fromJSON( json );
           draw._defaultDrawStyle = drawList[k]._defaultDrawStyle.clone();
-          layer._drawList.push( draw );
+          //リストは前後逆に並んでいる
+          layer._drawList.unshift(draw);
         }
 
       }
