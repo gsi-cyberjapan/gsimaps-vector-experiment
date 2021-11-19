@@ -33,38 +33,38 @@ GSIBV.Map.Util.latLngToDMS = function (latLng, useSymbol ) {
 
   var latD = Math.floor(latLng.lat);
   var latM = Math.floor((latLng.lat - latD) * 60);
-  var latS = (latLng.lat - latD - (latM / 60)) * 3600;
+  var latS = ((latLng.lat - latD - (latM / 60)) * 3600).toFixed(2);
 
-  if (latS == 60) { latS = 0; latM = latM + 1; };
+  if ('' + latS == "60.00") { latS = "0.00"; latM = latM + 1; };
   if (latM == 60) { latM = 0; latD = latD + 1; };
 
   var lngD = Math.floor(latLng.lng);
   var lngM = Math.floor((latLng.lng - lngD) * 60);
-  var lngS = (latLng.lng - lngD - (lngM / 60)) * 3600;
+  var lngS = ((latLng.lng - lngD - (lngM / 60)) * 3600).toFixed(2);
 
-  if (lngS == 60) { lngS = 0; lngM = lngM + 1; };
+  if ('' + lngS == "60.00") { lngS = "0.00"; lngM = lngM + 1; };
   if (lngM == 60) { lngM = 0; lngD = lngD + 1; };
   
   if ( useSymbol ) {
     return {
       lat: {
         d: latD, m: latM, s: latS,
-        text: latD + "°" + latM + "’" + latS.toFixed(2) + "”"
+        text: latD + "°" + latM + "’" + latS + "”"
       },
       lng: {
         d: lngD, m: lngM, s: lngS,
-        text: lngD + "°" + lngM + "’" + lngS.toFixed(2) + "”"
+        text: lngD + "°" + lngM + "’" + lngS + "”"
       }
     };
   } else {
     return {
       lat: {
         d: latD, m: latM, s: latS,
-        text: latD + "度" + latM + "分" + latS.toFixed(2) + "秒"
+        text: latD + "度" + latM + "分" + latS + "秒"
       },
       lng: {
         d: lngD, m: lngM, s: lngS,
-        text: lngD + "度" + lngM + "分" + lngS.toFixed(2) + "秒"
+        text: lngD + "度" + lngM + "分" + lngS + "秒"
       }
     };
   }
