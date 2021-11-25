@@ -338,7 +338,8 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
     var map = this._map.map;
     var zoom = Math.floor(map.getZoom());
 
-    if ((this._maxzoom && this._minzoom > zoom) || (this._maxzoom && this._maxzoom < zoom)) {
+    //if ((this._maxzoom && this._minzoom > zoom) || (this._maxzoom && this._maxzoom < zoom)) {
+    if (!(this._minzoom == 18 && zoom == 17) && ((this._minzoom && this._minzoom > zoom) || (this._maxzoom && this._maxzoom < zoom))) {
       this._clearTiles();
       return;
     }
