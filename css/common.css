@@ -207,10 +207,6 @@ select {
   padding: 0 3px 0 3px;
   cursor: pointer;
   padding-right: 20px;
-  background-image: url('data:image/svg+xml,<svg height="12" fill="rgba(255,255,255,0.8)"\
-        width="12" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L10 2 L6 10 z"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 4px center;
 }
 
 select:focus {
