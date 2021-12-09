@@ -590,6 +590,12 @@ GSIBV.UI.Dialog.Modeless = class extends GSIBV.UI.Dialog.Base {
       var top = parseInt(0//position.top
         + (mousePageY - this._dragState.clientMousePosition.top)
       );
+
+      if (!adjust){
+        if (top < 0 || left < 0 || left + this._size.width > window.innerWidth || top + this._size.height > window.innerHeight){
+          adjust = true;
+        }
+      }
       this.setPosition(left, top, adjust);
       this._dragState.pageMousePosition = {
         left: mousePageX,
