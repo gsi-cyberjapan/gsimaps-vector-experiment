@@ -124,7 +124,8 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
 
     this._onMapMoveHandler = MA.bind(this._onMapMove, this);
   }
-
+  get url() { return this._url; }
+  
   getVisible() {
     var map = this._map.map;
     return (map.getLayoutProperty(this.mapid, "visibility") == "visible");
