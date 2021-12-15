@@ -114,7 +114,9 @@ GSIBV.Map.Layer.Raster = class extends GSIBV.Map.Layer {
     //map.map.style.sourceCaches[this.mapid]._source.reparseOverscaled=true;
     //map.map.style.sourceCaches[this.mapid]._source.tileSize=512;
 
-    var maxZoom = (this.maxzoom ? this.maxzoom + 1 : 19);
+    // 20211215
+    //var maxZoom = (this.maxzoom ? this.maxzoom + 1 : 19);
+    var maxZoom = (this.maxzoom ? this.maxzoom : 19);
 
     map.map.addLayer({
       "id": this.mapid,
