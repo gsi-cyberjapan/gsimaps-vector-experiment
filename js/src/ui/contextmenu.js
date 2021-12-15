@@ -430,11 +430,13 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
 
     if ( data["seamlessphoto"] != undefined ) {
       var elem = MA.DOM.find(this._container, ".seamlessphoto.value")[0];
-
-      if (data["seamlessphoto"] == "") {
-        elem.innerHTML = "------";
-      } else {
-        elem.innerHTML = data["seamlessphoto"];
+      // 20211215
+      if ( elem ) {
+        if (data["seamlessphoto"] == "") {
+          elem.innerHTML = "------";
+        } else {
+          elem.innerHTML = data["seamlessphoto"];
+        }
       }
 
     }
