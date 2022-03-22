@@ -24,10 +24,16 @@
   </script>
 
 
-  <title>地理院地図Vector｜国土地理院</title>
+  <title>（ページタイトル）</title>
 
   <script src='./mapbox/1.13.0/mapbox-gl-gsi.js'></script>
   <link href='./mapbox/1.13.0/mapbox-gl.css' rel='stylesheet' />
+
+  <script type="text/javascript" src="./jquery/jquery-1.11.1.min.js"></script>
+  <script type="text/javascript" src="./jquery/jquery-ui.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="./jquery/jquery-ui.min.css" />
+  <script type="text/javascript" src="./jquery/jquery.csv/jquery.csv.min.js"></script>
+  
   
   <script src='./js/perfect-scrollbar.min.js'></script>
   <link href='./js/perfect-scrollbar.css' rel='stylesheet' />
@@ -46,6 +52,7 @@
   <script type="text/javascript" src="./js/src/map/spritemanager.js"></script>
   <script type="text/javascript" src="./js/src/map/control-centercross.js"></script>
   <script type="text/javascript" src="./js/src/map/control-mouseposition.js"></script>
+  <script type="text/javascript" src="./js/src/map/control-areaselect.js"></script>
   <script type="text/javascript" src="./js/src/map/hatch-imagemanager.js"></script>
   <script type="text/javascript" src="./js/src/map/imagemanager.js"></script>
   <script type="text/javascript" src="./js/src/map/layer.js"></script>
@@ -53,6 +60,7 @@
   <script type="text/javascript" src="./js/src/map/layer-comparephoto.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-binaryvectortile.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-kml.js"></script>
+  <script type="text/javascript" src="./js/src/map/layer-geotiff.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-geojson.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-tilegeojson.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-multi.js"></script>
@@ -65,6 +73,9 @@
   <script type="text/javascript" src="./js/src/map/control-layer.js"></script>
   <script type="text/javascript" src="./js/src/map/layer-searchresult.js"></script>
   <script type="text/javascript" src="./js/proj4js-combined.js"></script>
+  <script type="text/javascript" src="./js/exif.js"></script>
+  <script type="text/javascript" src="./js/geotiff.browserify.min.js"></script>
+  <script type="text/javascript" src="./js/arc.js"></script>
   <script type="text/javascript" src="./js/src/map/util.js"></script>
   <script type="text/javascript" src="./js/src/map/control.js"></script>
   <script type="text/javascript" src="./js/src/map/control-gps.js"></script>
@@ -99,11 +110,20 @@
   <script type="text/javascript" src="./js/src/ui/dialog/sakuzueditinfo.js"></script>
   <script type="text/javascript" src="./js/src/ui/dialog/sakuzu.js"></script>
   <script type="text/javascript" src="./js/src/ui/dialog/saveimage.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/measure.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/danmen.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/crosssectionview.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/crosssectionviewgraph.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/crosssectionviewgraphimage.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/outsidetile.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/csvload.js"></script>
+  <script type="text/javascript" src="./js/src/ui/dialog/sakuzusave.js"></script>
   <script type="text/javascript" src="./js/src/ui/input/input.js"></script>
   <script type="text/javascript" src="./js/src/ui/input/color.js"></script>
   <script type="text/javascript" src="./js/src/ui/input/colorpicker.js"></script>
   <script type="text/javascript" src="./js/src/ui/input/size.js"></script>
   <script type="text/javascript" src="./js/src/ui/input/offset.js"></script>
+  <script type="text/javascript" src="./js/src/ui/input/minzoom.js"></script>
   <script type="text/javascript" src="./js/src/ui/select/select.js"></script>
   <script type="text/javascript" src="./js/src/ui/select/image.js"></script>
   <script type="text/javascript" src="./js/src/ui/select/anchor.js"></script>
@@ -127,22 +147,37 @@
   <!-- 作図 -->
   <script type="text/javascript" src="./js/src/map/draw/feature.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/line.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/measure.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/measureline.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/danmenline.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/polygon.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/measurepolygon.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/multipolygon.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/marker.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/divmarker.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/image.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/circle.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/circlemarker.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/freehandpolyline.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/manager.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/layer.js"></script>
 
   <script type="text/javascript" src="./js/src/map/draw/control.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/tooltip.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/styleeditor-tooltip.js"></script>
   
   <script type="text/javascript" src="./js/src/map/draw/drawer/feature.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/drawer/marker.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/drawer/line.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/drawer/measureline.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/drawer/polygon.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/drawer/polygoninner.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/drawer/measurepolygon.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/drawer/danmenline.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/drawer/divmarker.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/drawer/circle.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/drawer/freehandpolyline.js"></script>
+  <script type="text/javascript" src="./js/src/map/draw/drawer/circlemarker.js"></script>
 
   <script type="text/javascript" src="./js/src/map/draw/edit/feature.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/edit/marker.js"></script>
@@ -151,6 +186,11 @@
   <script type="text/javascript" src="./js/src/map/draw/edit/polygon.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/edit/multipolygon.js"></script>
   <script type="text/javascript" src="./js/src/map/draw/edit/circle.js"></script>
+
+  <!-- 計測用 -->
+  <script type="text/javascript" src="./js/src/util/measure.js"></script>
+  <!-- 断面用 -->
+  <script type="text/javascript" src="./js/src/util/geodesic.js"></script>
 
   <!-- その他 -->
   <script type="text/javascript" src="./js/src/util/file.js"></script>
@@ -205,6 +245,10 @@
           <tr>
             <td><select name="pref"></select></td>
             <td><select name="city"></select></td>
+          </tr>
+          <tr>
+            <td><select name="type"></select></td>
+            <td></td>
           </tr>
         </table>
         <a href="javascript:void(0);" class="close-button"></a>
@@ -362,6 +406,14 @@
                     <div class="value elevation"></div>
                   </td>
                 </tr>
+                <tr class="lakedepth row">
+                  <th>
+                    <div class="key lakedepth">湖水深</div>
+                  </th>
+                  <td>
+                    <div class="value lakedepth"></div>
+                  </td>
+                </tr>
               </table>
             </td>
             <td class="features-frame">
@@ -377,6 +429,7 @@
             </td>
           </tr>
         </table>
+        <a class="description-button mobile" target="_blank" href="https://maps.gsi.go.jp/help/howtouse.html#h2-3">i</a>
       </div>
     </div>
 
@@ -655,9 +708,26 @@
         </div>
 
       </div>
+      <div class="dialog-measure">
+        <div class="radio-frame">
+          <input type="radio" class="normalcheck measure-type" value="type1"><label class="type1">距離</label>
+          <input type="radio" class="normalcheck measure-type" value="type2"><label class="type2">面積</label>
+          <input type="radio" class="normalcheck measure-type" value="type3"><label class="type3">選択図形</label>
+          <input type="radio" class="normalcheck measure-type" value="type4"><label class="type4">複数選択</label>
+        </div>
+        <div class="measure-result result-content">------</div>
+        <div class="measure-lastlatlng result-content">------</div>
+      </div>
     </div>
 
   </div>
-  
+  <div class="mapboxgl-ctrl-bottom-right" id="zoomGuidePanel" style="display:none; z-index: 99999; position: absolute; right: 45px; bottom: 35px;">
+    <div class="mapboxgl-zoom-msg mapboxgl-ctrl" id="zoomGuideMinMax" style="border-radius: 5px 5px 0px 0px;padding-top: 3px;">この情報はズームmin～maxで表示されます。</div>
+    <div class="mapboxgl-zoom-msg mapboxgl-ctrl">なお、整備範囲が全国であるとは限りません。</div>
+    <div class="mapboxgl-zoom-msg mapboxgl-ctrl" style="border-radius: 0px 0px 5px 5px;padding-bottom: 3px;">
+      <input class="" type="checkbox" id="zoomGuideCheckbox">
+      <label class="" for="zoomGuideCheckbox">以後、この案内を表示しない</label>
+    </div>
+  </div>
 </body>
 </html>
