@@ -9,6 +9,8 @@ GSIBV.Map.Layer.FILTERS.push(function (l) {
       "legendUrl": l.legendUrl,
       "minzoom": l.minZoom,
       "maxzoom": l.maxZoom,
+      "minZoom": l.minZoom,
+      "maxZoom": l.maxZoom,
       "minNativeZoom": l.minNativeZoom,
       "maxNativeZoom": l.maxNativeZoom,
       "stylejs": ( l.options ? l.options.stylejs : null),
@@ -25,6 +27,8 @@ GSIBV.Map.Layer.FILTERS.push(function (l) {
       "url": l.url,
       "html": l.html,
       "legendUrl": l.legendUrl,
+      "minzoom": l.minZoom,
+      "maxzoom": l.maxZoom,
       "minzoom": l.minZoom,
       "maxzoom": l.maxZoom,
       "minNativeZoom": l.minNativeZoom,
@@ -339,8 +343,14 @@ GSIBV.Map.Layer.TileVector = class extends GSIBV.Map.Layer {
       layer.id = this.mapid + "-" + i;
       layer.source = this.mapid;
 
-      if ( !layer.minzoom && this._minzoom ) layer.minzoom = this._minzoom;
-      if ( !layer.maxzoom && this._maxzoom ) layer.maxzoom = this._maxzoom;
+      if ( !layer.minzoom && this._minzoom ) {
+        layer.minzoom = this._minzoom;
+        layer.minZoom = this._minzoom;
+      }
+      if ( !layer.maxzoom && this._maxzoom ) {
+        layer.maxzoom = this._maxzoom;
+        layer.maxZoom = this._maxzoom;
+      }
       if ( !layer.metadata) layer.metadata = {};
       layer.metadata["mapid"] = this.mapid;
       if ( !layer.layout ) layer.layout = {};

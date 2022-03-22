@@ -1,8 +1,9 @@
 GSIBV.Map.Draw.Tooltip = class extends MA.Class.Base {
 
-  constructor(map) {
+  constructor(map, hideLatlng) {
     super();
     this._map = map;
+    this._hideLatlng = hideLatlng ? true: false;
     this._create();
   }
 
@@ -101,7 +102,7 @@ GSIBV.Map.Draw.Tooltip = class extends MA.Class.Base {
     var isError = this._errorMessage && this._errorMessage != "";
 
     var message = ( isError ? this._errorMessage :this._message );
-    if ( this._dms) {
+    if ( this._dms && !this._hideLatlng) {
       var dms = this._dms ;
       message += "<div>" + dms.lat.text + "," + dms.lng.text + "</div>";
     }

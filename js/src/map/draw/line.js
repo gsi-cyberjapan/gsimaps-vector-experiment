@@ -12,6 +12,10 @@ GSIBV.Map.Draw.Line = class extends GSIBV.Map.Draw.Feature{
   get geometryType () {
     return GSIBV.Map.Draw.Line.Type;
   }
+  
+  get innerList() {
+    return this._innerList;
+  }
 
   _getCoordinatesArray() {
     return this._coordinates.toGeoJSON();
@@ -37,6 +41,34 @@ GSIBV.Map.Draw.Line = class extends GSIBV.Map.Draw.Feature{
     
     this._coordinates = this.arrayToCoordinate( coordinates);
 
+  }
+
+  toMapboxGeoJSON() {
+    if ( this._coordinates.length < 2 ) {
+      return super.toMapboxGeoJSON();
+    }
+
+    if(this._style._geodesic == 1){
+      var lineCoordinates = this._createGeodesicLine(this._coordinates._coordinates )
+      var properties = this._properties.hash;
+      this._addMapboxStyleToHash(properties);
+
+      var coordinates = [];
+      for( var i=0; i<lineCoordinates.length; i++ ) {
+        coordinates.push( lineCoordinates[i].toGeoJSON() );
+      }
+      var geojson = {
+        "type": "Feature",
+        "geometry": {
+          "type": GSIBV.Map.Draw.Line.Type,
+          "coordinates": coordinates
+        },
+        "properties": properties
+      };
+      return geojson;
+    } else {
+      return super.toMapboxGeoJSON();
+    }
   }
 
   static addMapboxStyleToHash( feature, hash ) {
@@ -70,12 +102,57 @@ GSIBV.Map.Draw.Line = class extends GSIBV.Map.Draw.Feature{
     }
 
   }
+
   _addMapboxStyleToHash(hash) {
     super._addMapboxStyleToHash(hash);
     GSIBV.Map.Draw.Line.addMapboxStyleToHash( this, hash );
   }
+  
+  //
+  _coordinatesEqual(x, y) {
+    return x._lat === y._lat && x._lng === y._lng;
+  }
 
-
+  _coordinatePairs(array) {
+    return array.slice(0, -1)
+      .map((value, index) => [value, array[index + 1]])
+      .filter(pair => !this._coordinatesEqual(pair[0], pair[1]));
+  }
+    
+  _createGeodesicLine(coordinates, steps = 32) {
+    const segments = this._coordinatePairs(coordinates);
+  
+    const geodesicSegments = segments.map(segment => {
+      const greatCircle = new arc.GreatCircle(
+        { x: segment[0]._lng, y: segment[0]._lat },
+        { x: segment[1]._lng, y: segment[1]._lat }
+      );
+      return greatCircle.Arc(steps, { offset: 90 }).json();
+    });
+  
+    // arc.js returns the line crossing antimeridian split into two MultiLineString segments
+    // (the first going towards to antimeridian, the second going away from antimeridian, both in range -180..180 longitude)
+    // fix Mapbox rendering by merging them together, adding 360 to longitudes on the right side
+    let worldOffset = 0;
+    const geodesicCoordinates = geodesicSegments.map(geodesicSegment => {
+      if (geodesicSegment.geometry.type === "MULTI_LINE_STRING") {
+        const prevWorldOffset = worldOffset;
+        const nextWorldOffset = worldOffset + (geodesicSegment.geometry.coordinates[0][0][0] > geodesicSegment.geometry.coordinates[1][0][0] ? 1 : -1);
+        const geodesicCoordinates = [
+          ...geodesicSegment.geometry.coordinates[0].map(x => [x[0] + prevWorldOffset * 360, x[1]]),
+          ...geodesicSegment.geometry.coordinates[1].map(x => [x[0] + nextWorldOffset * 360, x[1]])
+        ];
+        worldOffset = nextWorldOffset;
+        return geodesicCoordinates;
+      } else {
+        const geodesicCoordinates = geodesicSegment.geometry.coordinates.map(x => [x[0] + worldOffset * 360, x[1]]);
+        return geodesicCoordinates;
+      }
+    }).flat();
+  
+    return geodesicCoordinates.map((values, index) => new GSIBV.Map.Draw.LatLng(values))
+            .filter((coord, index) => index === geodesicCoordinates.length - 1 || !this._coordinatesEqual(coord, geodesicCoordinates[index + 1]));
+  };
 };
 
 GSIBV.Map.Draw.Line.Type = "LineString";
@@ -99,8 +176,6 @@ GSIBV.Map.Draw.Line.Style = class extends GSIBV.Map.Draw.Feature.Style{
 
   constructor() {
     super();
-
-
   }
 
   copyFrom(from) {
@@ -113,6 +188,7 @@ GSIBV.Map.Draw.Line.Style = class extends GSIBV.Map.Draw.Feature.Style{
     this._dashArray = from._dashArray;
     this._lineCap = from._lineCap; 
     this._lineJoin = from._lineJoin; 
+    this._geodesic = from._geodesic;
   }
   clear() {
     super.clear();
@@ -123,18 +199,24 @@ GSIBV.Map.Draw.Line.Style = class extends GSIBV.Map.Draw.Feature.Style{
     this._dashArray = undefined;
     this._lineCap = undefined; 
     this._lineJoin = undefined; 
+    this._geodesic = 1;
   }
 
   setJSON(properties) {
     if ( properties["_stroke"] != undefined ) {
       this.stroke = properties["_stroke"];
     } 
+    if ( properties["_stroke-opacity"] != undefined ) {
+      this.opacity = properties["_stroke-opacity"];
+    } 
     if ( properties["_color"] != undefined ) {
       this.color = properties["_color"];
     } 
     if ( properties["_weight"] != undefined ) {
       this.weight = properties["_weight"];
-    } 
+    } else if ( properties["_stroke-width"] != undefined ) {
+      this.weight = properties["_stroke-width"];
+    }
     if ( properties["_dashArray"] != undefined ) {
       this.dashArray = properties["_dashArray"];
     } 
@@ -146,7 +228,6 @@ GSIBV.Map.Draw.Line.Style = class extends GSIBV.Map.Draw.Feature.Style{
     } 
     
     super.setJSON(properties);
-
   }
   
 
@@ -177,6 +258,14 @@ GSIBV.Map.Draw.Line.Style = class extends GSIBV.Map.Draw.Feature.Style{
       hash["_lineJoin"] = this._lineJoin;
     }
 
+    if ( this._geodesic != undefined) {
+      hash["_geodesic"] = parseInt( this._geodesic );
+    }
+
+    if ( this._opacity != undefined) {
+      hash["_opacity"] = parseFloat( this._opacity );
+    }
+
     return hash;
   }
   
@@ -205,7 +294,13 @@ GSIBV.Map.Draw.Line.Style = class extends GSIBV.Map.Draw.Feature.Style{
     return this._lineJoin;
   }
 
+  get geodesic() {
+    return this._geodesic == undefined ? 1 : this._geodesic;
+  }
 
+  get opacity(){
+    return this._opacity;
+  }
 
   set stroke(value) {
     this._stroke = value ? true : false;
@@ -270,5 +365,12 @@ GSIBV.Map.Draw.Line.Style = class extends GSIBV.Map.Draw.Feature.Style{
       this._lineJoin = value;
     }
 
+  }
+  set geodesic(value) {
+    this._geodesic = ( value != undefined ? parseInt(value) : undefined );
+  }
+
+  set opacity(value){
+    this._opacity = value;
   }
 }

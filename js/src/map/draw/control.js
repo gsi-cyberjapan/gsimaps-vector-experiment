@@ -639,7 +639,7 @@ GSIBV.Map.Draw.Control.FeatureSelector = class extends MA.Class.Base {
       for( var i=0;i<this._featureCollection.length; i++) {
         var feature = this._featureCollection.get(i);
         this._selectorList.push( 
-          new GSIBV.Map.Draw.Control.FeatureSelector.Item(this._map, feature)
+          new GSIBV.Map.Draw.Control.FeatureSelector.Item(this._map, feature, this._noEdit)
         );
       }
 
@@ -672,12 +672,13 @@ GSIBV.Map.Draw.Control.FeatureSelector = class extends MA.Class.Base {
 
 GSIBV.Map.Draw.Control.FeatureSelector.Item = class extends MA.Class.Base {
 
-  constructor( map, feature) {
+  constructor( map, feature, noEdit) {
     super();
     this._map = map;
     this._feature = feature;
+    this._noEdit =  noEdit ? true : false;
     this._backgroundColor = "transparent";
-    this._border = "2px solid #5a5a5a";
+    this._border = this._noEdit ? "":"2px solid #5a5a5a";
     this._borderRadius = "3px";
   }
 
@@ -725,9 +726,6 @@ GSIBV.Map.Draw.Control.FeatureSelector.Item = class extends MA.Class.Base {
     this._container.style.width = pixBounds.width + "px";
     this._container.style.top = pixBounds.top + "px";
     this._container.style.height = pixBounds.height + "px";
-
-    this._buttonContainer.style.left = pixBounds.right + "px";
-    this._buttonContainer.style.top = pixBounds.top + "px";
   }
   
   
@@ -752,67 +750,66 @@ GSIBV.Map.Draw.Control.FeatureSelector.Item = class extends MA.Class.Base {
 
   _createButtons() {
     if ( this._buttonContainer) return;
-    var canvasContainer = this._map.map.getCanvasContainer();
 
     this._buttonContainer = MA.DOM.create("div");
     this._buttonContainer.style.position = "absolute";
     this._buttonContainer.style.display = "none";
-    this._buttonContainer.style.width = "52px";
+    this._buttonContainer.style.width = this._noEdit ? "26px" : "52px";
     this._buttonContainer.style.height = "24px";
+    this._buttonContainer.style.top = "3px";
+    this._buttonContainer.style.right = "3px";
     this._buttonContainer.style.zIndex = 1;
 
-    var createButton = function(right) {
+    var createButton = function() {
       var button = MA.DOM.create("button");
       button.style.position = "absolute";
       button.style.width = "24px";
       button.style.height = "24px";
-      button.style.right = right + "px";
-      button.style.top = "0px";
       button.style.backgroundRepeat = "no-repeat";
       button.style.backgroundPosition = "center center";
       return button;
-
     };
 
-    var removeButton = createButton(0);
+    var removeButton = createButton();
+    removeButton.style.right = "0px";
     removeButton.style.backgroundImage ="url(./image/sakuzu/icon_remove.png)";
-    var editButton = createButton(26);
-    editButton.style.backgroundImage ="url(./image/sakuzu/icon_edit.png)";
-    
     MA.DOM.on( removeButton, "click", MA.bind( this._onRemoveClick, this ) );
-    MA.DOM.on( editButton, "click", MA.bind( this._onEditClick, this ) );
-
-
-    this._buttonContainer.style.marginTop = "4px";
-    this._buttonContainer.style.marginLeft = "-56px";
+    
+    if(this._noEdit){
+      removeButton.style.bottom = "12px";
+      removeButton.style.left = "12px";
+      this._buttonContainer.style.top = "50%";
+      this._buttonContainer.style.right = "50%";
+    }
 
     this._buttonContainer.appendChild( removeButton );
-    this._buttonContainer.appendChild( editButton );
+    if(!this._noEdit){
+      var editButton = createButton(26);
+      editButton.style.right = "26px";
+      editButton.style.backgroundImage ="url(./image/sakuzu/icon_edit.png)";
+      MA.DOM.on( editButton, "click", MA.bind( this._onEditClick, this ) );
+      this._buttonContainer.appendChild( editButton );
+    }
 
-    canvasContainer.appendChild(this._buttonContainer);
+
+
+    this._container.appendChild(this._buttonContainer);
   }
 
   destroy() {
-    if ( this._container) {
-      this._container.parentNode.removeChild( this._container );
-      this._container = undefined;
-    }
-
     if ( this._buttonContainer) {
       this._buttonContainer.parentNode.removeChild( this._buttonContainer );
       this._buttonContainer = undefined;
     }
-
-
+    if ( this._container) {
+      this._container.parentNode.removeChild( this._container );
+      this._container = undefined;
+    }
     if ( this._mapMoveHandler ) {
       this._map.off(  "move", this._mapMoveHandler );
       this._mapMoveHandler = undefined
     }
-
-
-
   }
-
 };
 
 

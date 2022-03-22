@@ -25,7 +25,6 @@ GSIBV.Map.Draw.Layer = class extends GSIBV.Map.Layer {
     for (var i = 0; i < this._layers.length; i++) {
       map.setLayoutProperty(this._layers[i].id, "visibility", visible ? "visible" : "none");
     }
-
   }
 
   get featureCollection() {
@@ -83,7 +82,6 @@ GSIBV.Map.Draw.Layer = class extends GSIBV.Map.Layer {
       });
 
       this._addToMap();
-
     }
   }
 
@@ -131,7 +129,15 @@ GSIBV.Map.Draw.Layer = class extends GSIBV.Map.Layer {
       switch( feature.properties["-sakuzu-type"]) {
         case "Point":
           if ( feature.properties["-sakuzu-marker-type"] == "Icon") {
-            
+            if(feature.properties["_loadType"] == "Local"){
+              if ( this._localLoadedHandler ) {
+                imageManager.off("loaded", this._localLoadedHandler);
+                this._localLoadedHandler = null;
+              }
+              this._localLoadedHandler = MA.bind(this._onLocalLoaded, this, geoJSON);
+              imageManager.on("loaded", this._localLoadedHandler);
+            }
+
             var icon = feature.properties["_iconUrl"];
             if (!imageManager.has(icon)) {
               loadIcons.push(icon);
@@ -208,7 +214,6 @@ GSIBV.Map.Draw.Layer = class extends GSIBV.Map.Layer {
     if ( feature.properties["_iconSize"]) {
       feature.properties["_iconScale"] = feature.properties["_iconSize"][0] / image.width;
     }
-  
   }
 
   _checkIconLoad( url, loadIcons, geoJSON ) {
@@ -245,12 +250,33 @@ GSIBV.Map.Draw.Layer = class extends GSIBV.Map.Layer {
     this._checkIconLoad( url, loadIcons,geoJSON);
   }
 
+  _onLocalLoaded(geoJSON, e){
+    var imageManager = GSIBV.Map.ImageManager.instance;
+    imageManager.off("loaded", this._localLoadedHandler);
+
+    for( var i=0; i<geoJSON.features.length; i++ ) {
+      var feature = geoJSON.features[i];
+      if ( feature.properties ) {
+        var url = feature.properties["_iconUrl"];
+        if ( !url ) continue;
+        var imageManager = GSIBV.Map.ImageManager.instance;
+        var popupContent = imageManager.getImagePopupContent(url);
+        if(popupContent) {
+          feature.properties["-gsibv-popupContent"] = popupContent;
+          feature.properties["-gsibv-popupClassName"] = "-gisbv-popup-content-jpeg";
+          feature.properties["iconPosition"] = feature.properties["position"];
+        }
+      }
+    }
+    var source = this._map.map.getSource(this.mapid);
+    source.setData(geoJSON);
+  }
+
   _setSymbolImage() {
 
     var map = this._map.map;
 
    // map.setLayoutProperty(this.mapid + "-symbol", "icon-image", ["concat", "-gsibv-image-", ["get", "_iconUrl"]])
-
   }
 
   _addPolygonLayer() {
@@ -356,6 +382,7 @@ GSIBV.Map.Draw.Layer = class extends GSIBV.Map.Layer {
       "layout": {
         "icon-image": ["concat", "-gsibv-image-", ["get", "_iconUrl"]],
         "icon-size": ["case", ["has", "_iconScale"], ["get", "_iconScale"], 1],
+        "icon-offset": ["case", ["has", "_iconOffset"], ["get", "_iconOffset"], ["literal", [0,0]]],
         "icon-pitch-alignment": "viewport",
         "symbol-placement": "point",
         "icon-keep-upright": true,
@@ -871,13 +898,6 @@ GSIBV.Map.Draw.Layer.TextToCanvas = class {
 
 
 
-
-
-
-
-
-
-
 GSIBV.Map.Draw.Layer.CircleToCanvasManager = class extends MA.Class.Base {
 
   constructor(map) {
@@ -945,8 +965,9 @@ GSIBV.Map.Draw.Layer.CircleToCanvasManager = class extends MA.Class.Base {
       height: h,
       data: imgData
     };
-
-    this._map.addImage(circleInfo.imageId, data, { pixelRatio: 1 });
+    if (!this._map.style.getImage(circleInfo.imageId)) {
+      this._map.addImage(circleInfo.imageId, data, { pixelRatio: 1 });
+    }
 
   }
 

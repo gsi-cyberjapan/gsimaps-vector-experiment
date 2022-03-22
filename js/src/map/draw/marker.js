@@ -48,6 +48,8 @@ GSIBV.Map.Draw.FeatureFilters.push( function(json){
         marker = new GSIBV.Map.Draw.DivMarker();
       } else if ( json.properties["_markerType"] == "Icon") {
         marker = new GSIBV.Map.Draw.Marker();
+      } else if ( json.properties["_markerType"] == "Image") {
+        marker = new GSIBV.Map.Draw.Image();
       } else {
         marker = new GSIBV.Map.Draw.Marker();
       }
@@ -72,8 +74,22 @@ GSIBV.Map.Draw.Marker = class extends GSIBV.Map.Draw.MarkerBase{
     this._style = new GSIBV.Map.Draw.Marker.Style();
   }
 
+  get notSave(){
+    return this._notSave;
+  }
+
   setJSON(json) {
     super.setJSON(json);
+    if ( json.properties["_loadType"] != undefined ) {
+      this._loadType = json.properties["_loadType"];
+    }
+    if ( json.properties["_properties"] != undefined ) {
+      if(!this._properties) this._properties={};
+      this._properties["_properties"] = json.properties["_properties"];
+    }
+    if ( json.properties["notSave"] != undefined ) {
+      this._notSave = json.properties["notSave"];
+    }
   }
 
   get markerType() {
@@ -118,9 +134,14 @@ GSIBV.Map.Draw.Marker = class extends GSIBV.Map.Draw.MarkerBase{
       hash["_iconUrl"] = this._style.iconUrl;
     if ( this._style.iconSize )
       hash["_iconSize"] = this._style.iconSize;
-    if ( this._style.iconAnchor )
-      hash["_iconAnchor"] = this._style.iconAnchor;
-    
+    if ( this._style.iconOffset )
+      hash["_iconOffset"] = this._style.iconOffset;
+    if ( this._style.popupContent )
+      hash["-gsibv-popupContent"] = this._style.popupContent;
+
+    if(this._loadType) hash["_loadType"] = this._loadType;
+
+    hash["position"] = this._coordinates.position;
   }
   
 };
@@ -138,23 +159,22 @@ GSIBV.Map.Draw.Marker.Style = class extends GSIBV.Map.Draw.Feature.Style{
 
   constructor() {
     super();
-
-
   }
-
-
   copyFrom(from) {
     super.copyFrom(from);
     if ( !from ) return;
     this._iconUrl = from._iconUrl;
     this._iconSize = from._iconSize; 
-    this.iconAnchor = from.iconAnchor;
+    this._iconOffset = from._iconOffset;
+    this._iconScale = from._iconScale; 
+    this._popupContent = from._popupContent;
   }
   clear() {
     super.clear();
     this._iconUrl = GSIBV.CONFIG.SAKUZU.SYMBOL.URL + GSIBV.CONFIG.SAKUZU.SYMBOL.DEFAULTICON; 
-    this._iconSize = JSON.parse( JSON.stringify( GSIBV.CONFIG.SAKUZU.SYMBOL.ICONSIZE ) ); 
-    this.iconAnchor = JSON.parse( JSON.stringify( GSIBV.CONFIG.SAKUZU.SYMBOL.ICONANCHOR ) ); 
+    this._iconSize = JSON.parse( JSON.stringify( GSIBV.CONFIG.SAKUZU.SYMBOL.ICONSIZE ) );
+    this._iconOffset = [0,0];
+    this._popupContent = "";
   }
 
   setJSON(properties) {
@@ -163,14 +183,17 @@ GSIBV.Map.Draw.Marker.Style = class extends GSIBV.Map.Draw.Feature.Style{
     } 
     if ( properties["_iconSize"] != undefined ) {
       this.iconSize = properties["_iconSize"];
-    } 
-    if ( properties["_iconAnchor"] != undefined ) {
-      this.iconAnchor = properties["_iconAnchor"];
-    } 
-    
-    
+    }
+    if ( properties["_iconOffset"] != undefined ) {
+      this.iconOffset = properties["_iconOffset"];
+    }
+    if ( properties["_iconScale"] != undefined ) {
+      this.iconScale = properties["_iconScale"];
+    }
+    if ( properties["_popupContent"] != undefined ) {
+      this.popupContent = properties["_popupContent"];
+    }
     super.setJSON(properties);
-
   }
   
 
@@ -186,11 +209,18 @@ GSIBV.Map.Draw.Marker.Style = class extends GSIBV.Map.Draw.Feature.Style{
     if ( this._iconSize != undefined) {
       hash["_iconSize"] = this._iconSize;
     }
-    
-    if ( this._iconAnchor != undefined) {
-      hash["_iconAnchor"] = this._iconAnchor;
+
+    if ( this._iconOffset != undefined) {
+      hash["_iconOffset"] = this._iconOffset;
     }
 
+    if ( this._iconScale != undefined) {
+      hash["_iconScale"] = this._iconScale;
+    }
+
+    if ( this._popupContent != undefined) {
+      hash["_popupContent"] = this._popupContent;
+    }
     return hash;
   }
   
@@ -201,8 +231,14 @@ GSIBV.Map.Draw.Marker.Style = class extends GSIBV.Map.Draw.Feature.Style{
   get iconSize() {
     return this._iconSize;
   }
-  get iconAnchor() {
-    return this._iconAnchor;
+  get iconOffset() {
+    return this._iconOffset;
+  }
+  get iconScale() {
+    return this._iconScale;
+  }
+  get popupContent(){
+    return this._popupContent;
   }
 
   set iconUrl(value) {
@@ -215,11 +251,17 @@ GSIBV.Map.Draw.Marker.Style = class extends GSIBV.Map.Draw.Feature.Style{
       this._iconSize = [parseInt(value[0]), parseInt(value[1])];
     }
   }
-  set iconAnchor(value) {
+  set iconOffset(value) {
     if ( value == undefined )
       this._iconAnchor = value;
     else if ( MA.isArray(value) && value.length == 2 ) {
-      this._iconAnchor = [parseInt(value[0]), parseInt(value[1])];
+      this._iconOffset = [parseInt(value[0]), parseInt(value[1])];
     }
+  }
+  set iconScale(value) {
+    this._iconScale = value;
+  }
+  set popupContent(value){
+    this._popupContent = value;
   }
 };

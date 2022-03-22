@@ -362,7 +362,11 @@ GSIBV.Map = class extends MA.Class.Base {
     this._centerCross = new GSIBV.Map.CenterCross(this._map);
     this._centerCrossVisible = true;
     this._centerCross.visible = this._centerCrossVisible;
-
+    this._zoomGuideVisible = true;
+    document.getElementById("zoomGuideCheckbox").addEventListener('change', event => {
+      var bol = document.getElementById("zoomGuideCheckbox").checked;
+      this.setZoomGuide(!bol);
+    });
     this._mousePositionControl = new GSIBV.Map.MousePosition(this._map);
     /*
     this._mousePositionLayer = new GSIBV.Map.ControlLayer.MousePosition();
@@ -607,15 +611,32 @@ GSIBV.Map = class extends MA.Class.Base {
     var latLng = e.lngLat;
     if (featuresAll.length > 0) {
       var html = '';
+      var className = "-gisbv-popup-content";
       for (var i = 0; i < featuresAll.length; i++) {
-        if ( i>0) return;
-        if (featuresAll[i].properties["-gsibv-popupContent"]) {
-          html = featuresAll[i].properties["-gsibv-popupContent"];
+        if ( i > 0) return;
+
+        var curFeature = featuresAll[i];
+        if (curFeature.properties["-gsibv-popupContent"]) {
+          html = curFeature.properties["-gsibv-popupContent"];
+          if (curFeature.properties["iconPosition"]) {
+            var position = JSON.parse(curFeature.properties["iconPosition"]);
+            latLng.lng = position._lng;
+            latLng.lat = position._lat;
+            var pos = this._map.project(latLng);
+            var fixpos = {
+              x: pos.x - 13,
+              y: pos.y - 10
+            }
+            latLng = this._map.unproject(fixpos);
+          }
+          if (curFeature.properties["-gsibv-popupClassName"]) {
+            className = curFeature.properties["-gsibv-popupClassName"];
+          }
           break;
         }
       }
       if (html != '') {
-        var popup = new mapboxgl.Popup({ "className": "-gisbv-popup-content" })
+        var popup = new mapboxgl.Popup({ "className": className })
           .setLngLat(latLng)
           .setHTML(html)
           .addTo(this._map);
@@ -701,7 +722,7 @@ GSIBV.Map = class extends MA.Class.Base {
     this._controlLayerList.refreshLayerOrder();
   }
 
-  addLayer(layer) {
+  addLayer(layer, index) {
     if (!this._vectorTileLoadHandler) {
       this._vectorTileLoadHandler = MA.bind(this._onVectorTileLoad, this);
     }
@@ -710,12 +731,10 @@ GSIBV.Map = class extends MA.Class.Base {
     layer.on("breakpoint", this._vectorTileLoadHandler);
     layer.on("finish", this._vectorTileLoadHandler);
 
-    var result = this._layerList.add(layer);
-
+    var result = this._layerList.add(layer, index);
 
     //this._drawManager.layerList.refreshLayerOrder();
     //this._controlLayerList.refreshLayerOrder();
-
     return result;
   }
 
@@ -814,6 +833,27 @@ GSIBV.Map = class extends MA.Class.Base {
     //this.fire("layerchange");
   }
 
+  zoomguidechange(){
+    this._zoomGuideVisible = !this._zoomGuideVisible;
+  }
+
+  setZoomGuide(bol){
+    this._zoomGuideVisible = bol;
+  }
+
+  getZoomGuide(){
+    return this._zoomGuideVisible;
+  }
+  onZoomCheck(item){
+    var zoom = this.zoom;
+    if (item.maxzoom && zoom > item.maxzoom){
+      return true;
+    }
+    if (item.minzoom && zoom < item.minzoom){
+      return true;
+    }
+    return false;
+  }
   compassChange(){
     this._compassVisible = !this._compassVisible;
     this._compassControl2.visible=this._compassVisible;
@@ -935,6 +975,36 @@ GSIBV.Map = class extends MA.Class.Base {
         ctx.strokeText(text, textPos.x, textPos.y);
         ctx.globalAlpha = 1;
         ctx.fillText(text, textPos.x, textPos.y);
+      }
+      // スケールバーロゴ
+      if (options && options.checkZoom) {
+        var area = document.querySelector('.mapboxgl-ctrl.mapboxgl-ctrl-scale');
+        var text = area.innerText;
+        var barHeight = height
+        if ( options.data ) {
+          barHeight = options.data.height;
+        }
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 2;
+  
+        ctx.beginPath();
+        ctx.moveTo(6, barHeight - 26);
+        ctx.lineTo(6, barHeight - 6);
+        ctx.lineTo(6 + area.clientWidth+2, barHeight - 6);
+        ctx.lineTo(6 + area.clientWidth+2, barHeight - 26);
+        ctx.stroke();
+  
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(7, barHeight -26, area.clientWidth, 19);
+  
+        ctx.font = "normal 11px 'メイリオ','ヒラギノ角ゴ Pro W3'";
+        ctx.fillStyle = "#333";
+        ctx.globalAlpha = 1;
+        ctx.lineWidth = 0.5;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(text, 11, barHeight - 12);
       }
       if ( callback ) {
         callback(canvas);

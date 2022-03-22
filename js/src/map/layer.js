@@ -25,7 +25,6 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
       return this._hash[layer];
     else
       return this._hash[layer.id];
-
   }
 
   _onLayerChange(e) {
@@ -40,12 +39,7 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
     layer.off("change", this._layerChangeHandler);
   }
 
-  add(layer) {
-
-    
-
-
-    
+  add(layer, index) {
     if (!(layer instanceof GSIBV.Map.Layer.Unknown)) {
       // 確認ダイアログ表示
       for( var key in GSIBV.CONFIG.CONFIRM_LAYERS ){
@@ -58,12 +52,10 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
           }
         }
       }
-      
     }
 
     if (this._hash[layer.id]) {
       if (this._hash[layer.id] instanceof GSIBV.Map.Layer.Unknown) {
-
         for (var i = 0; i < this._list.length; i++) {
           if (this._list[i].id == layer.id) {
 
@@ -87,7 +79,6 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
           }
         }
       }
-
       return null;
     } else {
       //自然災害伝承碑の排他処理
@@ -120,17 +111,14 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
         }   
       }
 
-
       for( var i=0; i<removeList.length; i++) this.remove(removeList[i]);
-
     }
-
 
 
     if (!layer._add(this._map)) return null;
     this._initLayerEvents(layer);
     this._hash[layer.id] = layer;
-    this._addToList( layer );
+    this._addToList( layer, index );
     this.refreshLayerOrder();
     //console.log( this._map.map.getStyle());
     this.fire("add", { "layer": layer });
@@ -143,15 +131,14 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
     }
     
     return layer;
-
   }
 
-  _addToList( layer ) {
-    this._list.push(layer);
+  _addToList( layer, index ) {
+    if(index != undefined) this._list.splice(index, 0, layer);
+    else this._list.push(layer);
   }
 
   remove(layer) {
-
     layer = this.find(layer);
 
     if (!layer) return layer;
@@ -178,9 +165,7 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
       GSIBV.application.hideComparePhotoControl(layer);
     }
 
-
     return layer;
-
   }
 
   clear() {
@@ -194,6 +179,15 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
     this.fire("change", { "type": "clear" });
   }
 
+  getLayerIndexById(id){
+    for (var i = 0; i < this._list.length; i++) {
+      if (id == this._list[i].id) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   getLayerIndex(layer) {
     for (var i = 0; i < this._list.length; i++) {
       if (layer.id == this._list[i].id) {
@@ -202,6 +196,7 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
     }
     return -1;
   }
+
   up(layer, inc) {
     var idx = this.getLayerIndex(layer);
     if (idx < 0) return;
@@ -213,8 +208,8 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
     }
     this._list[to] = tmp;
     this.refreshLayerOrder();
-
   }
+
   down(layer, inc) {
     var idx = this.getLayerIndex(layer);
     if (idx < 0) return;
@@ -228,7 +223,6 @@ GSIBV.Map.LayerList = class extends MA.Class.Base {
     this._list[to] = tmp;
 
     this.refreshLayerOrder();
-
   }
 
   refreshLayerOrder() {
@@ -268,6 +262,8 @@ GSIBV.Map.Layer = class extends MA.Class.Base {
       if (options.legendUrl) this._legendUrl = options.legendUrl;
       if (options.minzoom != undefined) this._minzoom = options.minzoom;
       if (options.maxzoom != undefined) this._maxzoom = options.maxzoom;
+      if (options.minZoom != undefined) this._minZoom = options.minZoom;
+      if (options.maxZoom != undefined) this._maxZoom = options.maxZoom;
       if (options.maxNativeZoom != undefined) this._maxNativeZoom = options.maxNativeZoom;
       if (options.backgroundList != undefined) this._backgroundList = options.backgroundList;
     }
@@ -294,6 +290,8 @@ GSIBV.Map.Layer = class extends MA.Class.Base {
   get legendUrl() { return this._legendUrl; }
   get minzoom() { return this._minzoom; }
   get maxzoom() { return this._maxzoom; }
+  get minZoom() { return this._minZoom; }
+  get maxZoom() { return this._maxZoom; }
   get maxNativeZoom() { return this._maxNativeZoom; }
   get backgroundList() { return this._backgroundList; }
   get mapid() {

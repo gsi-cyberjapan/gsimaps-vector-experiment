@@ -1,0 +1,761 @@
+/*****************************************************************
+ * GSIBV.Map.Draw.DanmenLineDrawer
+ * ライン作成クラス
+******************************************************************/
+
+GSIBV.Map.Draw.DanmenLineDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
+
+  constructor(map, layer, hideLatlng) {
+    super(map, layer, hideLatlng);
+    this.maxPoints = 300;
+  }
+
+  get type() {
+    return GSIBV.Map.Draw.DanmenLine.Type;
+  }
+
+  start() {
+    super.start();
+    this._initEvents();
+    this._latlngs = [];
+    this._createFeature();
+    this._map.map.getCanvasContainer().style.cursor = "crosshair";
+    this._updateTooltip();
+  }
+
+  stop() {
+    super.stop();
+    this._map.map.getCanvasContainer().style.cursor = "";
+    this._destroyEvents();
+    if (this._feature) {
+      this._feature.coordinates.set(this._latlngs);
+      if (this._editor) {
+        this._editor.destroy();
+        this._editor = undefined;
+      }
+      this._layer.update();
+    }
+  }
+
+  _initEvents() {
+
+    if (!this._mapMoveHandler) {
+      this._mapMoveHandler = MA.bind(this._onMapMove, this);
+      this._map.map.on("move", this._mapMoveHandler);
+    }
+
+    if (!this._mouseDownHandler) {
+      this._mouseDownHandler = MA.bind(this._onMouseDown, this);
+      MA.DOM.on(document.body, "mousedown", this._mouseDownHandler);
+    }
+
+
+    if (!this._clickHandler) {
+      this._clickHandler = MA.bind(this._onClick, this);
+      MA.DOM.on(document.body, "click", this._clickHandler);
+    }
+
+
+    if (!this._mouseMoveHandler) {
+      this._mouseMoveHandler = MA.bind(this._onMouseMove, this);
+      MA.DOM.on(document.body, "mousemove", this._mouseMoveHandler);
+    }
+
+  }
+
+  destroy() {
+    this._map.map.getCanvasContainer().style.cursor = "";
+    if (this._featureEditor) {
+      this._featureEditor.destroy();
+      this._featureEditor = undefined;
+    }
+    this._destroyFeature();
+
+    this._destroyEvents();
+
+    if (this._mapMoveHandler) {
+      this._map.map.off("move", this._mapMoveHandler);
+      this._mapMoveHandler = undefined
+    }
+
+    super.destroy();
+  }
+
+  _destroyEvents() {
+    if (this._clickHandler) {
+      MA.DOM.off(document.body, "click", this._clickHandler);
+      this._clickHandler = undefined
+    }
+    if (this._mouseDownHandler) {
+      MA.DOM.off(document.body, "mousedown", this._mouseDownHandler);
+      this._mouseDownHandler = undefined
+    }
+    if (this._mouseMoveHandler) {
+      MA.DOM.off(document.body, "mousemove", this._mouseMoveHandler);
+      this._mouseMoveHandler = undefined
+    }
+  }
+
+  _destroyFeature() {
+    if (this._feature) {
+      this._featureCollection.remove(this._feature);
+    }
+    if (this._featureStart) {
+      this._featureCollection.remove(this._featureStart);
+    }
+    if (this._featureEnd) {
+      this._featureCollection.remove(this._featureEnd);
+    }
+    if (this._editor) this._editor.destroy();
+  }
+
+
+  _makerFeature() {
+    return new GSIBV.Map.Draw.DanmenLine();
+  }
+  _pointerFeature(pos, icon) {
+    var feature = new GSIBV.Map.Draw.Marker();
+    feature.coordinates.position = pos;
+    feature.style.iconUrl = icon;
+    feature.style.iconSize = [50, 50];
+    feature.style.iconOffset = [1,-22];
+    return feature;
+  }
+
+  _createEdit(feature) {
+    return new GSIBV.Map.Draw.LineEditor(this._map, feature);
+  }
+
+  _createFeature() {
+    var oldFeature = this._feature;
+    this._feature = this._makerFeature();
+    if (oldFeature) this._feature.style = oldFeature.style;
+    this._feature.style.dashArray = [1, 3 * 2];
+    this._editor = new GSIBV.Map.Draw.Control.LineEditor(this._map, this._feature.coordinates, 2, true);
+    this._editor.on("update", MA.bind(function () {
+      this._feature.update();
+    }, this));
+
+    this._featureCollection.add(this._feature);
+    //this._layer = new GSIBV.Map.Draw.Layer( MA.getId("-gsi-draw-"), this._featureCollection );
+    //this._layerList.add(this._layer);
+
+  }
+
+  _onMapMove() {
+    if (this._editor) this._editor.refresh();
+  }
+
+  _getDistance(latlng) {
+    if (!this._latlngs || this._latlngs.length == 0 || (this._latlngs.length == 1 && !latlng)) return undefined;
+
+    var totalDistance = 0;
+    for (var i = 1; i < this._latlngs.length; i++) {
+      totalDistance += GSI.Utils.DistanceCalculator.calc(
+        this._latlngs[i - 1], this._latlngs[i]
+      );
+    }
+
+    if (latlng) {
+      totalDistance += GSI.Utils.DistanceCalculator.calc(
+        this._latlngs[this._latlngs.length - 1], latlng
+      );
+    }
+    if (this._restart || !this._latlngs || this._latlngs.length <= 0) {
+      this._toolTip.message = "始点を選択";
+    } else {
+      if (this._latlngs.length >= this._feature.coordinatesMinLength) {
+        this._toolTip.message = "<div class='tooltip-subtext'>" + GSI.Utils.DistanceCalculator.getDistanceStr(totalDistance) + "</div>" +
+          "次の位置を選択(最終点をもう一度クリックして終了)" +
+          '<div class="mini">※右クリックで直前の点を取り消すことができます。</div>';
+      } else {
+        this._toolTip.message = "<div class='tooltip-subtext'>" + GSI.Utils.DistanceCalculator.getDistanceStr(totalDistance) + "</div>" +
+          "次の位置を選択" +
+          '<div class="mini">※右クリックで直前の点を取り消すことができます。</div>';
+      }
+    }
+
+    return { "distance": totalDistance, "type": "distance" };
+  }
+
+  _updateTooltip() {
+    this._toolTip.distanceCalculator = MA.bind(this._getDistance, this);
+    if (!this._latlngs || this._latlngs.length <= 0) {
+      this._toolTip.message = "始点を選択";
+    } else {
+
+      var totalDistance = 0;
+      for (var i = 1; i < this._latlngs.length; i++) {
+        totalDistance += GSI.Utils.DistanceCalculator.calc(
+          this._latlngs[i - 1], this._latlngs[i]
+        );
+      }
+      this._toolTip._distance = totalDistance;
+      if (this._latlngs.length >= this._feature.coordinatesMinLength) {
+        this._toolTip.message = "<div class='tooltip-subtext'>" + GSI.Utils.DistanceCalculator.getDistanceStr(totalDistance) + "</div>" +
+          "次の位置を選択(最終点をもう一度クリックして終了)" +
+          '<div class="mini">※右クリックで直前の点を取り消すことができます。</div>';
+      } else {
+        this._toolTip.message = "<div class='tooltip-subtext'>" + GSI.Utils.DistanceCalculator.getDistanceStr(totalDistance) + "</div>" +
+          "次の位置を選択" +
+          '<div class="mini">※右クリックで直前の点を取り消すことができます。</div>';
+      }
+    }
+  }
+  _addLatLng(latlng) {
+    this._latlngs.push(latlng);
+    this._feature.coordinates.set(this._latlngs);
+    this._editor.recreate();
+    this._layer.update();
+
+    this._updateTooltip();
+  }
+
+
+  _popLatLng() {
+
+    if (this._latlngs.length > 0) {
+      this._latlngs.pop();
+      this._feature.coordinates.set(this._latlngs);
+      this._editor.recreate();
+      this._layer.update();
+    }
+
+    this._updateTooltip();
+  }
+
+
+  _onMouseMove(evt) {
+
+    var pos = this._pagePosToCanvasPos(evt);
+    this._currentPosition = this._map.map.unproject(pos);
+
+    this._feature.coordinates.set(this._latlngs);
+
+    if (!this._restart && this._latlngs.length >= 1) {
+      this._feature.coordinates.add(this._currentPosition);
+      this._layer.update();
+    }
+
+
+    this.fire("move");
+    this._currentMousePos = {
+      pageX: evt.pageX,
+      pageY: evt.pageY
+    }
+  }
+
+  _onMouseDown(evt) {
+    this._currentMousePos = undefined;
+    if (this._restart) {
+      return;
+    }
+    if (evt.button == 2) {
+      evt.stopPropagation();
+      evt.preventDefault();
+      this._popLatLng();
+      return;
+    }
+  }
+  _onClick(evt) {
+    if (!this._currentPosition) return;
+
+    if (evt.button == 2) {
+      return;
+    }
+
+    if (MA.DOM.hasClass(evt.target, "marker")) {
+      if (this._latlngs.length >= this._feature.coordinatesMinLength) {
+        this._featureStart = this._pointerFeature(this._latlngs[0], 'image/danmen/icon_start.png');
+        this._featureEnd = this._pointerFeature(this._latlngs[this._latlngs.length - 1], 'image/danmen/icon_end.png');
+        this._featureCollection.add(this._featureStart);
+        this._featureCollection.add(this._featureEnd);
+        this._feature.style.color = "#000000";
+        this._feature.style.dashArray = undefined;
+        // GSIBV.application._danmenDialog._onGraphCreateStart();
+        // GSIBV.application._danmenDialog.fire('graphcreatestart');
+        this.createCossSectionData();
+        this.stop();
+      }
+
+      return;
+    }
+
+    var canvasContainer = this._map.map.getCanvasContainer();
+    var target = evt.target;
+    var hit = false;
+    while (target) {
+      if (target == canvasContainer) {
+        hit = true;
+        break;
+      }
+      target = target.parentNode;
+    }
+    if (!hit) return;
+
+    var pos = this._pagePosToCanvasPos(evt);
+    this._addLatLng(this._map.map.unproject(pos));
+  }
+
+
+  _draw(type) {
+
+    var proc = MA.bind(function (type) {
+      if (this._map.drawManager.drawer) {
+        this._map.drawManager.stopDraw();
+      }
+      this._map.drawManager.draw(type);
+
+    }, this, type);
+
+
+    proc();
+  }
+  _getBoundsZoom(bounds, size, inside) {
+
+    // bounds = L.latLngBounds(bounds);
+
+    var map = this._map;
+    var zoom = map.zoom || 0;
+    var s = this._scale(zoom);
+    var min = 9,
+      max = 15,
+      nw = bounds._nw,
+      se = bounds._se,
+      boundsSize = this._getSize(this._transform(this._project(se),s), this._transform(this._project(nw),s)),
+      snap = 1,
+      scalex = size.x / boundsSize.x,
+      scaley = size.y / boundsSize.y,
+      scale = inside ? Math.max(scalex, scaley) : Math.min(scalex, scaley);
+    console.log(boundsSize);
+    console.log(scale);
+    zoom = this._getScaleZoom(scale, zoom);
+
+    if (snap) {
+      zoom = Math.round(zoom / (snap / 100)) * (snap / 100); // don't jump if within 1% of a snap level
+      zoom = inside ? Math.ceil(zoom / snap) * snap : Math.floor(zoom / snap) * snap;
+    }
+
+    return Math.max(min, Math.min(max, zoom));
+  }
+  _getSize(p1, p2) {
+    var min = { x:0, y:0};
+    var max = { x:0, y:0};
+    min.x = Math.min(p1.x, p2.x);
+    max.x = Math.max(p1.x, p2.x);
+    min.y = Math.min(p1.y, p2.y);
+    max.y = Math.max(p1.y, p2.y);
+    return {
+      x: max.x-min.x,
+      y:max.y-min.y
+    }
+	}
+  _getScaleZoom(scale, fromZoom) {
+		var zoom = Math.log(scale * this._scale(fromZoom) / 256) / Math.LN2;
+		return zoom;
+	}
+  _project(latlng) {
+    var d = Math.PI / 180,
+      R = 6378137,
+      max = 85.0511287798,
+      lat = Math.max(Math.min(max, latlng.lat), -max),
+      sin = Math.sin(lat * d);
+
+    return {
+      x: R * latlng.lng * d,
+      y: R * Math.log((1 + sin) / (1 - sin)) / 2
+    }
+  }
+  _scale(zoom) {
+		return 256 * Math.pow(2, zoom);
+	}
+  _transform(point, scale) {
+		scale = scale || 1;
+    var R = 6378137;
+    var scaleMercator = 0.5 / (Math.PI * R)
+		point.x = scale * (scaleMercator * point.x + 0.5);
+		point.y = scale * (-scaleMercator * point.y + 0.5);
+		return point;
+	}
+  // 経路を分割し必要な標高タイルを取得
+  createCossSectionData() {
+    let useDEMTileList = GSIBV.application._danmenDialog._useDEMTileList || [];
+    if (!this._latlngs || this._latlngs.length <= 1 || !this.feature) return;
+
+
+    // this.fire("graphcreatestart", {});
+
+    GSIBV.application._danmenDialog.fire('graphcreatestart', {})
+
+
+
+    var wrap = false;
+    var bounds = this.feature.bounds;
+
+    var options = {
+      padding: { x: 32, y: 32 },
+      maxZoom: 15
+    };
+    //var target = this._map._getBoundsCenterZoom(bounds, options);
+    var zoom = this._getBoundsZoom(bounds, {x: 2560, y: 2560});// target.zoom;
+    //if ( zoom > 15 ) zoom = 15;
+    //if ( zoom < 9 ) zoom = 9;
+    //console.log( zoom );
+
+    //var zoom = 15;
+    // var zoom = Math.round(this._map.zoom);
+    // if ( zoom > 15 ) zoom = 15;
+    // if ( zoom < 9 ) zoom = 9;
+    var scale = this._scale(zoom);
+    var totalDistance = 0;
+
+    for (var i = 1; i < this._latlngs.length; i++) {
+      totalDistance += GSI.Utils.DistanceCalculator.calc(
+        this._latlngs[i - 1], this._latlngs[i]
+      );
+    }
+
+
+    var interval = totalDistance / (this.maxPoints - 1);
+    var interval2 = 0;
+
+    var data = {
+      totalDistance: totalDistance,
+      points: []
+    };
+    data.points.push({ latlng: this._latlngs[0], distance: 0 });
+    for (var i = 0; i < this._latlngs.length - 1; i++) {
+
+      var pointA = this._latlngs[i];
+      var pointB = this._latlngs[i + 1];
+      if (pointA.lat == pointB.lat && pointA.lng == pointB.lng) {
+        continue;
+      }
+      var inverse = GSI.Utils.Geodesic.vincentyInverse(pointA, pointB);
+      var prev = pointA;
+
+      var distance = interval - interval2;
+
+      if (distance > inverse.distance) {
+        interval2 += inverse.distance;
+        continue;
+      }
+
+
+      interval2 = 0;
+
+      for (var s = 1; true;) {
+        var direct = GSI.Utils.Geodesic.vincentyDirect(pointA, inverse.initialBearing,
+          distance, wrap
+        );
+
+        var gp = L.latLng(direct.lat, direct.lng);
+
+        var dd = GSI.Utils.Geodesic.vincentyInverse(prev, gp);
+        if (Math.abs(gp.lng - prev.lng) > 180) {
+          var sec = GSI.Utils.Geodesic.intersection(pointA, inverse.initialBearing, {
+            lat: -89,
+            lng: ((gp.lng - prev.lng) > 0) ? -GSI.Utils.Geodesic.INTERSECT_LNG : GSI.Utils.Geodesic.INTERSECT_LNG
+          }, 0);
+          if (sec) {
+            data.points.push({
+              latlng: L.latLng(sec.lat, sec.lng)
+            });
+            prev = L.latLng(sec.lat, -sec.lng);
+            data.points.push({
+              latlng: prev
+            });
+
+          } else {
+            data.points.push({
+              latlng: gp
+            });
+            prev = gp;
+            s++;
+            distance += interval;
+          }
+        } else {
+          data.points.push({
+            latlng: gp
+          });
+          prev = gp;
+          s++;
+          distance += interval;
+        }
+
+        if (distance > inverse.distance) {
+          interval2 = interval - (distance - inverse.distance);
+          break;
+        }
+      }
+    }
+
+    if (data.points.length < this.maxPoints) data.points.push({ latlng: this._latlngs[this._latlngs.length - 1] });
+
+
+    // 必要なタイル一覧取得
+    this._data = data;
+    this._requestTileList = {};
+
+
+    for (var i = 0; i < data.points.length; i++) {
+      var p = this._project(data.points[i].latlng)
+      
+      p = this._transform(p,scale);
+
+      // var tilePoint = p.divideBy(256).floor();
+      var tilePoint = {
+        x: Math.floor(p.x / 256),
+        y: Math.floor(p.y / 256)
+      };
+
+      data.points[i].key = tilePoint.x + ':' + tilePoint.y + ':' + zoom;
+      data.points[i].px = {
+        x: Math.floor(p.x - (tilePoint.x * 256)),
+        y: Math.floor(p.y - (tilePoint.y * 256))
+      };
+
+      if (!this._requestTileList[data.points[i].key]) {
+        this._requestTileList[data.points[i].key] = {
+          x: tilePoint.x,
+          y: tilePoint.y,
+          z: zoom,
+          loader: new GSIBV.DEMLoader(tilePoint.x, tilePoint.y, zoom, {
+            overZooming: true,
+            useTileList: useDEMTileList
+          })
+          // loader: new GSI.DEMLoader(this._map, tilePoint.x, tilePoint.y, zoom, null, {
+          //   overZooming: true,
+          // })
+        };
+
+        this._requestTileList[data.points[i].key].loader.on("load", MA.bind(this._demLoaded, this, data.points[i].key));
+
+      }
+
+
+    }
+
+
+
+
+    this._pointsData = [];
+    for (var i = 0; i < this._latlngs.length; i++) {
+      var p = this._project(this._latlngs[i])
+      
+      p = this._transform(p,scale);
+
+      // var tilePoint = p.divideBy(256).floor();
+      var tilePoint = {
+        x: Math.floor(p.x / 256),
+        y: Math.floor(p.y / 256)
+      };
+
+
+      var pointData = {
+        latlng: this._latlngs[i],
+        z: zoom,
+        key: tilePoint.x + ':' + tilePoint.y + ':' + zoom,
+        px: {
+          x: Math.floor(p.x - (tilePoint.x * 256)),
+          y: Math.floor(p.y - (tilePoint.y * 256))
+        }
+      };
+      this._pointsData.push(pointData);
+
+      if (!this._requestTileList[pointData.key]) {
+        this._requestTileList[pointData.key] = {
+          x: tilePoint.x,
+          y: tilePoint.y,
+          z: zoom,
+          loader: new GSIBV.DEMLoader(tilePoint.x, tilePoint.y, zoom, {
+            overZooming: true,
+            useTileList: useDEMTileList
+          })
+          // loader: new GSI.DEMLoader(this._map, tilePoint.x, tilePoint.y, zoom, null, {
+          //   overZooming: true,
+          // })
+        };
+
+        this._requestTileList[pointData.key].loader.on("load", MA.bind(this._demLoaded, this, pointData.key));
+
+      }
+
+    }
+
+    for (var key in this._requestTileList) {
+      this._requestTileList[key].loader.load();
+    }
+
+  }
+  // 標高タイル取得後
+  _demLoaded(key) {
+    var req = this._requestTileList[key];
+
+    var demData = req.loader.getData();
+    var demInfo = req.loader.getInfo();
+
+    var data = this._data;
+    for (var i = 0; i < data.points.length; i++) {
+      if (key != data.points[i].key) continue;
+
+      var idx = (data.points[i].px.y * 256) + (data.points[i].px.x);
+
+      data.points[i].h = (demData ? demData[idx] : null);
+      if (demInfo) {
+        data.points[i].info = demInfo[idx];
+      }
+      //if (data.points[i].h == null) data.points[i].h = 0;
+      data.points[i].urlId = req.urlId;
+
+    }
+
+    for (var i = 0; i < this._pointsData.length; i++) {
+
+      if (key != this._pointsData[i].key) continue;
+
+      var idx = (this._pointsData[i].px.y * 256) + (this._pointsData[i].px.x);
+
+      this._pointsData[i].h = (demData ? demData[idx] : null);
+
+      if (demInfo) {
+        this._pointsData[i].info = demInfo[idx];
+      }
+
+      //if (this._pointsData[i].h == null) this._pointsData[i].h = 0;
+    }
+
+
+    req.loaded = true;
+    this._demLoadFinish();
+  }
+  // 全ての標高タイル取得後
+  _demLoadFinish() {
+    var loaded = true;
+
+    for (var key in this._requestTileList) {
+      if (!this._requestTileList[key].loaded) {
+        loaded = false;
+        break;
+      }
+    }
+
+
+    if (!loaded) return;
+
+    if (this._data.points.length < 2) {
+      //err
+      this.fire("finish", { loadedData: null });
+      this.fire("graphcreated", {});
+      return;
+    }
+
+    this._data.points[0].distance = 0;
+
+    //if (!this._data.points[0].h) this._data.points[0].h = 0;
+    this._data.max = this._data.points[0].h;
+    this._data.min = this._data.points[0].h;
+    for (var i = 0; i < this._data.points.length - 1; i++) {
+      var inverse = GSI.Utils.Geodesic.vincentyInverse(
+        this._data.points[i].latlng, this._data.points[i + 1].latlng);
+
+      //if (!this._data.points[i + 1].h) this._data.points[i + 1].h = 0;
+
+      this._data.points[i + 1].distance = this._data.totalDistance / (this.maxPoints - 1) * (i + 1);
+      if (this._data.max == null) {
+        this._data.max = this._data.points[i + 1].h;
+      } else if (this._data.max < this._data.points[i + 1].h) {
+        this._data.max = this._data.points[i + 1].h;
+      }
+
+      if (this._data.min == null) {
+        this._data.min = this._data.points[i + 1].h;
+      } else if (this._data.min > this._data.points[i + 1].h) {
+        this._data.min = this._data.points[i + 1].h;
+      }
+
+    }
+
+
+    //if ( this.options.autoGraph )
+    if (!this._data.max && this._data.max != 0) {
+      console.log("err");
+      this.fire("finish", { loadedData: null });
+      GSIBV.application._danmenDialog.fire("graphcreated", { msg: "標高データが読み込めませんでした。" });
+    }
+    else {
+      this.fire("finish", { loadedData: this._data });
+      this.createGraph();
+
+    }
+  }
+  // 断面図生成
+  createGraph() {
+
+    if (this._graph)
+      this._graph.destroy();
+    this._graph = null;
+
+    this._graph = new GSIBV.UI.Dialog.CrossSectionViewGraph();
+    this._graph.on("mousepointchange", MA.bind(function (e) {
+      this.setMousePoint(e.params.point);
+    }, this));
+
+
+    //var graphParams = this._graph.createGraphParams(this._data);
+    var minScale = 0;
+    var maxScale = 10;
+
+    this._graph.create(this._data);
+    GSIBV.application._danmenDialog.fire("graphcreated", {
+      graph: this._graph,
+      minScale: minScale,
+      maxScale: maxScale
+    });
+
+
+  }
+  // 断面図上マウス位置から地図上にアイコン表示
+  setMousePoint(p) {
+    this._mousePoint = p;
+
+    if (this._mousePoint) {
+      
+      var feature = new GSIBV.Map.Draw.Marker();
+      feature.coordinates.position = this._mousePoint.latlng;
+      feature.style.iconUrl = "https://maps.gsi.go.jp/portal/sys/v4/symbols/076.png"
+      feature.style.iconSize = [12, 12];
+      
+      if(this._featureCollection.length==4) {
+        this._featureCollection.remove(this._featureCollection.get(3))
+      }
+      this._featureCollection.add(feature);
+    }
+    else {
+      if(this._featureCollection.length==4) {
+        this._featureCollection.remove(this._featureCollection.get(3));
+      }
+    }
+  }
+
+  _load(json) {
+    this._featureCollection.clear();
+    var coordinates = json.features[0].geometry.coordinates;
+    this._latlngs = [];
+    for(var i=0;i<coordinates.length;i++) {
+      this._latlngs.push({lat:coordinates[i][1], lng:coordinates[i][0]});
+    }
+    this._feature = this._makerFeature();
+    this._feature.style.color = "#000000";
+    this._feature.style.dashArray = undefined;
+    this._feature.coordinates.set(this._latlngs);
+    this._featureCollection.add(this._feature);
+
+    this._featureStart = this._pointerFeature(this._latlngs[0], 'image/danmen/icon_start.png');
+    this._featureEnd = this._pointerFeature(this._latlngs[this._latlngs.length - 1], 'image/danmen/icon_end.png');
+    this._featureCollection.add(this._featureStart);
+    this._featureCollection.add(this._featureEnd);
+    this.createCossSectionData();
+    this.stop();
+  }
+};

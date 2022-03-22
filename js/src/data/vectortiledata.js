@@ -58,9 +58,9 @@ GSIBV.VectorTileData = class extends MA.Class.Base {
     this._groupList.sort();
   }
 
-  toData() {
+  toData(isSave) {
 
-    var result = this._root.toData();
+    var result = this._root.toData(isSave);
     result["title"] = this._title;
     result["group"] = this._groupList.toData();
     
@@ -72,7 +72,7 @@ GSIBV.VectorTileData = class extends MA.Class.Base {
   }
 
   save(indent) {
-    var data = this.toData();
+    var data = this.toData(true);
     indent = 2;
     MA.saveFile(this._fileName, "application\/json", 
       JSON.stringify(data, null, indent ) );
@@ -337,8 +337,8 @@ GSIBV.VectorTileData.LayerGroup = class extends MA.Class.Base {
   GSIBV.VectorTileData.ItemBase 
     子要素のベース
 ***********************************************/
-GSIBV.VectorTileData.ItemBase = class extends MA.Class.Base {
 
+GSIBV.VectorTileData.ItemBase = class extends MA.Class.Base {
   constructor(owner, parent) {
     super();
     this._owner = owner;
@@ -657,12 +657,12 @@ GSIBV.VectorTileData.Directory = class extends GSIBV.VectorTileData.ItemBase {
   getList() {
     return this._itemList;
   }
-  toData() {
+  toData(isSave) {
     var result = super.toData();
     result.list = [];
 
     for ( var i=0; i<this._itemList.length; i++ ) {
-      result.list.push( this._itemList[i].toData() );
+      result.list.push( this._itemList[i].toData(isSave) );
     }
 
     return result;
@@ -769,7 +769,7 @@ GSIBV.VectorTileData.Item = class extends GSIBV.VectorTileData.ItemBase {
 
   }
 
-  toData() {
+  toData(isSave) {
     var result = super.toData();
     result.type = "item";
     result.list = [];
@@ -777,7 +777,7 @@ GSIBV.VectorTileData.Item = class extends GSIBV.VectorTileData.ItemBase {
     var prevFilter = undefined;
     var isFilterSame = true;
     for ( var i=0; i<this._layerList.length; i++ ) {
-      var data = this._layerList[i].toData();
+      var data = this._layerList[i].toData(isSave);
       result.list.push( data );
       if ( !isFilterSame ) continue;
       if ( !data.filter ) {
@@ -851,8 +851,39 @@ GSIBV.VectorTileData.Layer = class extends GSIBV.VectorTileData.ItemBase {
     this._visible = visible;
   }
 
+  get minzoom(){
+    return super.minzoom;
+  }
+
+  get selMinzoom(){
+    return this._selMinzoom || this.minzoom;
+  }
+  set selMinzoom(value){
+    this._selMinzoom = value;
+  }
+
+  get minzoomSelector(){
+    return this._minzoomSelector;
+  }
+  set minzoomSelector(value){
+    this._minzoomSelector = value;
+  }
+
+  get minzoomChangeHandler(){
+    return this._minzoomChangeHandler;
+  }
+  set minzoomChangeHandler(value){
+    this._minzoomChangeHandler = value;
+  }
+
+  get minzoomSelCont(){
+    return this._minzoomSelCont;
+  }
+  set minzoomSelCont(value){
+    this._minzoomSelCont = value;
+  }
   
-  toData() {
+  toData(isSave) {
     var result = super.toData();
     result.type = "layer";
     result.list = [];
@@ -880,6 +911,21 @@ GSIBV.VectorTileData.Layer = class extends GSIBV.VectorTileData.ItemBase {
 
     } else {
       delete result["filter"];
+    }
+
+    function _removeNoNeedProperties(drawItem, minzoom){
+      for(var key of ["icon-size", "text-size", "line-width"]){
+        if(drawItem[key] && drawItem[key].stops){
+          drawItem[key].stops = drawItem[key].stops.filter((stopPair)=>{
+            return stopPair[0] >= minzoom;
+          })
+        }
+      }
+    }
+
+    if(isSave && result.list.length > 0) {
+      result.minzoom = this.selMinzoom || result.minzoom;
+      //result.list.forEach(item => _removeNoNeedProperties(item.draw, result.minzoom));
     }
     return result;
   }
@@ -1014,6 +1060,24 @@ GSIBV.VectorTileData.Draw = class extends GSIBV.VectorTileData.ItemBase {
   }
   get drawStyle() { return this._drawStyle; }
   get defaultDrawStyle() { return this._defaultDrawStyle; }
+
+  get drawMinzoom(){
+    return this._minzoom || this.minzoom;
+  }
+
+  get drawMaxzoom(){
+    return this._maxzoom || this.maxzoom;
+  }
+  
+  get minzoom() {
+    if(this._parent != undefined && this._parent.selMinzoom) {
+      if(this._minzoom) {
+        return Math.max(this._minzoom, this._parent.selMinzoom);
+      }
+      return this._parent.selMinzoom;
+    }
+    return super.minzoom;
+  }
   
   get paint() {
     if (!this._drawStyle) return undefined;

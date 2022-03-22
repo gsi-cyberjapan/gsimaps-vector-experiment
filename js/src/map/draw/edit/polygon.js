@@ -4,7 +4,7 @@
 ******************************************************************/
 
 
-GSIBV.Map.Draw.PolygonEditor = class extends GSIBV.Map.Draw.LineEditor {
+GSIBV.Map.Draw.PolygonEditor = class extends GSIBV.Map.Draw.FeatureEditor {
 
   constructor(map, targetFeature) {
     super( map, targetFeature);
@@ -13,7 +13,13 @@ GSIBV.Map.Draw.PolygonEditor = class extends GSIBV.Map.Draw.LineEditor {
 
 
   _createControls() {
-    super._createControls();
+    var editor = new GSIBV.Map.Draw.Control.LineEditor(  this._map, this.targetFeature.coordinates, this._minCoordinatesLength);
+    editor.on("update",MA.bind(function(){
+      this.targetFeature.update();
+      if ( this._layer ) this._layer.update();
+    },this));
+    this._editor = editor;
+    this._controls.push(editor);
     this._editor .on("markermove", MA.bind(function(evt){
       
       GSIBV.Map.Draw.PolygonEditor.checkOuter( this,

@@ -10,6 +10,8 @@ GSIBV.Map.Layer.FILTERS.unshift(function (l) {
       "legendUrl": l.legendUrl,
       "minzoom": l.minZoom,
       "maxzoom": l.maxZoom,
+      "minZoom": l.minZoom,
+      "maxZoom": l.maxZoom,
       "minNativeZoom": l.minNativeZoom,
       "maxNativeZoom": l.maxNativeZoom,
       "layerType": l.layerType
@@ -90,6 +92,8 @@ GSIBV.Map.Layer.Hillshade = class extends GSIBV.Map.Layer {
       "type" : "hillshade",
       "minzoom": 2,
       "maxzoom": 17,
+      "minZoom": 2,
+      "maxZoom": 17,
       "layout" : {
         "visibility" : "visible"
       },

@@ -1,18 +1,18 @@
 /*****************************************************************
- * GSIBV.Map.Draw.LineDrawer
+ * GSIBV.Map.Draw.MeasureLineDrawer
  * ライン作成クラス
 ******************************************************************/
 
-GSIBV.Map.Draw.PolygonDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
+GSIBV.Map.Draw.MeasureLineDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
 
-  constructor(map, layer) {
-    super(map, layer);
+  constructor(map, featureCollection, layer) {
+    super(map, featureCollection, layer);
+  }
+
+  get type() {
+    return GSIBV.Map.Draw.MeasureLine.Type;
   }
   
-  get type() {
-    return GSIBV.Map.Draw.Polygon.Type;
-  }
-
   start() {
     super.start();
     this._initEvents();
@@ -20,6 +20,15 @@ GSIBV.Map.Draw.PolygonDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
     this._createFeature();
     this._map.map.getCanvasContainer().style.cursor = "crosshair";
     this._updateTooltip();
+  }
+  restart() {
+    super.start();
+    this._initEvents();
+    // this._latlngs = [];
+    this._createFeature();
+    this._map.map.getCanvasContainer().style.cursor = "crosshair";
+    this._updateTooltip();
+    this._restart = true;
   }
 
   stop() {
@@ -102,10 +111,20 @@ GSIBV.Map.Draw.PolygonDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
     if ( this._editor ) this._editor.destroy();
   }
 
+  
+  _makerFeature() {
+    return new GSIBV.Map.Draw.MeasureLine();
+  }
+  
+  _createEdit( feature) {
+    return new GSIBV.Map.Draw.LineEditor( this._map, feature);
+  }
+
   _createFeature() {
     var oldFeature = this._feature;
     this._feature = this._makerFeature();
     if ( oldFeature ) this._feature.style = oldFeature.style;
+    this._feature.style.geodesic = 0;
     this._editor = new GSIBV.Map.Draw.Control.LineEditor(  this._map, this._feature.coordinates, 2, true);
     this._editor.on("update",MA.bind(function(){
       this._feature.update();
@@ -122,10 +141,35 @@ GSIBV.Map.Draw.PolygonDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
   }
 
   _getDistance(latlng) {
-    if ( !this._latlngs || this._latlngs.length <= 1 || ( this._latlngs.length == 2 && !latlng ) )  return undefined;
-    // ここで面積計算
+    if ( !this._latlngs || this._latlngs.length == 0 || ( this._latlngs.length == 1 && !latlng ) )  return undefined;
 
-    return {"distance":0, "type":"area" };
+    var totalDistance = 0;
+    for( var i=1; i<this._latlngs.length; i++ ) {
+      totalDistance += GSI.Utils.DistanceCalculator.calc(
+        this._latlngs[i-1], this._latlngs[i]
+      );
+    }
+
+    if ( latlng ) {
+      totalDistance += GSI.Utils.DistanceCalculator.calc(
+        this._latlngs[this._latlngs.length-1], latlng
+      );
+    }
+    if (this._restart || !this._latlngs || this._latlngs.length <= 0 ) {
+      this._toolTip.message = "開始位置をクリック";
+    } else {
+      if ( this._latlngs.length >= this._feature.coordinatesMinLength ) {
+        this._toolTip.message = "<div class='tooltip-subtext'>"+GSI.Utils.DistanceCalculator.getDistanceStr(totalDistance)+"</div>" +
+        "次の位置を選択(最終点をもう一度クリックして終了)" + 
+          '<div class="mini">※右クリックで直前の点を取り消すことができます。</div>';
+      }　else {
+        this._toolTip.message = "<div class='tooltip-subtext'>"+GSI.Utils.DistanceCalculator.getDistanceStr(totalDistance)+"</div>" +
+        "次の位置を選択" + 
+        '<div class="mini">※右クリックで直前の点を取り消すことができます。</div>';
+      }
+    }
+    
+    return {"distance":totalDistance, "type":"distance" };
   }
 
   _updateTooltip() {
@@ -133,24 +177,30 @@ GSIBV.Map.Draw.PolygonDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
     if ( !this._latlngs || this._latlngs.length <= 0 ) {
       this._toolTip.message = "開始位置をクリック";
     } else {
-
+      
+      var totalDistance = 0;
+      for( var i=1; i<this._latlngs.length; i++ ) {
+        totalDistance += GSI.Utils.DistanceCalculator.calc(
+          this._latlngs[i-1], this._latlngs[i]
+        );
+      }
+      this._toolTip._distance = totalDistance;
       if ( this._latlngs.length >= this._feature.coordinatesMinLength ) {
-        this._toolTip.message = "次の位置を選択(最終点をもう一度クリックして終了)" + 
+        this._toolTip.message = "<div class='tooltip-subtext'>"+GSI.Utils.DistanceCalculator.getDistanceStr(totalDistance)+"</div>" +
+        "次の位置を選択(最終点をもう一度クリックして終了)" + 
           '<div class="mini">※右クリックで直前の点を取り消すことができます。</div>';
       }　else {
-        this._toolTip.message = "次の位置を選択" + 
+        this._toolTip.message = "<div class='tooltip-subtext'>"+GSI.Utils.DistanceCalculator.getDistanceStr(totalDistance)+"</div>" +
+        "次の位置を選択" + 
         '<div class="mini">※右クリックで直前の点を取り消すことができます。</div>';
       }
     }
   }
-
   _addLatLng(latlng) {
-    if ( this._latlngs.length >= 3 ) {
-      
-      if ( this._checkCrossing(latlng) ) {
-        return;
-      }
-
+    if(this._restart) {
+      this._map.drawManager._userDrawingItem.featureCollection.clear();
+      this.start();
+      this._restart = false;
     }
     this._latlngs.push(latlng);
     this._feature.coordinates.set( this._latlngs );
@@ -158,7 +208,17 @@ GSIBV.Map.Draw.PolygonDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
     this._layer.update();
 
     this._updateTooltip();
+    var dialog = MA.DOM.find( document.body, ".-gsibv-measure-dialog" )[0];
+    MA.DOM.find( dialog, ".measure-result" )[0].innerHTML = GSI.Utils.DistanceCalculator.getDistanceStr(this._toolTip._distance);
+    MA.DOM.find( dialog, ".measure-lastlatlng" )[0].innerHTML = latlng.lat.toFixed(6) + ", " + latlng.lng.toFixed(6);
+    if(this._latlngs.length>1) {
+      GSIBV.application._measureDialog.enableButton(0);
+    } else {
+      GSIBV.application._measureDialog.disableButton(0);
+    }
   }
+
+  
   _popLatLng() {
     
     if ( this._latlngs.length > 0 ) {
@@ -169,16 +229,32 @@ GSIBV.Map.Draw.PolygonDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
     }
 
     this._updateTooltip();
+    var len = this._latlngs.length;
+    var dialog = MA.DOM.find( document.body, ".-gsibv-measure-dialog" )[0];
+    if(len>0) {
+      MA.DOM.find( dialog, ".measure-result" )[0].innerHTML = GSI.Utils.DistanceCalculator.getDistanceStr(this._toolTip._distance);
+      MA.DOM.find( dialog, ".measure-lastlatlng" )[0].innerHTML = this._latlngs[len-1].lat + ", " + this._latlngs[len-1].lngg;
+    } else {
+      MA.DOM.find( dialog, ".measure-result" )[0].innerHTML = "------";
+      MA.DOM.find( dialog, ".measure-lastlatlng" )[0].innerHTML = "------";
+    }
 
+    if(len>1) {
+      GSIBV.application._measureDialog.enableButton(0);
+    } else {
+      GSIBV.application._measureDialog.disableButton(0);
+    }
   }
 
+
   _onMouseMove(evt) {
+    
     var pos = this._pagePosToCanvasPos(evt);
     this._currentPosition = this._map.map.unproject(pos);
 
     this._feature.coordinates.set( this._latlngs );
 
-    if ( this._latlngs.length >= 1 ) {
+    if (!this._restart && this._latlngs.length >= 1 ) {
       this._feature.coordinates.add( this._currentPosition);
       this._layer.update();
     }
@@ -189,21 +265,13 @@ GSIBV.Map.Draw.PolygonDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
       pageX : evt.pageX,
       pageY : evt.pageY
     }
-
-    if ( this._feature.coordinates.length > 3 ) {
-      if ( this._checkCrossing(this._feature.coordinates.get(this._feature.coordinates.length-1)) ) {
-        this._toolTip.errorMessage = "ポリゴンが交差しています";
-        return;
-      }
-    }
-
-    this._toolTip.errorMessage = "";
-
-
   }
 
   _onMouseDown(evt) {
     this._currentMousePos = undefined;
+    if(this._restart) {
+      return;
+    }
     if (evt.button == 2) {
       evt.stopPropagation();
       evt.preventDefault();
@@ -211,7 +279,6 @@ GSIBV.Map.Draw.PolygonDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
       return;
     }
   }
-
   _onClick(evt) {
     if ( !this._currentPosition ) return;
     
@@ -221,9 +288,9 @@ GSIBV.Map.Draw.PolygonDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
 
     if ( MA.DOM.hasClass(evt.target,"marker") ) {
       if ( this._latlngs.length >= this._feature.coordinatesMinLength ) {
+        this._feature.style.geodesic = 1;
         this.stop();
-        this.fire("create", {layer:this._layer, feature:this._feature});
-        this._startEdit();
+        this.restart();
       }
       return;
     }
@@ -243,63 +310,14 @@ GSIBV.Map.Draw.PolygonDrawer = class extends GSIBV.Map.Draw.FeatureDrawer {
     var pos = this._pagePosToCanvasPos(evt);
     this._addLatLng( this._map.map.unproject(pos) );
   }
-  
+
+
   _startEdit() {
     this._featureEditor = this._createEdit( this._feature);
     //console.log("作成後編集開始");
     this._featureEditor.layer = this._layer;
     this._featureEditor.start();
 
-  }
-
-  _checkCrossing(newLatLng) {
-    
-    if ( this._latlngs.length < 3 ) return false;
-
-    var lines = [];
-    
-    lines.push([this._latlngs[0], newLatLng]);
-    lines.push([this._latlngs[this._latlngs.length-1], newLatLng]);
-
-    for( var i=0; i<lines.length; i++ ) {
-      var line = lines[i];
-
-      for( var j=0; j<this._latlngs.length-1; j++ ) {
-        var line2 = [];
-        line2.push( this._latlngs[j], this._latlngs[j+1]);
-        if ( MA.lineIntersects( 
-            line[0].lng, line[0].lat, line[1].lng, line[1].lat, 
-            line2[0].lng, line2[0].lat,line2[1].lng, line2[1].lat )) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-
-  /*
-  _popLatLng() {
-
-    if ( this._latlngs.length == 2 ) {
-      var latlngs = this._latlngs;
-      this._latlngs = [];
-      this._destroyFeature();
-      this._createFeature();
-      this._latlngs = latlngs;
-    }
-    super._popLatLng();
-
-    
-  }
-  */
-  _makerFeature() {
-    return new GSIBV.Map.Draw.Polygon();
-  }
-
-
-  _createEdit( feature) {
-    return new GSIBV.Map.Draw.PolygonEditor( this._map, feature);
   }
 
 };

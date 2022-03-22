@@ -11,6 +11,8 @@ GSIBV.Map.Layer.FILTERS.push(function (l) {
       "legendUrl": l.legendUrl,
       "minzoom": l.minZoom,
       "maxzoom": l.maxZoom,
+      "minZoom": l.minZoom,
+      "maxZoom": l.maxZoom,
       "minNativeZoom": l.minNativeZoom,
       "maxNativeZoom": l.maxNativeZoom
 
@@ -27,6 +29,8 @@ GSIBV.Map.Layer.FILTERS.push(function (l) {
       "legendUrl": l.legendUrl,
       "minzoom": l.minZoom,
       "maxzoom": l.maxZoom,
+      "minZoom": l.minZoom,
+      "maxZoom": l.maxZoom,
       "minNativeZoom": l.minNativeZoom,
       "maxNativeZoom": l.maxNativeZoom
 
@@ -49,12 +53,15 @@ GSIBV.Map.Layer.Raster = class extends GSIBV.Map.Layer {
     if (options) {
       this._url = (options.url ? options.url : "");
       this._tileSize = (options.tileSize ? options.tileSize : 256);
+      this._isOutside = (options.isOutside ? true : false);
+      this._tms = (options.tms ? true : false);
     }
     //this._tileSize = 512;
   }
 
   get url() { return this._url; }
   get tileSize() { return this._tileSize; }
+  get tms() { return this._tms; }
 
 
   getVisible() {
@@ -108,7 +115,7 @@ GSIBV.Map.Layer.Raster = class extends GSIBV.Map.Layer {
       ],
       'roundZoom': false,
       'tileSize': this.tileSize,
-      "scheme": "xyz"
+      "scheme": this._tms ? "tms":"xyz"
     });
     map.map.style.sourceCaches[this.mapid]._source.roundZoom = false;
     //map.map.style.sourceCaches[this.mapid]._source.reparseOverscaled=true;
@@ -124,6 +131,8 @@ GSIBV.Map.Layer.Raster = class extends GSIBV.Map.Layer {
       "source": this.mapid,
       "minzoom": this.minzoom ? this.minzoom : 2,
       "maxzoom": maxZoom,
+      "minZoom": this.minzoom ? this.minzoom : 2,
+      "maxZoom": maxZoom,
       "layout": {
         "visibility": (this._visible ? "visible" : "none")
       },

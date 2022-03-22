@@ -1,23 +1,25 @@
 /*****************************************************************
- * GSIBV.Map.Draw.Polygon
- * Polygonクラス
+ * GSIBV.Map.Draw.MeasurePolygon
+ * MeasurePolygonクラス
 ******************************************************************/
-GSIBV.Map.Draw.Polygon = class extends GSIBV.Map.Draw.Feature{
+GSIBV.Map.Draw.MeasurePolygon = class extends GSIBV.Map.Draw.Line{
   constructor() {
     super();
     this._coordinatesMinLength = 3;
-    this._style = new GSIBV.Map.Draw.Polygon.Style();
+    this._style = new GSIBV.Map.Draw.MeasurePolygon.Style();
+
     this._innerList = [];
   }
 
   get geometryType () {
-    return GSIBV.Map.Draw.Polygon.Type;
+    // return GSIBV.Map.Draw.MeasurePolygon.Type;
+    return "Polygon";
   }
 
   get innerList() {
     return this._innerList;
   }
-
+  
   _getCoordinatesArray() {
     var arr = [];
     if ( this._coordinates.length <= 2 ) {
@@ -127,7 +129,7 @@ GSIBV.Map.Draw.Polygon = class extends GSIBV.Map.Draw.Feature{
 
     if( !feature._style.fill) {
       return;
-    }
+    } 
 
     function convertColor(color, opacity) {
       var c = MA.Color.parse(color);
@@ -152,13 +154,12 @@ GSIBV.Map.Draw.Polygon = class extends GSIBV.Map.Draw.Feature{
     hash["_fillColor"] = fillColor;
     
   }
-  
+
   _addMapboxStyleToHash(hash) {
     super._addMapboxStyleToHash(hash);
     GSIBV.Map.Draw.Polygon.addMapboxStyleToHash( this, hash );
   }
 
-  //
   _coordinatesEqual(x, y) {
     return x._lat === y._lat && x._lng === y._lng;
   }
@@ -205,12 +206,12 @@ GSIBV.Map.Draw.Polygon = class extends GSIBV.Map.Draw.Feature{
   };
 };
 
-GSIBV.Map.Draw.Polygon.Type = "Polygon";
+GSIBV.Map.Draw.MeasurePolygon.Type = "MeasurePolygon";
 
 
-GSIBV.Map.Draw.FeatureFilters.push( function(json){
-  if( json.geometry && json.geometry.type == GSIBV.Map.Draw.Polygon.Type) {
-    var feature = new GSIBV.Map.Draw.Polygon();
+GSIBV.Map.Draw.FeatureFilters.push( function(json){console.log(json);
+  if( json.geometry && json.geometry.type == GSIBV.Map.Draw.MeasurePolygon.Type) {
+    var feature = new GSIBV.Map.Draw.MeasurePolygon();
     feature.setJSON(json);
     return feature;
   }
@@ -220,10 +221,10 @@ GSIBV.Map.Draw.FeatureFilters.push( function(json){
 
 
 /*****************************************************************
- * GSIBV.Map.Draw.Polygon.Style
+ * GSIBV.Map.Draw.MeasurePolygon.Style
  * Polygonスタイルクラス
 ******************************************************************/
-GSIBV.Map.Draw.Polygon.Style = class extends GSIBV.Map.Draw.Feature.Style{
+GSIBV.Map.Draw.MeasurePolygon.Style = class extends GSIBV.Map.Draw.MeasureLine.Style{
 
   constructor() {
     super();
@@ -241,17 +242,17 @@ GSIBV.Map.Draw.Polygon.Style = class extends GSIBV.Map.Draw.Feature.Style{
     this._lineJoin = from._lineJoin; 
     this._fillOpacity = from._fillOpacity; 
     this._fill = from._fill;
-    this._fillColor = from._fillColor;
-    this._geodesic = from._geodesic;
+    this._fillColor = from._fillColor; 
+    this._geodesic = from._geodesic;  
   }
 
   clear() {
     super.clear();
     this._opacity = 0.5;
     this._stroke = true; 
-    this._color = "#000000";
+    this._color = "#ff0000";
     this._weight = 3; 
-    this._dashArray = undefined;
+    this._dashArray = [1, 3*2];
     this._lineCap = undefined; 
     this._lineJoin = undefined; 
     this._fillOpacity = 0.5; 
@@ -267,14 +268,9 @@ GSIBV.Map.Draw.Polygon.Style = class extends GSIBV.Map.Draw.Feature.Style{
     if ( properties["_color"] != undefined ) {
       this.color = properties["_color"];
     } 
-    if ( properties["_stroke-opacity"] != undefined ) {
-      this.opacity = properties["_stroke-opacity"];
-    } 
     if ( properties["_weight"] != undefined ) {
       this.weight = properties["_weight"];
-    } else if ( properties["_stroke-width"] != undefined ) {
-      this.weight = properties["_stroke-width"];
-    }
+    } 
     if ( properties["_dashArray"] != undefined ) {
       this.dashArray = properties["_dashArray"];
     } 
@@ -292,9 +288,7 @@ GSIBV.Map.Draw.Polygon.Style = class extends GSIBV.Map.Draw.Feature.Style{
     } 
     if ( properties["_fillOpacity"] != undefined ) {
       this.fillOpacity = properties["_fillOpacity"];
-    } else if ( properties["_fill-opacity"] != undefined ) {
-      this.fillOpacity = properties["_fill-opacity"];
-    }
+    } 
     
     super.setJSON(properties);
   }
@@ -341,11 +335,7 @@ GSIBV.Map.Draw.Polygon.Style = class extends GSIBV.Map.Draw.Feature.Style{
     if ( this._geodesic != undefined) {
       hash["_geodesic"] = parseInt( this._geodesic );
     }
-
-    if ( this._opacity != undefined) {
-      hash["_opacity"] = parseFloat( this._opacity );
-    }
-
+    
     return hash;
   }
   
@@ -354,7 +344,7 @@ GSIBV.Map.Draw.Polygon.Style = class extends GSIBV.Map.Draw.Feature.Style{
   }
 
   get color() {
-    return this._color == undefined ? "#000000" : this._color;
+    return this._color == undefined ? "#ff0000" : this._color;
   }
 
   get weight() {
@@ -362,7 +352,7 @@ GSIBV.Map.Draw.Polygon.Style = class extends GSIBV.Map.Draw.Feature.Style{
   }
 
   get dashArray() {
-    return this._dashArray;
+    return this._dashArray == undefined ? [1, 3*2] : [1, this._weight*2];
   }
 
   get lineCap() {
@@ -387,10 +377,6 @@ GSIBV.Map.Draw.Polygon.Style = class extends GSIBV.Map.Draw.Feature.Style{
 
   get geodesic() {
     return this._geodesic == undefined ? 1 : this._geodesic;
-  }
-
-  get opacity(){
-    return this._opacity;
   }
 
   set stroke(value) {
@@ -472,9 +458,5 @@ GSIBV.Map.Draw.Polygon.Style = class extends GSIBV.Map.Draw.Feature.Style{
 
   set geodesic(value) {
     this._geodesic = ( value != undefined ? parseInt(value) : undefined );
-  }
-
-  set opacity(value){
-    this._opacity = value;
   }
 }

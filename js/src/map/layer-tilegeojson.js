@@ -68,6 +68,44 @@ L.marker = function (latlng, options) {
   return new L.Marker(latlng, options);
 };
 
+L.CircleMarker = class extends L.Feature {
+  constructor(latlng, options) {
+    super(options);
+    this._latlng = latlng;
+    this._options = options;
+  }
+}
+L.circleMarker = function (latlng, options) {
+  return new L.CircleMarker(latlng, options);
+}
+
+L.LatLngBounds = class {
+  constructor(latlngs) {
+    if(Array.isArray(latlngs) && latlngs.length > 1){
+      if(Array.isArray(latlngs[0]) && latlngs[0].length > 1){
+        this._nw = new L.LatLng(latlngs[0][0], latlngs[0][1]);
+      }
+      if(Array.isArray(latlngs[1]) && latlngs[1].length > 1){
+        this._se = new L.LatLng(latlngs[1][0], latlngs[1][1]);
+      }
+    }
+  }
+}
+L.latLngBounds = function(latlngs){
+  return new L.LatLngBounds(latlngs);
+}
+
+L.Rectangle = class extends L.Feature {
+  constructor(bounds, options) {
+    super(options);
+    this._latLngBounds = L.latLngBounds(bounds);
+    this._options = options;
+  }
+}
+L.rectangle = function (bounds, options) {
+  return new L.Rectangle(bounds, options);
+};
+
 
 GSIBV.Map.Layer.TYPES["tilegeojson"] = "タイルGeoJSON";
 GSIBV.Map.Layer.FILTERS.push(function (l) {
@@ -81,6 +119,8 @@ GSIBV.Map.Layer.FILTERS.push(function (l) {
       "legendUrl": l.legendUrl,
       "minzoom": l.minZoom,
       "maxzoom": l.maxZoom,
+      "minZoom": l.minZoom,
+      "maxZoom": l.maxZoom,
       "minNativeZoom": l.minNativeZoom,
       "maxNativeZoom": l.maxNativeZoom
     });
@@ -96,6 +136,8 @@ GSIBV.Map.Layer.FILTERS.push(function (l) {
       "legendUrl": l.legendUrl,
       "minzoom": l.minZoom,
       "maxzoom": l.maxZoom,
+      "minZoom": l.minZoom,
+      "maxZoom": l.maxZoom,
       "minNativeZoom": l.minNativeZoom,
       "maxNativeZoom": l.maxNativeZoom
     });
@@ -121,10 +163,16 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       this._maxNativeZoom = (options.maxNativeZoom ? options.maxNativeZoom : null);
       this._minNativeZoom = (options.minNativeZoom ? options.minNativeZoom : null);
     }
-
+    this._featuresFilter = undefined;
     this._onMapMoveHandler = MA.bind(this._onMapMove, this);
+    this.on("update", MA.bind(this._refresh, this, true));
   }
+
   get url() { return this._url; }
+
+  setFeaturesFilter(featuresFilter) {
+    this._featuresFilter = featuresFilter;
+  }
   
   getVisible() {
     var map = this._map.map;
@@ -334,7 +382,7 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
     this._tiles = {};
   }
 
-  _refresh() {
+  _refresh(force) {
 
     var map = this._map.map;
     var zoom = Math.floor(map.getZoom());
@@ -399,7 +447,7 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
     // 不要なタイル削除
     var removeTiles = [];
     for (var key in this._tiles) {
-      if (!tiles[key]) {
+      if (force || !tiles[key]) {
         removeTiles.push(this._tiles[key]);
         delete this._tiles[key];
       }
@@ -461,8 +509,28 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       if (geojson && geojson.features) {
 
         var imageManager = GSIBV.Map.ImageManager.instance;
+        var dyAppendFeatures = [];
         for (var i = 0; i < geojson.features.length; i++) {
           var feature = geojson.features[i];
+
+
+          if (this._style && this._style.geojsonOptions && this._style.geojsonOptions.onEachFeature) {
+            GSI.GLOBALS.map = {
+              zoom: Math.floor(this._map.map.getZoom()),
+              getZoom: function () {
+                return GSI.GLOBALS.map.zoom;
+              }
+            };
+            try {
+              var leafletLayer = new L.Feature();
+              this._style.geojsonOptions.onEachFeature(feature, leafletLayer);
+              if (leafletLayer._popupContent) {
+                feature.properties["-gsibv-popupContent"] = leafletLayer._popupContent;
+              }
+            } catch (e) {
+              console.log(e);
+            }
+          }
 
           if (feature.geometry.type == "Point") {
             if (this._style && this._style.geojsonOptions && this._style.geojsonOptions.pointToLayer) {
@@ -480,29 +548,7 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
               } catch (e) {
                 console.log(e);
               }
-
             }
-
-          }
-
-          if (this._style && this._style.geojsonOptions && this._style.geojsonOptions.onEachFeature) {
-
-            GSI.GLOBALS.map = {
-              zoom: Math.floor(this._map.map.getZoom()),
-              getZoom: function () {
-                return GSI.GLOBALS.map.zoom;
-              }
-            };
-            try {
-              var leafletLayer = new L.Feature();
-              this._style.geojsonOptions.onEachFeature(feature, leafletLayer);
-              if (leafletLayer._popupContent) {
-                feature.properties["-gsibv-popupContent"] = leafletLayer._popupContent;
-              }
-            } catch (e) {
-              console.log(e);
-            }
-
           }
 
           var style = null;
@@ -525,7 +571,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
           }
 
           if (properties["_dashArray"]) {
-
             if (typeof properties["_dashArray"] == "string") {
               var dashArray = properties["_dashArray"].split(",");
               for (var j = 0; j < dashArray.length; j++) {
@@ -566,8 +611,33 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
               if (properties["_iconWidth"])
                 properties["_iconScale"] = properties["_iconWidth"] / image.width;
             }
-
           }
+
+          if(properties["_Polygon"]) {
+            var append_feature = {};
+            append_feature['type'] = 'Feature';
+            append_feature['geometry'] = {
+              'type': properties["_Polygon"]['_type'],
+              'coordinates': properties["_Polygon"]['_coordinates'],
+            };
+            var color = properties["_Polygon"]['_color'];
+            var opacity = null; //properties["_Polygon"]['_opacity'];
+            if (color && opacity != undefined) {
+              color = convertColor(color, opacity);
+            }
+
+            append_feature["properties"] = {
+              "_color": color,
+              "_weight" : properties["_Polygon"]["_weight"]
+            }
+            dyAppendFeatures.push(append_feature);
+          }
+        }
+        dyAppendFeatures.forEach((item)=>{
+          geojson.features.push(item);
+        })
+        if( this._featuresFilter ){
+          geojson.features = this._featuresFilter(geojson.features);
         }
 
         if (loadIcons.length > 0) {
@@ -600,11 +670,11 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
   }
 
   _initFeature(feature, leafletLayer) {
-    feature.properties["_text"] = "";
-    feature.properties["_rotate"] = 0;
-    feature.properties["_color"] = "rgba(0,0,0,1)";
-    feature.properties["_fontSize"] = 10;
-    feature.properties["_textanchor"] = "top-left";
+    //feature.properties["_text"] = "";
+    //feature.properties["_rotate"] = 0;
+    //feature.properties["_color"] = "rgba(0,0,0,1)";
+    //feature.properties["_fontSize"] = 10;
+    //feature.properties["_textanchor"] = "top-left";
 
     if (!leafletLayer) {
       return;
@@ -626,14 +696,23 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
 
         if (llayer._options.icon instanceof L.DivIcon) {
           var html = llayer._options.icon._options.html;
-          //font-size
-          //color
-          //transform: rotate(0deg);
-          //transform-origin:top center;
-          //writing-mode: vertical-rl;
           var div = MA.DOM.create("div");
           div.innerHTML = html;
-
+          if( html.indexOf("border-radius") >= 0 ){
+            m = html.match(/border\-radius[\s]*\:[\s]*([^;]+)/i);
+            if (m) {
+              if (m[1].indexOf("px") >= 0)
+                feature.properties["_radius"] = parseFloat(m[1])/2;
+              else
+                feature.properties["_radius"] = parseFloat(m[1]) * 1.33/2;
+            }
+            m = html.match(/background\-color[\s]*\:[\s]*([^;]+)/i);
+            if (m) {
+              feature.properties["_fillColor"] = m[1];
+            }
+            feature.properties["_className"] = llayer._options.icon._options.className;
+            continue;
+          }
           if ((html.indexOf("vertical-rl") >= 0 ? true : false)) {
             feature.properties["_text"] = "<gsi-vertical>" + div.innerText + "</gsi-vertical>";
           } else {
@@ -651,7 +730,7 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
               feature.properties["_fontSize"] = parseFloat(m[1]) * 1.33;
           }
 
-          m = html.match(/color[\s]*\:[\s]*([^;\s]+)/i);
+          m = html.match(/color[\s]*\:[\s]*([^;]+)/i);
           if (m) {
             feature.properties["_color"] = m[1];
           }
@@ -692,9 +771,16 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
               }
             }
             //feature.properties["_rotate"] = parseFloat(m[1]);
+          } else {
+            feature.properties["_textanchor"] = "center";
           }
 
-
+          m = html.match(/margin\-top[\s]*\:[\s]*([^;\s]+)/i);
+          if (m) {
+            var y_offset_px = m[1].indexOf("px") >= 0 ? parseFloat(m[1]) : 0;
+            var y_offset_em = 1.0*y_offset_px/16.0;
+            feature.properties["_offset"] = y_offset_em;
+          }
         } else if (llayer._options.icon instanceof L.Icon) {
           for (var key in feature.properties) {
             if (key.indexOf("_") == 0) {
@@ -708,11 +794,40 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
             feature.properties["_iconHeight"] = llayer._options.icon._options.iconSize[1];
           }
         }
+      } else if (llayer instanceof L.CircleMarker){
+        feature.properties["_weight"] = llayer._options.radius
+        feature.properties["_color"] = this._convertHex(llayer._options.color,llayer._options.opacity)
+        if(llayer._options.radius){
+          feature.properties["_radius"] = llayer._options.radius/2
+        }
+      } else if(llayer instanceof L.Rectangle){
+        var lng_lt = llayer._latLngBounds._nw.lng;
+        var lat_lt = llayer._latLngBounds._se.lat;
+        var lng_rb = llayer._latLngBounds._se.lng;
+        var lat_rb = llayer._latLngBounds._nw.lat;
 
+        feature.properties["_Polygon"] = {
+          '_type': "Polygon",
+          '_color': llayer._options.color || '#ff0000',
+          '_opacity': llayer._options.opacity || 1,
+          '_coordinates': [[[lng_lt, lat_lt], [lng_rb, lat_lt], [lng_rb, lat_rb], [lng_lt, lat_rb], [lng_lt, lat_lt]]],
+          '_weight': llayer._options.weight
+        };
       }
     }
+  }
+  _convertHex(hexCode,opacity){
+      var hex = hexCode.replace('#','');
 
+      if (hex.length === 3) {
+          hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+      }
 
+      var r = parseInt(hex.substring(0,2), 16),
+          g = parseInt(hex.substring(2,4), 16),
+          b = parseInt(hex.substring(4,6), 16);
+
+      return 'rgba('+r+','+g+','+b+','+opacity+')';
   }
 
   _onIconLoadError(e) {
@@ -779,15 +894,57 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
 
   }
 
+  checkMinMaxZoom(url){
+    var data = {minzoom: 2, maxzoom: 18};
+    if (!url) return data;
+    var lastindex = url.lastIndexOf(".");
+    if (lastindex == -1) return data;
+    var str = url.substring(0,lastindex);
+    var arr = str.split('/');
+    if (url.substring(lastindex) == ".geojson" && arr.length > 3){
+      var layStr,layArr,layXYZ;
+      for (var i = 0; i < this._map.layers.length; i++){
+        var layindex = this._map.layers[i]._url.lastIndexOf(".");
+        if(this._map.layers[i]._url.substring(layindex) == ".geojson"){
+          layStr = this._map.layers[i]._url.substring(0,layindex);
+          layArr = layStr.split('/');
+          layXYZ = [];
+          layXYZ.push(layArr.indexOf('{x}'));
+          layXYZ.push(layArr.indexOf('{y}'));
+          layXYZ.push(layArr.indexOf('{z}'));
+          if (!layXYZ.includes(-1) && arr.length == layArr.length){
+            var flg = true;
+            for(var j = 0; j < arr.length; j++){
+              if (layXYZ.includes(j)) continue;
+              if (arr[j] != layArr[j]){
+                flg = false;
+                break;
+              }
+            }
+            if (flg){
+              if (this._map.layers[i].minzoom) data.minzoom = this._map.layers[i].minzoom;
+              if (this._map.layers[i].maxzoom) data.maxzoom = this._map.layers[i].maxzoom;
+              break;
+            }
+          }
+        }
+      }
+    }
+    return data;
+  }
 
   _addToMap(tile, withSymbol) {
     var map = this._map.map;
     var sourceId = this.mapid + "-" + tile.id;
     tile.sourceId = sourceId;
+    var minmaxdata = this.checkMinMaxZoom(tile.url);
     map.addSource(sourceId, {
       "type": "geojson",
       "data": tile._geojson
     });
+
+    var minZoom = minmaxdata.minzoom;
+    var maxZoom = minmaxdata.maxzoom;
 
     tile.layers = [];
     tile.layers.push({
@@ -795,6 +952,10 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       "source": sourceId,
       "filter": ["all", ["has", "_fillColor"]],
       "type": "fill",
+      "minzoom": minZoom,
+      "maxzoom": maxZoom,
+      "minZoom": minZoom,
+      "maxZoom": maxZoom,
       "paint": {
         "fill-color": ["case", ["has", "_fillColor"], ["get", "_fillColor"], "rgba(0,0,0,0)"]
       }
@@ -805,6 +966,10 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       "source": sourceId,
       "filter": ["all", ["has", "_dashArray"]],
       "type": "line",
+      "minzoom": minZoom,
+      "maxzoom": maxZoom,
+      "minZoom": minZoom,
+      "maxZoom": maxZoom,
       "paint": {
         "line-width": ["case", ["has", "_weight"], ["get", "_weight"], 0],
         "line-color": ["case", ["has", "_color"], ["get", "_color"], "rgba(0,0,0,0)"],
@@ -817,6 +982,10 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       "source": sourceId,
       "filter": ["all", ["!has", "_dashArray"]],
       "type": "line",
+      "minzoom": minZoom,
+      "maxzoom": maxZoom,
+      "minZoom": minZoom,
+      "maxZoom": maxZoom,
       "paint": {
         "line-width": ["case", ["has", "_weight"], ["get", "_weight"], 0],
         "line-color": ["case", ["has", "_color"], ["get", "_color"], "rgba(0,0,0,0)"]
@@ -828,6 +997,10 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       "source": sourceId,
       "filter": ["all", ["has", "_radius"]],
       "type": "circle",
+      "minzoom": minZoom,
+      "maxzoom": maxZoom,
+      "minZoom": minZoom,
+      "maxZoom": maxZoom,
       "paint": {
         "circle-radius": ["case", ["has", "_radius"], ["get", "_radius"], 0],
         "circle-color": ["case", ["has", "_fillColor"], ["get", "_fillColor"], "rgba(0,0,0,0)"],
@@ -843,6 +1016,10 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       "source": sourceId,
       "filter": ["all", ["has", "_iconUrl"]],
       "type": "symbol",
+      "minzoom": minZoom,
+      "maxzoom": maxZoom,
+      "minZoom": minZoom,
+      "maxZoom": maxZoom,
       "layout": {
         "icon-pitch-alignment": "map",
         "symbol-placement": "point",
@@ -863,6 +1040,10 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
       "source": sourceId,
       "filter": ["all", ["has", "_text"]],
       "type": "symbol",
+      "minzoom": minZoom,
+      "maxzoom": maxZoom,
+      "minZoom": minZoom,
+      "maxZoom": maxZoom,
       "paint": {
         "text-color": ["case", ["has", "_color"], ["get", "_color"], "rgba(0,0,0,1)"],
         "text-halo-color": "rgba(255,255,255,1)",
@@ -876,6 +1057,7 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
         "text-font": [
           "NotoSansCJKjp-Regular"
         ],
+        "text-offset": ["case", ["has", "_offset"], ["literal", [0, 1]], ["literal", [0, 0]]],    //TBD: use margin-top value
         "text-pitch-alignment": "map",
         "text-rotation-alignment": "map",
         "text-keep-upright": true,
@@ -883,7 +1065,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
         "text-max-width": 100
       }
     });
-
 
     for (var i = 0; i < tile.layers.length; i++) {
       var layer = tile.layers[i];
@@ -917,7 +1098,6 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
     if (withSymbol) {
       //this._setSymbolImage(tile);
     }
-
   }
 
   _setSymbolImage(tile) {

@@ -87,14 +87,40 @@ GSIBV.Map.Draw.CircleMarker.Style = class extends GSIBV.Map.Draw.Circle.Style{
 
   }
 
+  clear() {
+    super.clear();
+    this._radius = 0;
+  }
+
+  setJSON(properties) {
+    if ( properties["_radius"] != undefined ) {
+      this.radius = properties["_radius"];
+    } 
+    
+    super.setJSON(properties);
+
+  }
   
+
   _getHash() {
     var hash = super._getHash();
     
     hash["_markerType"] = "CircleMarker";
-  
+    
+    if ( this._radius != undefined) {
+      hash["_radius"] = this._radius ? this._radius : 0;
+    }
+
     return hash;
   }
   
+
+  get radius () {
+    return this._radius == undefined ? 0 : this._radius;
+  }
+
+  set radius(value) {
+    this._radius = ( value != undefined ? parseInt(value) : undefined );
+  }
 
 };

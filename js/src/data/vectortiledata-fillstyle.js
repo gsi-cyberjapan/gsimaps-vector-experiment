@@ -45,7 +45,9 @@ GSIBV.VectorTileData.FillDrawStyle = class extends GSIBV.VectorTileData.DrawStyl
   clone() {
     var result = new GSIBV.VectorTileData.FillDrawStyle();
     if (this._info) result._info = this._info.clone();
-    if (this._data) result._data = JSON.parse(JSON.stringify(this.data));
+    if (this._data) {
+      result._data = JSON.parse(JSON.stringify(this.data));
+    }
     return result;
   }
 
@@ -56,8 +58,6 @@ GSIBV.VectorTileData.FillDrawStyle = class extends GSIBV.VectorTileData.DrawStyl
   fromHash(hash) {
     if (hash)
       this._data = JSON.parse(JSON.stringify(hash));
-      
-
   }
 
   get paint() {
@@ -67,7 +67,6 @@ GSIBV.VectorTileData.FillDrawStyle = class extends GSIBV.VectorTileData.DrawStyl
       if (!this._paintTypes[key]) continue;
       if (!result) result = {};
       result[key] = this._data[key];
-
     }
 
 

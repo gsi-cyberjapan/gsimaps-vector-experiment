@@ -53,13 +53,14 @@ GSIBV.VectorTileData.SymbolDrawStyle = class extends GSIBV.VectorTileData.DrawSt
     }
 
     if ( !this._data["icon-visible"]) this._data["icon-visible"] = false;
-
   }
 
   clone() {
     var result = new GSIBV.VectorTileData.SymbolDrawStyle();
     if (this._info) result._info = this._info.clone();
-    if (this._data) result._data = JSON.parse(JSON.stringify(this.data));
+    if (this._data) {
+      result._data = JSON.parse(JSON.stringify(this.data));
+    }
     return result;
   }
 
@@ -119,6 +120,7 @@ GSIBV.VectorTileData.SymbolDrawStyle = class extends GSIBV.VectorTileData.DrawSt
     if (!this._data["text-visible"]  ){
       this._deleteTextStyle(result);
     }
+    this._deleteSymbolStyle(result);
 
     return result;
   }

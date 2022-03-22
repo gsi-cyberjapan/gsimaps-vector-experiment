@@ -47,8 +47,6 @@ GSIBV.Map.Draw.FeatureCollection = class extends MA.Class.Base {
   }
 
   toGeoJSON(onlyFeatures) {
-
-    
     var json = {
       "type": "FeatureCollection",
       "features": []
@@ -91,7 +89,6 @@ GSIBV.Map.Draw.FeatureCollection = class extends MA.Class.Base {
     return json;
   }
 
-
   setJSON(json) {
     this._features = [];
     if ( !json.features || !MA.isArray(json.features ) || json.features.length <= 0 ) return false;
@@ -111,7 +108,6 @@ GSIBV.Map.Draw.FeatureCollection = class extends MA.Class.Base {
     }
 
     return ( this._features.length > 0 );
-
   }
 
   _onFeatureUpdate() {

@@ -56,6 +56,13 @@ GSIBV.VectorTileData.DrawStyleBase = class {
       }
     }
   }
+  _deleteSymbolStyle (data) {
+    for( var key in data ) {
+      if ( key.indexOf( "symbol-") == 0 ) {
+        delete data[key];
+      }
+    }
+  }
   _deleteFillStyle(data) {
     for( var key in data ) {
       if ( key.indexOf( "fill-") == 0 ) {

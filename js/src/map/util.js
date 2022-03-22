@@ -453,7 +453,16 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
 
   constructor(options) {
     super();
+    this._initUrlList();
+    this._initUtils();
+    this._typename = 'elevation'
+  }
 
+  get typename(){
+    return this._typename;
+  }
+
+  _initUrlList(){
     this._demUrlList = [
       {
         "title": "DEM5A",
@@ -491,12 +500,13 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
         "fixed": 0
       }
     ];
+  }
 
+  _initUtils(){
     this.pow2_8 = Math.pow(2, 8);
     this.pow2_16 = Math.pow(2, 16);
     this.pow2_23 = Math.pow(2, 23);
     this.pow2_24 = Math.pow(2, 24);
-
   }
 
   load(map, pos) {
@@ -512,6 +522,7 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
 
     this._load(this._current);
   }
+
   start(map) {
     this.fire("start");
     this._map = map;
@@ -549,6 +560,7 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
     this._destroyImage();
     this.fire("start");
   }
+
   _onMapMove(eventData) {
     if (eventData && eventData["exec"] == "resetpitch" || eventData && eventData["exec"] == "resetrotate") {
       return;
@@ -568,11 +580,12 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
 
     this._load(this._current);
   }
+
   _makeUrlList() {
 
     var list = [];
     var buffList =[];
-    for( var i=0; i<=15; i++) {
+    for( var i=0; i<=20; i++) {
       buffList.push([]);
     }
     for (var i = 0; i < this._demUrlList.length; i++) {
@@ -598,24 +611,6 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
         list.push(buffList[i][j]);
       }
     }
-    /*
-    var list = [];
-    for (var i = 0; i < this._demUrlList.length; i++) {
-      var demUrl = this._demUrlList[i];
-      if (demUrl.maxzoom < demUrl.minzoom) {
-        var buff = demUrl.maxzoom;
-        demUrl.maxzoom = demUrl.minzoom;
-        demUrl.minzoom = buff;
-      }
-      for (var z = demUrl.maxzoom; z >= demUrl.minzoom; z--) {
-        list.push({
-          "title": demUrl.title,
-          "zoom": z,
-          "url": demUrl.url
-        });
-      }
-    }
-    */
     return list;
   }
 
@@ -629,23 +624,23 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
       this._img = null;
     }
   }
+
+  _parseValidUrl(valueError){
+    if (!this._current.urlList || this._current.urlList.length <= 0) return null;   //not found
+    
+    var url = this._current.urlList.shift();
+    if ( valueError && url.title=="DEMGM") return null;
+    
+    return url;
+  }
+
   _load(current, valueError) {
     this._destroyImage();
 
     if (this._current != current) return;
 
-    if (!this._current.urlList || this._current.urlList.length <= 0) {
-      // not found
-      this.fire("finish", {
-        h: undefined,
-        pos: current.pos
-      })
-      return;
-    }
-
-    var url = this._current.urlList.shift();
-    
-    if ( valueError && url.title=="DEMGM") {
+    var url = this._parseValidUrl(valueError);
+    if(!url) {
       this.fire("finish", {
         h: undefined,
         pos: current.pos
@@ -653,27 +648,9 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
       return;
     }
 
-    var tileInfo = this._getTileInfo(this._current.pos.lat, this._current.pos.lng, url.zoom);
-
-    this._img = document.createElement("img");
-    this._img.setAttribute("crossorigin", "anonymous");
-
-    this._imgLoadHandler = MA.bind(this._onImgLoad, this, url, current, tileInfo, this._img);
-    this._imgLoadErrorHandler = MA.bind(this._onImgLoadError, this, url, current, tileInfo, this._img);
-
-    MA.DOM.on(this._img, "load", this._imgLoadHandler);
-    MA.DOM.on(this._img, "error", this._imgLoadErrorHandler);
-
-    function makeUrl(url, tileInfo) {
-      var result = url.url.replace("{x}", tileInfo.x);
-      result = result.replace("{y}", tileInfo.y);
-      result = result.replace("{z}", url.zoom);
-      return result;
-    }
-
-    this._img.src = makeUrl(url, tileInfo);
-
+    this._initImgInfo(url);
   }
+
   _onImgLoad(url, current, tileInfo, img) {
 
     if (current != this._current) return;
@@ -718,8 +695,6 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
     this._load(current);
   }
 
-
-
   _getTileInfo(lat, lng, z) {
     var lng_rad = lng * Math.PI / 180;
     var R = 128 / Math.PI;
@@ -740,6 +715,28 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
     };
 
   }
+
+  _initImgInfo(url){
+    if(!url) return;
+
+    var tileInfo = this._getTileInfo(this._current.pos.lat, this._current.pos.lng, url.zoom);
+    this._img = document.createElement("img");
+    this._img.setAttribute("crossorigin", "anonymous");
+  
+    this._imgLoadHandler = MA.bind(this._onImgLoad, this, url, this._current, tileInfo, this._img);
+    this._imgLoadErrorHandler = MA.bind(this._onImgLoadError, this, url, this._current, tileInfo, this._img);
+    MA.DOM.on(this._img, "load", this._imgLoadHandler);
+    MA.DOM.on(this._img, "error", this._imgLoadErrorHandler);
+
+    this._img.src = this._makeUrlFromTile(url, tileInfo);
+  }
+
+  _makeUrlFromTile(url, tileInfo) {
+    var result = url.url.replace("{x}", tileInfo.x);
+    result = result.replace("{y}", tileInfo.y);
+    result = result.replace("{z}", url.zoom);
+    return result;
+  }
 }
 
 /************************************************************************
@@ -749,7 +746,10 @@ GSIBV.Map.Util.FooterElevationLoader = class extends GSIBV.Map.Util.ElevationLoa
 
   constructor(options) {
     super();
+    this._typename = 'elevation'
+  }
 
+  _initUrlList(){
     this._demUrlList = [
       {
         "title": "DEM5A",
@@ -787,69 +787,100 @@ GSIBV.Map.Util.FooterElevationLoader = class extends GSIBV.Map.Util.ElevationLoa
         "fixed": 0
       }
     ];
-
-    this.pow2_8 = Math.pow(2, 8);
-    this.pow2_16 = Math.pow(2, 16);
-    this.pow2_23 = Math.pow(2, 23);
-    this.pow2_24 = Math.pow(2, 24);
-
   }
 
-  _load(current, valueError) {
-    this._destroyImage();
-
-    if (this._current != current) return;
-
-    if (!this._current.urlList || this._current.urlList.length <= 0) {
-      // not found
-      this.fire("finish", {
-        h: undefined,
-        pos: current.pos
-      })
-      return;
-    }
-
-    var url = this._current.urlList.shift();
+  _parseValidUrl(valueError){
+    if (!this._current.urlList || this._current.urlList.length <= 0) return null;   //not found
     
-    if ( valueError && url.title=="DEMGM") {
-      this.fire("finish", {
-        h: undefined,
-        pos: current.pos
-      });
-      return;
-    }
+    var url = this._current.urlList.shift();
+    if (valueError && url.title=="DEMGM") return null;
+    if (this._map.getZoom() > url.zoom && url.title=="DEMGM") return null;
+    
+    return url;
+  }
+}
 
-    if ( this._map.getZoom() > url.zoom && url.title=="DEMGM") {
-      this.fire("finish", {
-        h: undefined,
-        pos: current.pos
-      });
-      return;
-    }
 
-    var tileInfo = this._getTileInfo(this._current.pos.lat, this._current.pos.lng, url.zoom);
-
-    this._img = document.createElement("img");
-    this._img.setAttribute("crossorigin", "anonymous");
-
-    this._imgLoadHandler = MA.bind(this._onImgLoad, this, url, current, tileInfo, this._img);
-    this._imgLoadErrorHandler = MA.bind(this._onImgLoadError, this, url, current, tileInfo, this._img);
-
-    MA.DOM.on(this._img, "load", this._imgLoadHandler);
-    MA.DOM.on(this._img, "error", this._imgLoadErrorHandler);
-
-    function makeUrl(url, tileInfo) {
-      var result = url.url.replace("{x}", tileInfo.x);
-      result = result.replace("{y}", tileInfo.y);
-      result = result.replace("{z}", url.zoom);
-      return result;
-    }
-
-    this._img.src = makeUrl(url, tileInfo);
-
+/************************************************************************
+ GSIBV.Map.Util.LakeDataLoader
+************************************************************************/
+GSIBV.Map.Util.LakeDataLoader = class extends GSIBV.Map.Util.ElevationLoader{
+  constructor(options) {
+    super();
+    this._typename = 'elevation'
   }
 
+  _initUrlList() {
+    this._demUrlList = [];
+  }
+
+  _parseValidUrl(valueError){
+    if (!this._current.urlList || this._current.urlList.length <= 0) return null;   //not found
+    
+    var url = this._current.urlList.shift();
+    if (valueError) return null;
+    if (this._map.getZoom() > url.zoom) return null;
+
+    return url;
+  }
+
+  _getTileInfo(lat, lng, z) {
+    return super._getTileInfo(lat, lng, 14);
+  }
+
+  _makeUrlFromTile(url, tileInfo) {
+    var result = url.url.replace("{x}", tileInfo.x);
+    result = result.replace("{y}", tileInfo.y);
+    result = result.replace("{z}", '14');
+    return result;
+  }
 }
+
+
+/************************************************************************
+ GSIBV.Map.Util.LakeDepthLoader
+************************************************************************/
+GSIBV.Map.Util.LakeDepthLoader = class extends GSIBV.Map.Util.LakeDataLoader{
+  constructor(options) {
+    super();
+    this._typename = 'lakedepth';
+  }
+
+  _initUrlList() {
+    this._demUrlList = [
+      {
+        "title": "",
+        "url": "https://cyberjapandata.gsi.go.jp/xyz/lakedepth/{z}/{x}/{y}.png",
+        "minzoom": 14,
+        "maxzoom": 20,
+        "fixed": 1
+      }
+    ];
+  }
+};
+
+
+/************************************************************************
+ GSIBV.Map.Util.LakeStdHeightLoader
+************************************************************************/
+GSIBV.Map.Util.LakeStdHeightLoader = class extends GSIBV.Map.Util.LakeDataLoader{
+  constructor(options) {
+    super();
+    this._typename = 'lakestdheight';
+  }
+
+  _initUrlList() {
+    this._demUrlList = [
+      {
+        "title": "",
+        "url": "https://cyberjapandata.gsi.go.jp/xyz/lakedepth_standard/{z}/{x}/{y}.png",
+        "minzoom": 14,
+        "maxzoom": 20,
+        "fixed": 1
+      }
+    ];
+  }
+};
 
 
 /************************************************************************

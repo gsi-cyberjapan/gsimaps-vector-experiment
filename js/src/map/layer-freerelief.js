@@ -11,6 +11,8 @@ GSIBV.Map.Layer.FILTERS.unshift(function (l) {
       "legendUrl": l.legendUrl,
       "minzoom": l.minZoom,
       "maxzoom": l.maxZoom,
+      "minZoom": l.minZoom,
+      "maxZoom": l.maxZoom,
       "minNativeZoom": l.minNativeZoom,
       "maxNativeZoom": l.maxNativeZoom
 
@@ -711,10 +713,10 @@ GSIBV.Map.Layer.FreeRelief.HanreiImageInfo.lineHeight =
 
   var size = ctx.measureText("-");
   textWidth["-"] = size.width;
-  size = ctx.measureText("以上");
-  textWidth["以上"] = size.width;
-  size = ctx.measureText("未満");
-  textWidth["未満"] = size.width;
+  size = ctx.measureText("　～");
+  textWidth["　～"] = size.width;
+  size = ctx.measureText(" 以下");
+  textWidth[" 以下"] = size.width;
   var maxTextWidth = 0;
 
   for (var i = 0; i < data.colors.length; i++) {
@@ -742,7 +744,7 @@ GSIBV.Map.Layer.FreeRelief.HanreiImageInfo.lineHeight =
     });
   }
 
-  maxTextWidth += (textWidth["未満"] > textWidth["以上"] ? textWidth["未満"] : textWidth["以上"]);
+  maxTextWidth += (textWidth[" 以下"] > textWidth["　～"] ? textWidth[" 以下"] : textWidth["　～"]);
 
   var canvasWidth = (maxTextWidth + (info.cellPadding * 2)) * 2;
   canvasWidth += (textWidth["-"] + (info.cellPadding * 2));
@@ -872,17 +874,16 @@ GSIBV.Map.Layer.FreeRelief.makeHanreiImage = function (data, transparentBackgrou
     // 下限
     if (prev) {
       ctx.textAlign = "right";
-      ctx.fillText(prev.text + "以上", left + drawInfo.maxTextWidth, middle);
+      ctx.fillText(prev.text + "　～", left + drawInfo.maxTextWidth, middle);
     }
 
     //　上限
     if (row.text != "") {
       ctx.textAlign = "right";
-      ctx.fillText(row.text + "未満", right, middle);
+      ctx.fillText(row.text + " 以下", right, middle);
     }
 
     // ～
-
     ctx.textAlign = "left";
     //ctx.fillText("-", left +  + drawInfo.maxTextWidth + ( info.cellPadding * 2 ), middle );
 

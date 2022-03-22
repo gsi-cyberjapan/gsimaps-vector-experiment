@@ -5,12 +5,13 @@
 
 GSIBV.Map.Draw.FeatureDrawer= class extends MA.Class.Base {
 
-  constructor(map, layer) {
+  constructor(map, layer, hideLatlng) {
     super();
     this._map = map;
     this._layer = layer;
     this._featureCollection = layer.featureCollection;
     this._controls = [];
+    this._hideLatlng = hideLatlng ? true : false;
   }
 
   get feature() {
@@ -34,7 +35,7 @@ GSIBV.Map.Draw.FeatureDrawer= class extends MA.Class.Base {
 
   start() {
     this._startAutoPan();
-    if ( !this._toolTip ) this._toolTip = new GSIBV.Map.Draw.Tooltip(this._map);
+    if ( !this._toolTip ) this._toolTip = new GSIBV.Map.Draw.Tooltip(this._map, this._hideLatlng);
   }
 
   stop() {

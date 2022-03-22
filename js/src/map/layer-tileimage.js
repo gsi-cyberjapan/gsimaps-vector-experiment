@@ -527,6 +527,8 @@ GSIBV.Map.Layer.TileImage.Tile = class extends MA.Class.Base {
           "source": this.id,
           "minzoom": this._layer.minzoom ? this._layer.minzoom : 2,
           "maxzoom": this._layer.maxzoom ? this._layer.maxzoom + 1 : 19,
+          "minZoom": this._layer.minzoom ? this._layer.minzoom : 2,
+          "maxZoom": this._layer.maxzoom ? this._layer.maxzoom + 1 : 19,
           "type": "raster",
           "paint":{
             "raster-opacity":this._opacity,
