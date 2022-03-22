@@ -607,11 +607,58 @@ GSIBV.Application = class extends MA.Class.Base {
     }
     this._sakuzuPanel.toggle();
     */
+    if ( this._danmenDialog && this._danmenDialog.isVisible ) {
+      alert('断面図表示中は作図出来ません');
+      return;
+    }
+    if ( this._measureDialog && this._measureDialog.isVisible ) {
+      this._measureDialog.hide();
+    }
 
     if ( !this._sakuzuDialog ) {
       this._sakuzuDialog = new GSIBV.UI.Dialog.SakuzuDialog(this._map.drawManager);
     }
     this._sakuzuDialog.show();
+  }
+
+  // 外部タイル
+  startOutsideTile() {
+    if( !this._outsideTileDialog ){
+      this._outsideTileDialog = new GSIBV.UI.Dialog.LoadOutsideTileDialog(this._map);
+    }
+    this._outsideTileDialog.show();
+  }
+
+  // 計測
+  startMeasure() {
+    if ( this._sakuzuDialog && this._sakuzuDialog.isVisible ) {
+      alert('作図中は計測出来ません');
+      return;
+    }
+    if ( this._danmenDialog && this._danmenDialog.isVisible ) {
+      alert('断面図表示中は計測機能は使用できません');
+      return;
+    }
+    if ( !this._measureDialog ) {
+      this._measureDialog = new GSIBV.UI.Dialog.MeasureDialog({map:this._map});
+    }
+    this._measureDialog.show();
+  }
+
+  // 断面図
+  startDanmen() {
+    if ( this._sakuzuDialog && this._sakuzuDialog.isVisible ) {
+      alert('作図中は計測出来ません');
+      return;
+    }
+    if ( this._measureDialog && this._measureDialog.isVisible ) {
+      this._measureDialog.hide();
+    }
+    
+    if ( !this._danmenDialog ) {
+      this._danmenDialog = new GSIBV.UI.Dialog.DanmenDialog({map:this._map});
+    }
+    this._danmenDialog.show();
   }
 
   // 指定緊急避難場所確認
@@ -742,6 +789,7 @@ GSIBV.Application = class extends MA.Class.Base {
       for (var i = 0; i < layers.length; i++) {
         var layer = layers[i];
         if ( layer.type == "binaryvector" ) continue;
+        if ( layer._isOutside ) continue;
         layersHash += (layersHash != "" ? "|" : "") + layer.id;
         if (layer.opacity < 1)
           layersHash += "," + (Math.floor(layer.opacity * 100) / 100);
@@ -751,6 +799,11 @@ GSIBV.Application = class extends MA.Class.Base {
       if ( layersHash != "" ) {
         hash += "&ls=" + encodeURIComponent(layersHash);
         hash+= "&disp=" + dispHash;
+        for (var i = 1; i<= 5; i++ ){
+          if (GSIBV.FILEURL["url"+i]){
+            hash += "&url" + i + "=" + GSIBV.FILEURL["url"+i];
+          }
+        }
       }
       
       var relief = GSIBV.Map.Layer.FreeRelief.DataManager.instance.text;
@@ -901,6 +954,22 @@ GSIBV.Application = class extends MA.Class.Base {
     } else {
       this._map.addLayer(e.params.layerInfo.layer);
       
+      if (GSIBV.application._map.getZoomGuide() && GSIBV.application._map.onZoomCheck(e.params.layerInfo.layer)) {
+        var mintxt = '', maxtxt = '', minmaxtxt = "この情報はズームmin～maxで表示されます。";
+        if (e.params.layerInfo.layer.minZoom) mintxt = e.params.layerInfo.layer.minZoom;
+        if (e.params.layerInfo.layer.maxZoom) maxtxt = e.params.layerInfo.layer.maxZoom;
+        minmaxtxt = minmaxtxt.replace('min', mintxt);
+        minmaxtxt = minmaxtxt.replace('max', maxtxt);
+        document.getElementById("zoomGuideCheckbox").checked = false;
+        document.getElementById('zoomGuideMinMax').innerText = minmaxtxt;
+        document.getElementById('zoomGuidePanel').style.display = "block";
+
+        clearTimeout(this.timer);
+        this.timer = setTimeout(function(){
+          document.getElementById('zoomGuidePanel').style.display = "none";
+        },3000);
+      }
+      
       // kmlの場合読込後移動
       if ( e.params.layerInfo.layer.getLngLatBounds ) {
         e.params.layerInfo.layer.on("loaded", MA.bind(function(e){
@@ -929,7 +998,16 @@ GSIBV.Application = class extends MA.Class.Base {
   // レイヤー削除要求
   _onRequestLayerRemove(e) {
     this._map.removeLayer(e.params.layer);
-
+    if (this._map._layerList._list.length > 0) {
+      var isOutside = false;
+      for(var i = 0; i < this._map._layerList._list.length; i++){
+        var item = this._map._layerList._list[i];
+        if (item._isOutside) isOutside = true;
+      }
+      if (!isOutside && GSIBV.application._outsideTileDialog) GSIBV.application._outsideTileDialog._outLayerButtonHide();
+    }else if (this._map._layerList._list.length == 0 && GSIBV.application._outsideTileDialog){
+      GSIBV.application._outsideTileDialog._outLayerButtonHide();
+    }
   }
 
   // 時系列比較コントロール表示
@@ -1098,6 +1176,7 @@ GSIBV.HashManager = class extends MA.Class.Base {
       for (var i = 0; i < layers.length; i++) {
         var layer = layers[i];
         if ( layer.isUserFileLayer ) continue;
+        if ( layer._isOutside ) continue;
         layersHash += (layersHash != "" ? "|" : "") + layer.id;
         if (layer.opacity < 1)
           layersHash += "," + (Math.floor(layer.opacity * 100) / 100);
@@ -1106,6 +1185,11 @@ GSIBV.HashManager = class extends MA.Class.Base {
 
       hash += "&ls=" + encodeURIComponent(layersHash);
       hash += "&disp=" + dispHash;
+      for (var i = 1; i<= 5; i++ ){
+        if (GSIBV.FILEURL["url"+i]){
+          hash += "&url" + i + "=" + GSIBV.FILEURL["url"+i];
+        }
+      }
 
     }
 
@@ -1241,6 +1325,57 @@ GSIBV.HashManager = class extends MA.Class.Base {
         params["disp"][i] = (params["disp"][i] == "0" ? false : true);
       }
     }
+
+    if( !GSIBV.FILEURL){
+      GSIBV.FILEURL = {};
+    }
+
+    pattern = /url1\=([^&]+)/;
+    result = hash.match(pattern);
+    if (result) {
+      params["url1"] = result[1];
+      if (GSIBV.FILEURL["url1"] != params["url1"]) {
+        GSIBV.FILEURL["url1"] = params["url1"];
+        window.loadSakuzuList(GSIBV.FILEURL["url1"], "url1");
+      }
+    }
+    pattern = /url2\=([^&]+)/;
+    result = hash.match(pattern);
+    if (result) {
+      params["url2"] = result[1];
+      if (GSIBV.FILEURL["url2"] != params["url2"]) {
+        GSIBV.FILEURL["url2"] = params["url2"];
+        window.loadSakuzuList(GSIBV.FILEURL["url2"], "url2");
+      }
+    }
+    pattern = /url3\=([^&]+)/;
+    result = hash.match(pattern);
+    if (result) {
+      params["url3"] = result[1];
+      if (GSIBV.FILEURL["url3"] != params["url3"]) {
+        GSIBV.FILEURL["url3"] = params["url3"];
+        window.loadSakuzuList(GSIBV.FILEURL["url3"], "url3");
+      }
+    }
+    pattern = /url4\=([^&]+)/;
+    result = hash.match(pattern);
+    if (result) {
+      params["url4"] = result[1];
+      if (GSIBV.FILEURL["url4"] != params["url4"]) {
+        GSIBV.FILEURL["url4"] = params["url4"];
+        window.loadSakuzuList(GSIBV.FILEURL["url4"], "url4");
+      }
+    }
+    pattern = /url5\=([^&]+)/;
+    result = hash.match(pattern);
+    if (result) {
+      params["url5"] = result[1];
+      if (GSIBV.FILEURL["url5"] != params["url5"]) {
+        GSIBV.FILEURL["url5"] = params["url5"];
+        window.loadSakuzuList(GSIBV.FILEURL["url5"], "url5");
+      }
+    }
+
 
     pattern = /reliefdata\=([^&]+)/;
     result = hash.match(pattern);
@@ -1395,4 +1530,40 @@ GSIBV.Application.TooltipManager = class extends MA.Class.Base {
 
 GSIBV.application = new GSIBV.Application();
 
+function getFileeData(url, key) {
+  var fname = url.substr(url.lastIndexOf("/") + 1);
+  var ftype = fname.substr(fname.lastIndexOf(".") + 1);
+  if (ftype == "geojson" || ftype == "kml") {
+    $.ajax({
+      url: url,
+      dataType: 'text'
+    }).done(function (data) {
+      var f = new File([data], fname, { type: "" });
+      loadfile(f, fname, key);
+    }).fail(function (data) {
+      console.log(data);
+    });
+  }
+};
 
+function loadfile(file, filename, key){
+  var files = [file];
+  var loader = new GSIBV.LocalFileLoader(files);
+  loader.on("load", MA.bind(function(files){
+    GSIBV.application.fire("filedrop", {
+      key: key,
+      data: files.params
+    });
+  },GSIBV.application));
+  loader.load();
+};
+
+function loadSakuzuList(url, key){
+  if (GSIBV.application && GSIBV.application._map && GSIBV.application._map.map){
+    getFileeData(decodeURIComponent(url), key);
+  }else{
+    setTimeout(() => {
+      loadSakuzuList(url, key);
+    }, 1000);
+  }
+};

@@ -227,16 +227,17 @@ var toGeoJSON = (function() {
                         styleUrl = '#' + styleUrl;
                     }
 
-                    properties.styleUrl = styleUrl;
+                    // properties.styleUrl = styleUrl;
+                    var styleMapHash,styleHash;
                     if (styleIndex[styleUrl]) {
-                        properties.styleHash = styleIndex[styleUrl];
+                        styleHash = styleIndex[styleUrl];
                     }
                     if (styleMapIndex[styleUrl]) {
-                        properties.styleMapHash = styleMapIndex[styleUrl];
-                        properties.styleHash = styleIndex[styleMapIndex[styleUrl].normal];
+                        styleMapHash = styleMapIndex[styleUrl];
+                        styleHash = styleIndex[styleMapIndex[styleUrl].normal];
                     }
                     // Try to populate the lineStyle or polyStyle since we got the style hash
-                    var style = styleByHash[properties.styleHash];
+                    var style = styleByHash[styleHash];
                     if (style) {
                         if (!lineStyle) lineStyle = get1(style, 'LineStyle');
                         if (!polyStyle) polyStyle = get1(style, 'PolyStyle');
@@ -245,16 +246,41 @@ var toGeoJSON = (function() {
                             var icon = get1(iconStyle, 'Icon');
                             if (icon) {
                                 var href = nodeVal(get1(icon, 'href'));
-                                if (href) properties.icon = href;
+                                if (href) properties._iconUrl = href;
                             }
                             var iconScale = get1(iconStyle, 'scale');
+                            var scaleVal = 1;
+                            if (parseFloat(nodeVal(iconScale))) scaleVal = parseFloat(nodeVal(iconScale));
                             if ( iconScale ) {
-                                properties.iconScale = parseFloat(nodeVal(iconScale));
+                                properties._iconSize = [20 * scaleVal, 20 * scaleVal];
+                                properties._iconAnchor = [10 * scaleVal, 10 * scaleVal];
                             }
                         }
                     }
                 }
-                if (description) properties.description = description;
+                if (description) {
+                    var parser = $('<div>').html(description);
+                    var table = parser.children('table');
+                    if (table.length > 0) {
+                        var tr = $(table[0]).find('tr');
+                        if (tr.length <= 0) {
+                            tr = $(table[0]).chidlren('tbody').children('tr');
+                        }
+                        for (var j = 0; j < tr.length; j++) {
+                            var td = $(tr[j]).children('td');
+                            if (td.length == 2) {
+                                var key = $(td[0]).html();
+                                var value = $(td[1]).html();
+                                key = key.replace(/\<br\>/ig, "\n");
+                                value = value.replace(/\<br\>/ig, "\n");
+                                properties[key] = value;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    parser = null;
+                }
                 if (timeSpan) {
                     var begin = nodeVal(get1(timeSpan, 'begin'));
                     var end = nodeVal(get1(timeSpan, 'end'));
@@ -268,9 +294,12 @@ var toGeoJSON = (function() {
                         color = linestyles[0],
                         opacity = linestyles[1],
                         width = parseFloat(nodeVal(get1(lineStyle, 'width')));
-                    if (color) properties.stroke = color;
-                    if (!isNaN(opacity)) properties['stroke-opacity'] = opacity;
-                    if (!isNaN(width)) properties['stroke-width'] = width;
+                    if (color) {
+                      properties._stroke = color;
+                      properties._color = color;
+                    }
+                    if (!isNaN(opacity)) properties['_stroke-opacity'] = opacity;
+                    if (!isNaN(width)) properties['_stroke-width'] = width;
                 }
                 if (polyStyle) {
                     var polystyles = kmlColor(nodeVal(get1(polyStyle, 'color'))),
@@ -278,10 +307,13 @@ var toGeoJSON = (function() {
                         popacity = polystyles[1],
                         fill = nodeVal(get1(polyStyle, 'fill')),
                         outline = nodeVal(get1(polyStyle, 'outline'));
-                    if (pcolor) properties.fill = pcolor;
-                    if (!isNaN(popacity)) properties['fill-opacity'] = popacity;
-                    if (fill) properties['fill-opacity'] = fill === '1' ? properties['fill-opacity'] || 1 : 0;
-                    if (outline) properties['stroke-opacity'] = outline === '1' ? properties['stroke-opacity'] || 1 : 0;
+                    if (pcolor) {
+                      properties._fill = pcolor;
+                      properties._fillColor = pcolor;
+                    }
+                    if (!isNaN(popacity)) properties['_fill-opacity'] = popacity;
+                    if (fill) properties['_fill-opacity'] = fill === '1' ? properties['_fill-opacity'] || 1 : 0;
+                    if (outline) properties['_stroke-opacity'] = outline === '1' ? properties['_stroke-opacity'] || 1 : 0;
                 }
                 if (extendedData) {
                     var datas = get(extendedData, 'Data'),
@@ -435,10 +467,10 @@ var toGeoJSON = (function() {
                         var color = nodeVal(get1(lineStyle, 'color')),
                             opacity = parseFloat(nodeVal(get1(lineStyle, 'opacity'))),
                             width = parseFloat(nodeVal(get1(lineStyle, 'width')));
-                        if (color) style.stroke = color;
-                        if (!isNaN(opacity)) style['stroke-opacity'] = opacity;
+                        if (color) style._stroke = color;
+                        if (!isNaN(opacity)) style['_stroke-opacity'] = opacity;
                         // GPX width is in mm, convert to px with 96 px per inch
-                        if (!isNaN(width)) style['stroke-width'] = width * 96 / 25.4;
+                        if (!isNaN(width)) style['_stroke-width'] = width * 96 / 25.4;
                     }
                 }
                 return style;
