@@ -175,7 +175,6 @@ GSIBV.UI.Input.Number = class extends GSIBV.UI.Input.Base {
   }
 
   _onUpButtonClick() {
-    
     var value = this.value;
     if ( value == undefined) value = 0;
 
@@ -193,7 +192,14 @@ GSIBV.UI.Input.Number = class extends GSIBV.UI.Input.Base {
     if ( this._max != undefined && this._max < value )
       value = this._max;
 
+    var changed = value != this.value
     this.value = value;
+
+    if(changed){
+      this.fire("change", {
+        "value": this.value
+      });
+    }
   }
 
   _onDownButtonClick() {
@@ -201,7 +207,7 @@ GSIBV.UI.Input.Number = class extends GSIBV.UI.Input.Base {
     if ( value == undefined) value = 0;
 
     if ( this._type == "float") {
-      if ( this._max != undefined && this._max <= 1 ) {
+      if ( value <= 1 ) {
         value -= 0.1;
         value = Math.round( value*100 ) / 100;
       } else {
@@ -212,10 +218,18 @@ GSIBV.UI.Input.Number = class extends GSIBV.UI.Input.Base {
     } else {
       value--;
     }
-    if ( this._max != undefined && this._max < value )
-      value = this._max;
-
+    if ( this._min != undefined && this._min >= value ) {
+      value = this._min < 1e-8 ? 0:this._min;
+    }
+    
+    var changed = value != this.value
     this.value = value;
+
+    if(changed){
+      this.fire("change", {
+        "value": this.value
+      });
+    }
   }
 
   _check() {

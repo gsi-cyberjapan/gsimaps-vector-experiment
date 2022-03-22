@@ -108,9 +108,7 @@ GSIBV.UI.EditLayerView = class extends GSIBV.UI.Base {
         for ( var j=0; j<item.item.layerList.length;j++ ) {
           var layer = item.item.layerList[j];
           if ( !layer.drawList ) continue;
-          if (zoom < layer.minzoom || zoom > layer.maxzoom) {
-            continue;
-          }
+          if (zoom < layer.minzoom || zoom > layer.maxzoom) continue;
           if ( layer._origDrawList && layer._origDrawList.length != layer.drawList.length ) {
             itemChanged = true;
             break;
@@ -127,6 +125,8 @@ GSIBV.UI.EditLayerView = class extends GSIBV.UI.Base {
             if( itemChanged ) break;
           }
 
+          if(layer.selMinzoom != layer.minzoom) itemChanged = true;
+
           if ( itemChanged ) break;
         }
 
@@ -136,7 +136,6 @@ GSIBV.UI.EditLayerView = class extends GSIBV.UI.Base {
         }else {
           MA.DOM.removeClass( item.dt, "-gsibv-changed");
         }
-
       }
 
     }

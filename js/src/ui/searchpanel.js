@@ -74,7 +74,7 @@ GSIBV.UI.SearchPanel = class extends GSIBV.UI.Base {
       var pref = this._prefList[i];
       option = MA.DOM.create("option");
 
-      option.setAttribute("value", pref.id);
+      option.setAttribute("value", pref.code);
       option.appendChild(document.createTextNode(pref.title));
       option._pref = pref;
       this._prefSelect.appendChild(option);
@@ -85,8 +85,23 @@ GSIBV.UI.SearchPanel = class extends GSIBV.UI.Base {
 
     this._citySelect = MA.DOM.find(this._searchResultFrame, "select[name=city]")[0];
 
+    this._typeSelect = MA.DOM.find(this._searchResultFrame, "select[name=type]")[0];
+    option = MA.DOM.create("option");
+    option.setAttribute("value", "");
+    option.appendChild(document.createTextNode("すべて"));
+    this._typeSelect.appendChild(option);
+    option = MA.DOM.create("option");
+    option.setAttribute("value", "5");
+    option.appendChild(document.createTextNode("居住地名"));
+    this._typeSelect.appendChild(option);
+    option = MA.DOM.create("option");
+    option.setAttribute("value", "3");
+    option.appendChild(document.createTextNode("居住地名以外"));
+    this._typeSelect.appendChild(option);
+
     MA.DOM.on(this._prefSelect, "change", MA.bind(this._onPrefChange, this));
     MA.DOM.on(this._citySelect, "change", MA.bind(this._onCityChange, this));
+    MA.DOM.on(this._typeSelect, "change", MA.bind(this._onTypeChange, this));
     this._onPrefChange();
 
   }
@@ -142,7 +157,7 @@ GSIBV.UI.SearchPanel = class extends GSIBV.UI.Base {
       var city = pref.city[i];
       option = MA.DOM.create("option");
 
-      option.setAttribute("value", city.id);
+      option.setAttribute("value", city.code);
       option.appendChild(document.createTextNode(city.title));
       option._pref = pref;
       option._city = city;
@@ -155,6 +170,10 @@ GSIBV.UI.SearchPanel = class extends GSIBV.UI.Base {
   }
 
   _onCityChange() {
+    this._showResultPanel(this._searchResultList);
+  }
+
+  _onTypeChange() {
     this._showResultPanel(this._searchResultList);
   }
 
@@ -266,23 +285,45 @@ GSIBV.UI.SearchPanel = class extends GSIBV.UI.Base {
       var prefOption = this._prefSelect.options[this._prefSelect.selectedIndex];
       pref = prefOption._pref;
     }
-
+    var typeval = this._typeSelect.value;
 
     for (var i = 0; i < list.length; i++) {
       var item = list[i];
+      var dataSource = item.properties["dataSource"];
       if (pref) {
         if (!item.properties["pref"]) continue;
         if (pref.code == item.properties["pref"].code) {
           if (!city) {
+            if (typeval != ''){
+              if (typeval == '5') {
+                if (dataSource != 5 && dataSource != null && dataSource != undefined) continue;
+              } else if (typeval == '3') {
+                if (dataSource == 5 || dataSource == null || dataSource == undefined) continue;
+              }
+            }
             this._searchViewList.push(item);
           } else {
             if (!item.properties["city"]) continue;
             if (city.code == item.properties["city"].code) {
+              if (typeval != ''){
+                if (typeval == '5') {
+                  if (dataSource != 5 && dataSource != null && dataSource != undefined) continue;
+                } else if (typeval == '3') {
+                  if (dataSource == 5 || dataSource == null || dataSource == undefined) continue;
+                }
+              }
               this._searchViewList.push(item);
             }
           }
         }
       } else {
+        if (typeval != ''){
+          if (typeval == '5') {
+            if (dataSource != 5 && dataSource != null && dataSource != undefined) continue;
+          } else if (typeval == '3') {
+            if (dataSource == 5 || dataSource == null || dataSource == undefined) continue;
+          }
+        }
         this._searchViewList.push(item);
       }
     }

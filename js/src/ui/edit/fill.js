@@ -1,10 +1,7 @@
 GSIBV.UI.Edit.Fill = class extends GSIBV.UI.Edit.Base {
 
   constructor(map, drawStyle, minzoom, maxzoom,defaultDrawStyle) {
-    super(map, drawStyle);
-    this._minzoom = minzoom;
-    this._maxzoom = maxzoom;
-    this._defaultDrawStyle = defaultDrawStyle;
+    super(map, drawStyle, minzoom, maxzoom,defaultDrawStyle);
   }
 
 
@@ -37,7 +34,6 @@ GSIBV.UI.Edit.Fill = class extends GSIBV.UI.Edit.Base {
       
       check( "outline-width",this._outlineWidthInput.checked, this._outlineWidthInput.container );
       check( "outline-dasharray",this._outlineDasharrayInput.value, this._outlineDasharrayInput.input );
-      
   
     } catch(ex) {
       console.log(ex);
@@ -96,7 +92,6 @@ GSIBV.UI.Edit.Fill = class extends GSIBV.UI.Edit.Base {
     if (this._outlineColorInput) this._outlineColorInput.destroy();
     if (this._outlineWidthInput) this._outlineWidthInput.destroy();
     if (this._outlineDasharrayInput) this._outlineDasharrayInput.destroy();
-
   }
 
 

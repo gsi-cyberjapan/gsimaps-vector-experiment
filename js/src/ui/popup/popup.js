@@ -64,7 +64,6 @@ GSIBV.UI.Popup = class extends MA.Class.Base {
 
     this._content = MA.DOM.create('div');
     MA.DOM.addClass(this._content, "-gsibv-ui-popup-content");
-    this._content.style.position = 'relative';
     this._container.appendChild(this._content);
 
     this._createContent(this._content);
@@ -77,11 +76,45 @@ GSIBV.UI.Popup = class extends MA.Class.Base {
     if (!MA.DOM.isChild(this._container, e.target) && this._container != e.target) {
       this.hide();
     }
-
   }
-
 }
 
+GSIBV.UI.Popup.Notice = class extends GSIBV.UI.Popup {
+  constructor(parent) {
+    super(parent);
+    this._autoHide = false;
+  }
+  set text(text) {
+    this._text = text;
+  }
+
+  set btnText(text) {
+    this._btnText = text;
+  }
+  
+  _createContent(content) {
+    this._contentDiv = MA.DOM.create('div');
+    this._contentDiv.innerHTML = this._text;
+    content.appendChild(this._contentDiv);
+    
+    this._btn = MA.DOM.create('button');
+    this._btn.innerHTML = this._btnText;
+
+    var btnDiv = MA.DOM.create('div');
+    MA.DOM.addClass(btnDiv, "-gsibv-ui-popup-content-btn");
+    
+    btnDiv.appendChild(this._btn);
+    content.appendChild(btnDiv);
+  }
+
+  destroy() {
+    if ( this._container ) {
+      this._container.parentNode.removeChild( this._container );
+      delete this._container;
+      this._container = null;
+    }
+  }
+}
 
 GSIBV.UI.Popup.Menu = class extends MA.Class.Base {
 

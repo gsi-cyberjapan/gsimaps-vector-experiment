@@ -48,7 +48,10 @@ GSIBV.UI.MainMenu = class extends MA.Class.Base {
       switch( this._menu[i].id) {
         case "centercross":
           this._menu[i].checked = this._app._map.centerCrossVisible;
-          break
+          break;
+        case "zoomguide":
+          this._menu[i].checked = this._app._map._zoomGuideVisible;
+          break;
         case "compass":
           this._menu[i].checked = this._app._map.compassVisible;
           break;
@@ -75,6 +78,9 @@ GSIBV.UI.MainMenu = class extends MA.Class.Base {
       case "centercross":
         this._app._map.centercrosschange();
         break;
+      case "zoomguide":
+        this._app._map.zoomguidechange();
+        break;
       case "compass":
         this._app._map.compassChange();
         break;
@@ -94,6 +100,18 @@ GSIBV.UI.MainMenu = class extends MA.Class.Base {
         break;
       case "draw":
         this._app.startSakuzu();
+        break;
+      case "measure":
+        console.log("計測");
+        this._app.startMeasure();
+        break;
+      case "danmen":
+        console.log("断面図");
+        this._app.startDanmen();
+        break;
+      case "outsidetile":
+        console.log("外部タイル");
+        this._app.startOutsideTile();
         break;
     }
   }

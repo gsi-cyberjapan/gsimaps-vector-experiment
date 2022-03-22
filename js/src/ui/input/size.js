@@ -17,7 +17,9 @@ GSIBV.UI.Input.Size = class extends MA.Class.Base {
     this._parseValue(value);
     this._container = container;
     this._initialize();
-  
+
+    this._noteNode = null;
+    
     this._langChangeHandler = MA.bind( this._onLangChange, this );
     GSIBV.application.on("langchange", this._langChangeHandler );
   }
@@ -43,7 +45,8 @@ GSIBV.UI.Input.Size = class extends MA.Class.Base {
       var intpuLant =GSIBV.CONFIG.LANG[lang.toUpperCase()].UI.EDITINPUT;
       this._typeNumberRadio.nextSibling.innerHTML = intpuLant["fix"];
       this._typeStopsRadio.nextSibling.innerHTML = intpuLant["perzoom"];
-
+      
+      if(this._noteNode) this._noteNode.innerHTML = intpuLant["note"];
       
       MA.DOM.find( this._stopsFrame, ".-gsi-size-stops-table .zoom-title" )[0].innerHTML = intpuLant["zoom"];
       MA.DOM.find( this._stopsFrame, ".-gsi-size-stops-table .size-title" )[0].innerHTML = intpuLant["size"];
@@ -308,8 +311,15 @@ GSIBV.UI.Input.Size = class extends MA.Class.Base {
       table.appendChild(tr);
       this._valueStops[z].input = new GSIBV.UI.Input.Number(input, ( this._canMinus ? undefined: { "min": 0.00000000001 } ) );
     }
-
     this._stopsFrame.appendChild(table);
+
+    var noteWrap = MA.DOM.create("div");
+    this._noteNode = MA.DOM.create("span");
+    MA.DOM.addClass(this._noteNode, "-gsi-size-stops-note");
+    MA.DOM.addClass(this._noteNode, "keepcolor");
+    noteWrap.appendChild(this._noteNode);
+    this._stopsFrame.appendChild(noteWrap);
+
     container.appendChild(this._stopsFrame);
   }
 };

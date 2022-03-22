@@ -184,6 +184,18 @@ GSIBV.UI.Dialog.LayerTree = class extends GSIBV.UI.Dialog.Modeless {
 
           MA.DOM.on( infoButton, "click", MA.bind( this._onInfoButtonClick, this, li, item ));
         }
+
+        if (item.title == '自分で作る色別標高図' && item.parent.title == '標高・土地の凹凸') {
+          var toolButton = MA.DOM.create("a");
+          toolButton.setAttribute("href","javascript:void(0);");
+          toolButton.setAttribute("title","スタイル変更");
+          toolButton.style.right = "26px";
+          MA.DOM.addClass(toolButton,"setting_btn");
+          li.appendChild(toolButton);
+          a.style.marginRight = "48px"
+          MA.DOM.on( toolButton, "click", MA.bind( GSIBV.UI.DisplayLayerListView.prototype._onfreeReliefDialogShow, GSIBV.application._leftPanel._displayLayerListView));
+        }
+
         if ( item.area ) {
 
           var areaButton = MA.DOM.create("a");

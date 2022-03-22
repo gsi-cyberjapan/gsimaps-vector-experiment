@@ -1,21 +1,12 @@
 GSIBV.UI.Edit.Symbol = class extends GSIBV.UI.Edit.Base {
 
   constructor(map, drawStyle, minzoom, maxzoom, defaultDrawStyle) {
-    super(map, drawStyle);
-    this._minzoom = minzoom;
-    this._maxzoom = maxzoom;
-    this._defaultDrawStyle = defaultDrawStyle;
+    super(map, drawStyle, minzoom, maxzoom, defaultDrawStyle);
   }
 
-
   get changed() {
-
     var drawStyle = this._getDrawStyle();
-
-
     return !drawStyle.equals(this._drawStyle);
-
-
   }
 
   destroy() {
@@ -34,7 +25,6 @@ GSIBV.UI.Edit.Symbol = class extends GSIBV.UI.Edit.Base {
     if (this._textVertical) this._textVertical.destroy();
     if (this._textPitchAlignment) this._textPitchAlignment.destroy();
     if (this._textRotationAlignment) this._textRotationAlignment.destroy();
-
   }
 
   refreshChangeState() {
@@ -61,8 +51,6 @@ GSIBV.UI.Edit.Symbol = class extends GSIBV.UI.Edit.Base {
       check("icon-pitch-alignment", this._iconPitchAlignment.value, this._iconPitchAlignment.container);
       check("icon-rotation-alignment", this._iconRotationAlignment.value, this._iconRotationAlignment.container);
     
-    
-
       if (this._textColorInput) {
         check("text-visible", this._textVisibleCheck.checked, this._textVisibleLabel);
         check("text-color", this._textColorInput.value, this._textColorInput.input);
@@ -93,17 +81,11 @@ GSIBV.UI.Edit.Symbol = class extends GSIBV.UI.Edit.Base {
         
         check("text-pitch-alignment", this._textPitchAlignment.value, this._textPitchAlignment.container);
         check("text-rotation-alignment", this._textRotationAlignment.value, this._textRotationAlignment.container);
-    
-
-  
       }
     
     }catch(ex) {
       console.log(ex);
     }
-
-
-
   }
 
   _getDrawStyle() {
@@ -163,8 +145,6 @@ GSIBV.UI.Edit.Symbol = class extends GSIBV.UI.Edit.Base {
       }
       setValue(data, "text-pitch-alignment", this._textPitchAlignment.value);
       setValue(data, "text-rotation-alignment", this._textRotationAlignment.value);
-
-
     }
 
     return drawStyle;
@@ -336,8 +316,6 @@ GSIBV.UI.Edit.Symbol = class extends GSIBV.UI.Edit.Base {
     } else {
       this._initializeTextEdit();
     }
-    
-
   }
 
   _initializeTextEdit() {

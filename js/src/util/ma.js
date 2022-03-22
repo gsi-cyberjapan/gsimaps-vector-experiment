@@ -338,6 +338,17 @@ MA.DOM.create = function (tagName) {
   return document.createElement(tagName);
 };
 
+MA.DOM.createInContainer = function(tagName, className, container) {
+  var el = document.createElement(tagName);
+	el.className = className;
+
+	if (container) {
+		container.appendChild(el);
+	}
+  
+	return el;
+}
+
 
 /***************************************
     MA.DOM.addClass
@@ -430,7 +441,12 @@ MA.DOM.on = function (target, eventName, handler) {
     イベント登録   
 ***************************************/
 MA.DOM.off = function (target, eventName, handler) {
-  target.removeEventListener(eventName, handler);
+  if (target.forEach) {
+    for (var i = 0; i < target.length; i++)
+      target[i].removeEventListener(eventName, handler);
+  } else {
+    target.removeEventListener(eventName, handler);
+  }
 };
 
 

@@ -1,29 +1,22 @@
 GSIBV.UI.Edit.Line = class extends GSIBV.UI.Edit.Base {
 
   constructor(map, drawStyle, minzoom, maxzoom, defaultDrawStyle) {
-    super(map, drawStyle);
-    this._minzoom = minzoom;
-    this._maxzoom = maxzoom;
-    this._defaultDrawStyle = defaultDrawStyle;
+    super(map, drawStyle, minzoom, maxzoom, defaultDrawStyle);
   }
 
 
   get changed() {
-
     var drawStyle = this._getDrawStyle();
     return !drawStyle.equals(this._drawStyle);
-
   }
 
   refreshChangeState() {
 
     var check = MA.bind( function( key, value, element) {
-
-  
       function n$(value) {
         return (value == "" || value == undefined ? undefined : value);
       }
-  
+
       if ( JSON.stringify(this._defaultDrawStyle.getValue(key)) 
         != JSON.stringify(this._drawStyle.getValue(key)) ) {
         MA.DOM.addClass(element, "-gsibv-changed");
@@ -96,8 +89,6 @@ GSIBV.UI.Edit.Line = class extends GSIBV.UI.Edit.Base {
     if (this._lineOffsetInput) this._lineOffsetInput.destroy();
     if (this._lineCapSelect) this._lineCapSelect.destroy();
     if (this._lineRoleSelect) this._lineRoleSelect.destroy();
-    
-
   }
 
   flush() {

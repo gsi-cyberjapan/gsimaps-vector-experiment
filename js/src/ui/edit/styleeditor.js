@@ -139,6 +139,10 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
   }
 
   destroy() {
+    for (var i = 0; i < this._item.layerList.length; i++){
+      let layer = this._item.layerList[i];
+      if(layer.minzoomSelector) layer.minzoomSelector.destroy();
+    }
     
     if ( this._langChangeHandler ) {
       GSIBV.application.on("langchange", this._langChangeHandler );
@@ -160,6 +164,10 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
     if (this._check2TimerId) clearInterval(this._check2TimerId);
     this._check2TimerId = null;
     this._clearEditList();
+
+    if(this._toolTip && this._toolTip instanceof GSIBV.Map.Draw.SeTooltip) {
+        this._toolTip.destroy();
+    }
   }
 
   hide(noEffect) {
@@ -191,6 +199,8 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
 
         if (this._targetZoom != undefined &&
           (layer.minzoom > this._targetZoom || layer.maxzoom < this._targetZoom)) continue;
+
+        layer.selMinzoom = layer.minzoom;
         
         layer._drawList = [];
         
@@ -475,6 +485,8 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
 
     this._sizeFrame.scrollTop = 0;
 
+    this._toolTip = new GSIBV.Map.Draw.SeTooltip(this._container, this._headerFrame.firstElementChild);
+
     this._initializeTitle();
     /*
     var titles = this._item.titles;
@@ -568,6 +580,10 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
     this._titleFrame.innerHTML = '';
     this._titleFrame.appendChild(title);
 
+    var ttMsg = this._item._owner.title;
+    ttMsg += " | ";
+    ttMsg += this._item.fullTitle.replaceAll("-", " > ");
+    this._toolTip.message = ttMsg;
   }
 
   _onScroll() {
@@ -583,6 +599,74 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
     this.hide();
   }
 
+  _toggleItemMinzoomSel(item, curSelMinzoom){
+    for (var j = 0; j < item.layerList.length; j++) {
+      this._toggleLayerMinzoomSel(item.layerList[j], curSelMinzoom);
+    }
+  }
+
+  _toggleLayerMinzoomSel(layer, curSelMinzoom){
+    var zoom = Math.floor(this._map.zoom);
+    if (zoom < layer.minzoom || zoom > layer.maxzoom) return;
+    
+    //update selMinzoom
+    layer.selMinzoom = curSelMinzoom;
+
+    if(!layer.minzoomSelCont) return;
+    if(layer.selMinzoom !== layer.minzoom){
+      MA.DOM.addClass(layer.minzoomSelCont, "-gsibv-changed");
+    } else {
+      MA.DOM.removeClass(layer.minzoomSelCont, "-gsibv-changed");
+    }
+  }
+
+  _selMinzoomChangedHandler(e){
+    if(!e.params || !e.params.value) return;
+    
+    var curSelMinzoom = e.params.value;
+    if ( !this._itemList) {
+      this._toggleItemMinzoomSel(this._item, curSelMinzoom);
+      this._item.fire("change");
+    } else if(this._itemList.length > 0) {
+      for(var item of this._itemList){
+        this._toggleItemMinzoomSel(item, curSelMinzoom);
+        item.fire("change");
+      }
+    }
+  }
+
+  //create display minzoom element
+  _createMinzoomSelFrame(container, layer){
+    var layerStyleDiv = MA.DOM.create("div");
+    MA.DOM.addClass( layerStyleDiv, "edit-frame" );
+
+    var tbMinzoom = MA.DOM.create("table");
+    MA.DOM.addClass( tbMinzoom, "table" );
+    var thMinzoom = MA.DOM.create("th");
+    MA.DOM.addClass( thMinzoom, "table" );
+    MA.DOM.addClass( thMinzoom, "middle-label" );
+    thMinzoom.innerHTML="表示するズーム";
+    tbMinzoom.appendChild(thMinzoom);
+    var tdMinzoom = MA.DOM.create("td");
+    MA.DOM.addClass( tdMinzoom, "table" );
+    tbMinzoom.appendChild(tdMinzoom);
+    layer.minzoomSelector = new GSIBV.UI.Input.MinZoom(
+      tdMinzoom, layer.minzoom, layer.maxzoom, layer.selMinzoom
+    );
+    if(layer.minzoomChangeHandler){
+      layer.minzoomSelector.off("change", layer.minzoomChangeHandler);
+      layer.minzoomChangeHandler = null;
+    }
+    layer.minzoomChangeHandler = MA.bind(this._selMinzoomChangedHandler, this);
+    layer.minzoomSelector.on("change", layer.minzoomChangeHandler);
+    layer.minzoomSelCont = tdMinzoom;
+
+    layerStyleDiv.appendChild(tbMinzoom);
+    container.appendChild(layerStyleDiv);
+
+    this._toggleLayerMinzoomSel(layer, layer.selMinzoom);
+  }
+
   _createLayerContainer(layer) {
     var container = MA.DOM.create("div");
     this._drawContainer = container;
@@ -593,6 +677,8 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
     MA.DOM.addClass(header, "message-header");
     header.innerHTML= "※一覧の下から順に重ねて描画されます";
     container.appendChild(header);
+
+    this._createMinzoomSelFrame(container, layer);
 
     for (var i = layer.drawList.length-1; i >= 0 ; i--) {
       this._createEditContainer(container, layer.drawList[i]);
@@ -1055,7 +1141,7 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
 
   _createSymbolEdit(container, draw) {
 
-    var edit = new GSIBV.UI.Edit.Symbol(this._map, draw.drawStyle, draw.minzoom, draw.maxzoom, draw.defaultDrawStyle);
+    var edit = new GSIBV.UI.Edit.Symbol(this._map, draw.drawStyle, draw.drawMinzoom, draw.drawMaxzoom, draw.defaultDrawStyle);
     edit.initialize(container, MA.DOM.select("#template .edit-frame.edit-symbol")[0]);
 
     return edit;
@@ -1064,7 +1150,7 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
   
   _createFillEdit(container, draw) {
 
-    var edit = new GSIBV.UI.Edit.Fill(this._map, draw.drawStyle, draw.minzoom, draw.maxzoom, draw.defaultDrawStyle);
+    var edit = new GSIBV.UI.Edit.Fill(this._map, draw.drawStyle, draw.drawMinzoom, draw.drawMaxzoom, draw.defaultDrawStyle);
     edit.initialize(container, MA.DOM.select("#template .edit-frame.edit-fill")[0], this._sizeFrame);
 
 
@@ -1073,8 +1159,7 @@ GSIBV.UI.StyleEditor = class extends GSIBV.UI.Base {
 
   _createLineEdit(container, draw) {
 
-    var edit = new GSIBV.UI.Edit.Line(
-        this._map, draw.drawStyle, draw.minzoom, draw.maxzoom, draw.defaultDrawStyle);
+    var edit = new GSIBV.UI.Edit.Line(this._map, draw.drawStyle, draw.drawMinzoom, draw.drawMaxzoom, draw.defaultDrawStyle);
     edit.initialize(container, MA.DOM.select("#template .edit-frame.edit-line")[0], this._sizeFrame);
 
 

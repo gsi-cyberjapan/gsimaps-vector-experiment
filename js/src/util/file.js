@@ -22,7 +22,12 @@ GSIBV.LocalFileLoader = class extends MA.Class.Base {
     }
 
     for( var i=0; i<this._queue.length; i++ ) {
-      this._queue[i].reader.readAsArrayBuffer(this._queue[i].file);
+      var ext = this._queue[i].fileName.split('.').pop();
+      if(ext==="kml") {
+        this._queue[i].reader.readAsText(this._queue[i].file);
+      } else {
+        this._queue[i].reader.readAsArrayBuffer(this._queue[i].file);
+      }
     }
 
   }

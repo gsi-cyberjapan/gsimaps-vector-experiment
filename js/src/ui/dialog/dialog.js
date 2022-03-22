@@ -116,24 +116,25 @@ GSIBV.UI.Dialog.Base = class extends MA.Class.Base {
 
   _createContents(contentsContainer) { }
 
+  _genBtnNode(btnInfo){
+    var btn = MA.DOM.create("button");
+    btn.innerHTML = btnInfo.title;
+    btnInfo.element = btn;
+    return btn;
+  }
+  
   _createFooter() {
-
     this._footer = MA.DOM.create("div");
     MA.DOM.addClass(this._footer, "footer");
     MA.DOM.addClass(this._frame, "has-footer");
-    this._container.appendChild(this._footer);
+    this._contentsFrame.appendChild(this._footer);
 
     for (var i = 0; i < this._buttons.length; i++) {
       var btnInfo = this._buttons[i];
-      var btn = MA.DOM.create("button");
-      btn.innerHTML = btnInfo.title;
-      btnInfo.element = btn;
-      this._footer.appendChild(btn);
-
-      MA.DOM.on(btn, "click", MA.bind(this._onButtonClick, this, btnInfo));
+      var btnNode = this._genBtnNode(btnInfo);
+      this._footer.appendChild(btnNode);
+      MA.DOM.on(btnNode, "click", MA.bind(this._onButtonClick, this, btnInfo));
     }
-
-
   }
 
   _onButtonClick(btnInfo) {

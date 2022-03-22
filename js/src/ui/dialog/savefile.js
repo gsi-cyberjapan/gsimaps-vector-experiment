@@ -156,7 +156,7 @@ GSIBV.UI.Dialog.SaveFileDialog = class extends GSIBV.UI.Dialog.Modal {
       document.body.removeChild( GSIBV.UI.Dialog.SaveFileDialog._dummyButton );
     }
     GSIBV.UI.Dialog.SaveFileDialog._dummyButton = MA.DOM.create("a");
-    GSIBV.UI.Dialog.SaveFileDialog._dummyButton.innerHTML="　";
+    GSIBV.UI.Dialog.SaveFileDialog._dummyButton.innerHTML=" ";
 
     GSIBV.UI.Dialog.SaveFileDialog._dummyButton.setAttribute("download",fileName);
     GSIBV.UI.Dialog.SaveFileDialog._dummyButton.setAttribute("href",url.createObjectURL(blob));

@@ -7,8 +7,8 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
   constructor(drawManager,options) {
     super(options);
     this._align = "right";
-    this._size.width = 260;
-    this._size.height = 200;
+    this._size.width = 320;
+    this._size.height = 260;
 
     this._frameSize;
     
@@ -21,6 +21,7 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
     this._frameClass = ["-gsibv-sakuzu-dialog"];
 
     this._drawManager = drawManager;
+    // this._iconLabels = [];
     this._initializeDrawManagerEvents();
 
   }
@@ -61,11 +62,52 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
       this._list.on( "request", MA.bind( this._onListRequest, this ));
       this._list.on( "itemchange", MA.bind( this._onListItemChange, this ));
       
-      try {
-        this._listScrollBar = new PerfectScrollbar(this._listFrame);
-      } catch(ex) {}
+      // try {
+      //   this._listScrollBar = new PerfectScrollbar(this._listFrame);
+      // } catch(ex) {}
     }
+    // //アイコンのラベルを表示
+    // if ( !this.iconLableCheckbox ) {
+    //   var chkId = "SakuzuDialog_iconlabel_check";
+    //   var frame = $("<div>").css("float", "right");
+    //   this.iconLableCheckbox = $("<input>").attr({ "type": "checkbox", "id": chkId }).addClass("normalcheck");
+    //   var label = $("<label>").attr({ "for": chkId }).html("アイコンのラベルを表示");
+    //   frame.append(this.iconLableCheckbox).append(label);
+    //   this.iconLableCheckbox.on("click", MA.bind(this._toggleMarkerLabel, this));
+    //   this._contents.appendChild( frame[0] );
+    // }
   }
+  // _toggleMarkerLabel() {
+  //   if (this.iconLableCheckbox.is(":checked")) {
+  //     var len = this._list._list.length;
+  //     for(var i=0;i<len;i++) {
+  //       var featuresLen = this._list._list[i]._item.featureCollection._features.length;
+  //       if(featuresLen>0) {
+  //         var features = this._list._list[i]._item.featureCollection._features;
+  //         for(var j=0;j<featuresLen;j++) {
+  //          if(features[j].geometryType === GSIBV.Map.Draw.Marker.Type 
+  //           && features[j].markerType && features[j].markerType===GSIBV.Map.Draw.Marker.MarkerType
+  //           && features[j].title) {
+  //             var ll = features[j].coordinates._coordinates[0];
+  //             var iconLabel = new mapboxgl.Popup({ "className": "marker-icon-label", "closeOnClick": false })
+  //             .setLngLat({lat: ll._lat, lng:ll._lng})
+  //             .setOffset(-40)
+  //             .setHTML(features[j].title)
+  //             .addTo(this._drawManager._map._map);
+  //             this._iconLabels.push(iconLabel);
+  //          }
+  //         }
+  
+  //       }
+  //     }
+  //   } else {
+  //     var len = this._iconLabels.length;
+  //     for(var i=0;i<len;i++) {
+  //       this._iconLabels[i].remove();
+  //     }
+  //     this._iconLabels = [];
+  //   }
+  // }
 
   show() {
     super.show();
@@ -99,7 +141,8 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
   _resize() {
     var controlsSize = MA.DOM.size( this._controlsContainer);
     this._listFrame.style.top = controlsSize.height + "px";
-    if ( this._listScrollBar ) this._listScrollBar.update();
+    this._listFrame.style.height = (this._frame.offsetHeight - 63) + "px";
+    //if ( this._listScrollBar ) this._listScrollBar.update();
   }
 
   // 上部ボタン類生成 
@@ -122,8 +165,12 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
       {"id":"save", "className" : "save"},
       {"id":"-"},
       {"id":GSIBV.Map.Draw.Marker.MarkerType, "className" : "marker"},
+      {"id":GSIBV.Map.Draw.CircleMarker.MarkerType, "className" : "circlemarker"},
       {"id":GSIBV.Map.Draw.Line.Type, "className" : "line"},
-      {"id":GSIBV.Map.Draw.Polygon.Type, "className" : "polygon"}
+      {"id":GSIBV.Map.Draw.Polygon.Type, "className" : "polygon"},
+      {"id":GSIBV.Map.Draw.Circle.MarkerType, "className" : "circle"},
+      {"id":GSIBV.Map.Draw.DivMarker.MarkerType, "className" : "text"},
+      {"id":GSIBV.Map.Draw.FreehandPolyline.Type, "className" : "freehand"}
     ];
 
     this._controlButtons = [];
@@ -154,7 +201,7 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
         MA.DOM.removeClass( buttonInfo.button, "active" );
 
       if ( buttonInfo.id == "save") {
-        if ( this._drawManager.geoJSON  ) {
+        if ( this._drawManager.geoJSONForSaveState  ) {
           MA.DOM.removeClass( buttonInfo.button, "disable" );
         } else {
           MA.DOM.addClass( buttonInfo.button, "disable" );
@@ -174,8 +221,12 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
         this._saveToFile();
         break;
       case GSIBV.Map.Draw.Marker.MarkerType:
+      case GSIBV.Map.Draw.CircleMarker.MarkerType:
       case GSIBV.Map.Draw.Line.Type:
       case GSIBV.Map.Draw.Polygon.Type:
+      case GSIBV.Map.Draw.Circle.MarkerType:
+      case GSIBV.Map.Draw.DivMarker.MarkerType:
+      case GSIBV.Map.Draw.FreehandPolyline.Type:
         this._draw(id);
         break;
     }
@@ -187,6 +238,9 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
       case "edit":
         this._editItem( evt.params.target );
         break;
+      case "opacity":
+        this._editItem( evt.params.target );
+        break;
       case "remove":
         this._removeItem( evt.params.target );
         break;
@@ -195,7 +249,7 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
 
   _openFile() {
     if ( !this._openFileDialog) {
-      this._openFileDialog = new  GSIBV.UI.Dialog.OpenFileDialog("GeoJSON形式のファイルを開く");
+      this._openFileDialog = new  GSIBV.UI.Dialog.OpenFileDialog("ファイルからデータを読込");
       this._openFileDialog.multi = true;
       this._openFileDialog.on("select", MA.bind(function(evt){
         this._drawManager.load( evt.params.list );
@@ -206,27 +260,14 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
 
   // 保存
   _saveToFile() {
-    var geoJSON = this._drawManager.geoJSON;
-    if ( !geoJSON ) return;
-
-    var proc = MA.bind(function(){
-
-      var geoJSON = this._drawManager.geoJSON;
-      if ( !geoJSON ) return;
-      var text = JSON.stringify( geoJSON, null, "  " );
-      if ( !this._saveFileDialog) {
-        this._saveFileDialog = new GSIBV.UI.Dialog.SaveFileDialog(
-          "作図した情報をGeoJSON形式で保存", GSIBV.UI.Dialog.SaveFileDialog.FILE_JSON);
-      }
-      this._saveFileDialog.show(MA.getTimestampText("gsi") + ".geojson",text);
-    },this);
-    
-    if ( this._editInfoDialog && this._editInfoDialog.isVisible) {
-      this._showConfirm(proc);
+    var saveBtnRs = this._controlButtons.filter((btn) => {return btn.id == "save";});
+    if(saveBtnRs.length > 0 && $(saveBtnRs[0].button).hasClass("disable")) {
       return;
     }
-
-    proc();
+    if(!this._sakuzuSaveDialog) {
+      this._sakuzuSaveDialog = new GSIBV.UI.Dialog.SakuzuSaveDialog(this._drawManager);
+    }
+    this._sakuzuSaveDialog.show();
   }
 
   // 新規作成開始
@@ -286,14 +327,26 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
         this._list.refresh();
         break;
     }
-    if ( this._listScrollBar ) this._listScrollBar.update();
+    //if ( this._listScrollBar ) this._listScrollBar.update();
     this._refreshButtonState();
+  }
+
+  _setUrl(fKey){
+    var items = window.location.href.split('&');
+    items = items.filter((item)=>{
+      return !item.startsWith(fKey+"=")
+    })
+    var url = items.join('&');
+    window.history.pushState({url: url, title: document.title}, document.title, url);
+    if(GSIBV.FILEURL[fKey]) GSIBV.FILEURL[fKey] = null;
   }
 
   // 作図ファイル削除開始
   _removeItem(item) {
     var proc = MA.bind(function() {
+      var fKey = item.fKey;
       item.remove();
+      if(fKey) this._setUrl(fKey);
     }, this, item );
 
     if ( this._editInfoDialog && this._editInfoDialog.isVisible) {
@@ -380,7 +433,7 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
 
     if ( this._editInfoDialog ) this._editInfoDialog.destroy();
 
-    this._editInfoDialog = new GSIBV.UI.Dialog.SakuzuEditInfoDialog(evt.params.feature) ;
+    this._editInfoDialog = new GSIBV.UI.Dialog.SakuzuEditInfoDialog(evt.params.feature, evt.params.layer, this._drawManager);
     this._editInfoDialog.on("buttonclick",MA.bind(function(item,evt){
       //console.log( item );
       item.stopEditFeature();
@@ -406,7 +459,7 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
     
     if ( this._editInfoDialog ) this._editInfoDialog.destroy();
 
-    this._editInfoDialog = new GSIBV.UI.Dialog.SakuzuEditInfoDialog(evt.params.feature) ;
+    this._editInfoDialog = new GSIBV.UI.Dialog.SakuzuEditInfoDialog(evt.params.feature, evt.params.layer, this._drawManager) ;
     this._editInfoDialog.on("buttonclick",MA.bind(function(evt){
       this._drawManager.nextDraw(evt.params.id!="ok");
     },this));
@@ -419,6 +472,22 @@ GSIBV.UI.Dialog.SakuzuDialog = class extends GSIBV.UI.Dialog.Modeless {
   // Item数が変更されている可能性があるためボタンの状態を更新
   _onListItemChange() {
     this._refreshButtonState();
+
+    var objList = this._list._list;
+    for(var i = 0; i< objList.length; i++){
+      var features = objList[i]._item.featureCollection._features;
+      for(var j=0; j < features.length; j++){
+        if(features[j] == this._feature){
+          objList[i].reSetSelect();
+          i = objList.length;
+          break;
+        }
+      }
+    }
+    if (GSIBV.FeatureItemIndex){
+      objList[GSIBV.FeatureItemIndex].reSetSelect();
+      GSIBV.FeatureItemIndex = undefined;
+    }
   }
 }
 
@@ -456,7 +525,7 @@ GSIBV.UI.Dialog.SakuzuDialog.List = class extends MA.Class.Base {
 
   add(drawListItem) {
 
-    var item = new GSIBV.UI.Dialog.SakuzuDialog.Item(drawListItem);
+    var item = new GSIBV.UI.Dialog.SakuzuDialog.Item(drawListItem ,this._drawManager);
     item.on("request", MA.bind( this._onItemRequest, this ));
     item.on("change", MA.bind( this._onItemChange, this ));
     this._container.appendChild( item.create() );
@@ -502,16 +571,19 @@ GSIBV.UI.Dialog.SakuzuDialog.List = class extends MA.Class.Base {
  * リスト項目
 ******************************************************************/
 GSIBV.UI.Dialog.SakuzuDialog.Item = class extends MA.Class.Base {
-  constructor(item) {
+  constructor(item, drawManager) {
     super();
     this._item = item;
+    this._drawManager = drawManager;
+    this._iconLabels = [];
     this._itemChangeHandler = MA.bind( this._onItemChange, this );
     this._itemEditStartHandler = MA.bind( this._onItemEditStart, this );
     this._itemEditFinishHandler = MA.bind( this._onItemEditFinish, this );
     this._item.on("change", this._itemChangeHandler );
     this._item.on("editstart", this._itemEditStartHandler );
     this._item.on("editfinish", this._itemEditFinishHandler );
-    this.create();
+    this.kmlList = ["description","icon","iconScale","styleHash","styleUrl"];
+    //this.create();
   }
 
   get item() { return this._item; }
@@ -553,22 +625,199 @@ GSIBV.UI.Dialog.SakuzuDialog.Item = class extends MA.Class.Base {
     // 数
     this._numContainer = MA.DOM.create("div");
     MA.DOM.addClass( this._numContainer, "num" );
+    if(this._item.operation == "none") {
+      MA.DOM.addClass( this._numContainer, "num_col2" );
+    }
     this._container.appendChild( this._numContainer);
 
-    // 編集ボタン
-    this._editButton = MA.DOM.create("button");
-    MA.DOM.addClass( this._editButton, "edit" );
-    this._container.appendChild( this._editButton);
-    MA.DOM.on( this._editButton, "click", MA.bind(this._onEditClick, this ) );
-
+    if(this._item.operation == "opacity"){
+      //透過
+      this._editButton = MA.DOM.create("button");
+      MA.DOM.addClass( this._editButton, "opacity" );
+      this._container.appendChild( this._editButton);
+      MA.DOM.on( this._editButton, "click", MA.bind(this._onOpacityClick, this ) );
+    } else if(this._item.operation != "none") {
+      // 編集ボタン
+      this._editButton = MA.DOM.create("button");
+      MA.DOM.addClass( this._editButton, "edit" );
+      this._container.appendChild( this._editButton);
+      MA.DOM.on( this._editButton, "click", MA.bind(this._onEditClick, this ) );
+    }
+    
     // 削除ボタン
     this._removeButton = MA.DOM.create("button");
     MA.DOM.addClass( this._removeButton, "remove" );
     this._container.appendChild( this._removeButton);
     MA.DOM.on( this._removeButton, "click", MA.bind(this._onRemoveClick, this ) );
 
+    if(!this.needSave()){
+      var frame = $("<div>").css({"text-align": "right"});
+      var label = $("<label>").attr({ "for": chkId }).html("このレイヤーは保存されません。");
+      frame.append(label);
+      this._container.appendChild(frame[0]);
+    } else {
+      //ラベル表示
+      var chkId = MA.getId("SakuzuDialog_iconlabel_check");
+      var frame = $("<div>").css({"text-align": "right"});
+      this.iconLableCheckbox = $("<input>").attr({ "type": "checkbox", "id": chkId }).addClass("normalcheck");
+      var label = $("<label>").attr({ "for": chkId }).html("アイコンのラベルを表示");
+      frame.append(this.iconLableCheckbox).append(label);
+      this.iconLableCheckbox.on("click", MA.bind(this._toggleMarkerLabel, this));
+      this._container.appendChild(frame[0]);
+
+      this._selectdiv =  $("<div>").css({"height":"auto", "display":"none","text-align": "right"});
+      label = $("<label>").html("ラベルとして表示する属性：");
+      this._select = $("<select>")
+      this._select.append($('<option>').html("name").val("name"));
+      this._select.on("change", MA.bind(this.selectChange, this));
+      this._selectdiv.append(label);
+      this._selectdiv.append(this._select);
+      this._container.appendChild(this._selectdiv[0]);
+
+      var labelSizeFrame = $("<div>").addClass("icon-labelsizeframe");
+      var labelLarge = $("<a>").attr({ "href": "javascript:void(0);" }).html("大").addClass("large");
+      var labelMiddle = $("<a>").attr({ "href": "javascript:void(0);" }).html("中").addClass("middle");
+      var labelSmall = $("<a>").attr({ "href": "javascript:void(0);" }).html("小").addClass("small");
+      MA.DOM.on( labelLarge[0], "click",MA.bind(function (labelSizeFrame, item) {
+        labelSizeFrame.children().removeClass("active");
+        labelSizeFrame.children(".large").addClass("active");
+        this.iconLabelTextSize = "large";
+        this.removeIconLabel();
+        this.setIconLabel();
+      }, this, labelSizeFrame, this));
+
+      MA.DOM.on( labelMiddle[0], "click",MA.bind(function (labelSizeFrame, item) {
+        labelSizeFrame.children().removeClass("active");
+        labelSizeFrame.children(".middle").addClass("active");
+        this.iconLabelTextSize = "middle";
+        this.removeIconLabel();
+        this.setIconLabel();
+      }, this, labelSizeFrame, this));
+
+      MA.DOM.on( labelSmall[0], "click",MA.bind(function (labelSizeFrame, item) {
+        labelSizeFrame.children().removeClass("active");
+        labelSizeFrame.children(".small").addClass("active");
+        this.iconLabelTextSize = "small";
+        this.removeIconLabel();
+        this.setIconLabel();
+      }, this, labelSizeFrame, this));
+
+      labelLarge.attr({"title":"ラベル大"});
+      labelMiddle.attr({"title":"ラベル中"});
+      labelSmall.attr({"title":"ラベル小"});
+      labelMiddle.addClass("active");
+      labelSizeFrame.append(labelLarge).append(labelMiddle).append(labelSmall);
+      this._container.appendChild(labelSizeFrame[0]);
+
+      this.iconLabelTextSize = "middle";
+
+      this.reSetSelect();
+    }
+    
     this.refresh();
     return this._container;
+  }
+
+  _toggleMarkerLabel() {
+    if (this.iconLableCheckbox.is(":checked")) {
+      this._selectdiv.slideDown(200);
+      this.setIconLabel();
+    } else {
+      this._selectdiv.slideUp(200);
+      this.removeIconLabel();
+    }
+  }
+
+  needEdit(){
+    return this._item.operation == "edit";
+  }
+
+  needSave(){
+    return this._item.operation == "edit";
+  }
+
+  reSetSelect(){
+    if(!this.needEdit()) return;
+
+    var oldval = this._select.val();
+    var valflg = false;
+    this._select.children().remove();
+    var namelist = ["name"];
+    var kmlList = this.kmlList;
+    var features = this._item.featureCollection._features;
+    for(var j=0;j<features.length;j++) {
+      if(features[j].geometryType === GSIBV.Map.Draw.Marker.Type 
+      && features[j].markerType && features[j].markerType===GSIBV.Map.Draw.Marker.MarkerType){
+        var properties = features[j].properties._properties;
+        Object.keys(properties).forEach(function (key) {
+          if (!namelist.includes(key) && !kmlList.includes(key)){
+            namelist.push(key);
+          }
+        });
+      }
+    }
+    for(var i = 0; i< namelist.length; i++){
+      this._select.append($('<option>').html(namelist[i]).val(namelist[i]));
+      if(namelist[i] == oldval) valflg = true;
+    }
+
+    if(valflg){
+      this._select.val(oldval);
+    }
+    this.removeIconLabel();
+    this.setIconLabel();
+  }
+
+  selectChange(){
+    this.removeIconLabel();
+    this.setIconLabel();
+  }
+
+  setIconLabel (){
+    if (this.iconLableCheckbox.is(":checked") && !this._item.editing) {
+      var featuresLen = this._item.featureCollection._features.length;
+      if(featuresLen > 0) {
+        var features = this._item.featureCollection._features;
+        for(var j=0;j<featuresLen;j++) {
+          if(features[j].geometryType === GSIBV.Map.Draw.Marker.Type 
+          && features[j].markerType && features[j].markerType===GSIBV.Map.Draw.Marker.MarkerType) {
+            var txt = features[j]._properties._properties[this._select.val()];
+            if(txt) {
+              var ll = features[j].coordinates._coordinates[0];
+              var cName = " ";
+              switch (this.iconLabelTextSize) {
+                case 'large':
+                  cName = "marker-icon-label" + cName + "large";
+                  break;
+                case 'middle':
+                  cName = "marker-icon-label" + cName + "middle";
+                  break;
+                case 'small':
+                  cName = "marker-icon-label" + cName + "small";
+                  break;
+                default:
+                  cName = "marker-icon-label" + cName + "middle";
+              }
+
+              var iconLabel = new mapboxgl.Popup({ "className": cName, "closeOnClick": false })
+              .setLngLat({lat: ll._lat, lng:ll._lng})
+              .setOffset(-40)
+              .setHTML(txt)
+              .addTo(this._drawManager._map._map);
+              this._iconLabels.push(iconLabel);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  removeIconLabel(){
+    var len = this._iconLabels.length;
+    for(var i=0;i<len;i++) {
+      this._iconLabels[i].remove();
+    }
+    this._iconLabels = [];
   }
 
   refresh() {
@@ -591,15 +840,24 @@ GSIBV.UI.Dialog.SakuzuDialog.Item = class extends MA.Class.Base {
 
     if ( this._item.featureCollection.length <= 0 ) {
       MA.DOM.addClass( this._removeButton,"disable");
-      MA.DOM.addClass( this._editButton,"disable");
+      if(this._editButton) MA.DOM.addClass( this._editButton,"disable");
     } else {
       MA.DOM.removeClass( this._removeButton,"disable");
-      MA.DOM.removeClass( this._editButton,"disable");
+      if(this._editButton) MA.DOM.removeClass( this._editButton,"disable");
     }
   }
 
   // 表示切り替え
   _onViewClick() {
+    if(this.needEdit()) {
+      if (!this._item.visible){
+        if (this.iconLableCheckbox.is(":checked")) {
+          this.setIconLabel();
+        } 
+      } else{
+        this.removeIconLabel();
+      }
+    }
     this._item.visible = !this._item.visible;
   }
 
@@ -607,12 +865,102 @@ GSIBV.UI.Dialog.SakuzuDialog.Item = class extends MA.Class.Base {
   _onEditClick() {
     if ( this._item.featureCollection.length <= 0 ) return;
     this.fire( "request", { "type":"edit", "target":this._item});
+
+    if(this.needEdit()){
+      if (this._item.editing){
+        this.removeIconLabel();
+      } else{
+        this.setIconLabel();
+      }
+    }
+  }
+
+  _unbindMousedownEvent(){
+    if ( this._hideOpacityWindowHandler ) {
+      $( document.body ).unbind( 'mousedown', this._hideOpacityWindowHandler );
+      $( document.body ).unbind( 'touchstart', this._hideOpacityWindowHandler );
+      this._hideOpacityWindowHandler = null;
+    }
+  }
+
+  _bindMousedownEvent(){
+    if ( this._hideOpacityWindowHandler ) {
+      $( document.body ).bind( 'mousedown', this._hideOpacityWindowHandler );
+      $( document.body ).bind( 'touchstart', this._hideOpacityWindowHandler );
+    }
+  }
+
+  //透過
+  _onOpacityClick() {
+    if ( this._item.featureCollection.length <= 0 ) return;
+    this.fire( "request", { "type":"opacity", "target":this._item});
+
+    if ( !this._opacityWindow ) {
+      this._opacityWindow = $( '<div>' ).addClass( 'viewlistdialog_opacity_window' );
+      this._opacityValue = $( '<div>' ).addClass( 'value' ).html( '透過率:' );
+      this._opacitySlider = $( '<div>' ).addClass( 'slider' ).html( '&nbsp;' );
+      this._opacityWindow.append(this._opacityValue ).append( this._opacitySlider );
+      $( "body" ) .append( this._opacityWindow );
+      this._opacitySlider.slider({min: 0,max : 100});
+    } else if ( this._opacityWindow && this._opacityWindow.is(":visible") && this._opacityWindow.data("item") == this._item ) {
+      this._opacityWindow.slideUp(200);
+      this._unbindMousedownEvent();
+      return;
+    }
+
+    var layer = this._item.layer;
+    var opacity = layer.opacity || 1;
+    var offset = $(this._editButton).offset();
+    this._opacityWindow.css({
+      top: offset.top + $(this._editButton).outerHeight() -4 + 10,
+      left :offset.left - 230 + 'px'
+    }).data( { "item" : this._item } );
+		
+    var opacityPercentage = Math.round( 100 - ( opacity * 100 ) );
+    this._opacityValue.html('透過率:' + opacityPercentage + '%');
+    this._opacitySlider.data({"__target_item":this._item}).slider( "option", "value", opacityPercentage );
+    this._opacitySlider.off("slide").on( "slide", MA.bind(function( event, ui ) {
+      var item = this._opacitySlider.data('__target_item');
+      var value = ui.value;
+      this._opacityValue.html('透過率:' + value + '%');
+      var opacity = value / 100.0;
+      if ( opacity < 0 ) opacity = 0;
+      if ( opacity > 1 ) opacity = 1;
+      item.opacity = 1- opacity;
+		}, this ) );
+
+    this._unbindMousedownEvent();
+    this._hideOpacityWindowHandler  = MA.bind( function(event) {
+      if ( !this._opacityWindow || event.target == this._opacityWindow[0] || $(event.target).is(".opacity")) return;
+
+      var parents = $( event.target ).parents();
+
+      var hit = false;
+      for( var i=0; i<parents.length; i++ ){
+        if ( $(parents[i]).is(".viewlistdialog_opacity_window")){
+          hit = true;
+          break;
+        }
+      }
+      if (!hit ){
+        this._opacityWindow.slideUp(200);
+        this._unbindMousedownEvent();
+        this.fire( "request", { "type":"opacity", "target":this._item});
+      }
+    }, this );
+    this._bindMousedownEvent();
+
+    this._opacityWindow.hide().slideDown(200);
   }
 
   // 削除
   _onRemoveClick() {
+    this.removeIconLabel();
     if ( this._item.featureCollection.length <= 0 ) return;
+
+    if(this._opacityWindow) this._opacityWindow.remove();
+
     this.fire( "request", { "type":"remove", "target":this._item});
-    
+    this.reSetSelect();
   }
 };

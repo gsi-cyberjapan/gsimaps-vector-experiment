@@ -449,4 +449,100 @@ GSI.Utils.DistanceCalculator._hanten = function (PI, params, zoneInfo, result) {
   return 0;
 } /* hanten_ */
 
+GSI.Utils.DistanceCalculator.getDistanceStr = function(d) {
+  if(d===undefined) {
+    return "0 m";
+  }
+  if(d > 1000) {
+    return (d / 1000).toFixed(3) + " km";
+  }
+  return Math.ceil(d) + " m";
+}
 
+/*************************************************
+ 面積の計算
+*************************************************/
+GSI.Utils.AreaCalculator = {};
+
+GSI.Utils.AreaCalculator.getAreaStr = function(area) {
+  if(!area) {
+    return '0 m&sup2;';
+  }
+  var areaStr = '';
+
+  if (area >= 1000000) {
+    areaStr = (area / 1000000).toFixed(3) + ' km&sup2;';
+  } else {
+    areaStr = Math.ceil(area) + ' m&sup2;';
+  }
+  return areaStr;
+}
+GSI.Utils.AreaCalculator.calc = function (points) {
+  try {
+    var radius=40589732498869.4
+    var E = 0;
+    var area = 0;
+    for(var i=1;i<points.length-1;++i){
+      E+=GSI.Utils.AreaCalculator.calc_smallarea(points[0],points[i],points[i+1])*GSI.Utils.AreaCalculator.decide_plmn(points[0],points[i],points[i+1]);
+    }
+    area = Math.abs(E*radius);
+  }
+  catch (ex) {
+    console.log(ex);
+  }
+
+  return area;
+};
+
+
+GSI.Utils.AreaCalculator.calc_smallarea = function (a, b, c) {
+  var points = [a, b, c, a], s = 0, ss = [];
+  for (var i = 0; i < 3; ++i) {
+    ss[i] = GSI.Utils.AreaCalculator.calc_distance(points[i], points[i + 1]); s += ss[i];
+  }
+  s /= 2;
+  var content_sqrt = Math.tan(s / 2);
+  for (var i = 0; i < 3; ++i) {
+    content_sqrt *= Math.tan((s - ss[i]) / 2);
+  }
+  return 4 * Math.atan(Math.sqrt(Math.abs(content_sqrt)));
+}
+GSI.Utils.AreaCalculator.calc_distance = function(a,b){
+  var a_lat=GSI.Utils.AreaCalculator.getAuthalicLatitude(a.lat);
+  var a_lon=GSI.Utils.AreaCalculator.ext_lon(a);
+  var b_lat=GSI.Utils.AreaCalculator.getAuthalicLatitude(b.lat);
+  var b_lon=GSI.Utils.AreaCalculator.ext_lon(b);
+  return 2*Math.asin(Math.sqrt(Math.pow(Math.sin((a_lat-b_lat)/2),2)+Math.cos(a_lat)*Math.cos(b_lat)*Math.pow(Math.sin((a_lon-b_lon)/2),2)));
+}
+GSI.Utils.AreaCalculator.decide_plmn = function (a, b, c) {
+  var points = [a, b, c], array = [];
+  for (var i = 0; i < 3; ++i) {
+    var d = points[i], d_lat = GSI.Utils.AreaCalculator.getAuthalicLatitude(d.lat),
+      d_lon = GSI.Utils.AreaCalculator.ext_lon(d), w_array = array[i] = []; 
+      w_array[0] = Math.cos(d_lat) * Math.cos(d_lon); 
+      w_array[1] = Math.cos(d_lat) * Math.sin(d_lon); 
+      w_array[2] = Math.sin(d_lat);
+  }
+  return 0 < array[0][0] * array[1][1] * array[2][2] + array[1][0] * array[2][1] * array[0][2] + array[2][0] * array[0][1] * array[1][2] - array[0][0] * array[2][1] * array[1][2] - array[1][0] * array[0][1] * array[2][2] - array[2][0] * array[1][1] * array[0][2] ? 1 : -1;
+}
+GSI.Utils.AreaCalculator.getAuthalicLatitude = function (lat) { 
+  var latrad = GSI.Utils.AreaCalculator.deg2Rad(lat); 
+  var s1 = GSI.Utils.AreaCalculator.calcBeltArea(latrad); 
+  var s2 = GSI.Utils.AreaCalculator.calcBeltArea(Math.PI / 2); 
+  var ans = Math.asin(s1 / s2); return ans; 
+}
+GSI.Utils.AreaCalculator.ext_lon = function (a) { return a.lng * Math.PI / 180; }
+GSI.Utils.AreaCalculator.deg2Rad = function (deg) { return deg * Math.PI / 180.0; }
+GSI.Utils.AreaCalculator.calcBeltArea = function (latrad) { 
+  var pi = Math.PI; 
+  var e = 0.081819191; 
+  var radius = 6378137.0; 
+  var part1c = e * Math.sin(latrad); 
+  var part1m = 1 - Math.pow(part1c, 2); 
+  var part2 = GSI.Utils.AreaCalculator.hbArcTan(part1c); 
+  var ans = pi * Math.pow(radius, 2) * (1 / e - e) * (part1c / part1m + part2); 
+  return ans; 
+}
+GSI.Utils.AreaCalculator.hbArcTan = function (latrad) { 
+  return Math.log((1 + latrad) / (1 - latrad)) / 2; 
+}

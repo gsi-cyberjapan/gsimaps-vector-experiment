@@ -295,7 +295,7 @@ GSIBV.UI.DisplayLayerListView = class extends GSIBV.UI.Base {
     }else if (layer.type == "relief_free") {
       MA.DOM.find(li, ".save-button")[0].style.display = 'none';
       MA.DOM.on(MA.DOM.find(li, ".edit-button")[0], "click",
-        MA.bind(this._onReliefEditButtonClick, this, li, layer));
+        MA.bind(this._onfreeReliefDialogShow, this));
       MA.DOM.find(li, ".layer-edit-list-frame")[0].style.display = 'none';
       this.showEditView( li, layer );
 
@@ -303,6 +303,12 @@ GSIBV.UI.DisplayLayerListView = class extends GSIBV.UI.Base {
       MA.DOM.find(li, ".edit-button")[0].style.display = 'none';
       MA.DOM.find(li, ".save-button")[0].style.display = 'none';
       MA.DOM.find(li, ".layer-edit-list-frame")[0].style.display = 'none';
+    }
+
+    if (layer._isOutside){
+      MA.DOM.find(li, ".edit-button")[0].style.display = '';
+      MA.DOM.on(MA.DOM.find(li, ".edit-button")[0], "click",
+      MA.bind(this._onEditOutside, this, li, layer));
     }
 
     this._refreshRow(li, layer);
@@ -556,6 +562,13 @@ GSIBV.UI.DisplayLayerListView = class extends GSIBV.UI.Base {
     this.showEditView(li, layer);
   }
 
+  _onEditOutside (li, layer){
+    if (!this.editOutsideTileDialog){
+      this.editOutsideTileDialog = new GSIBV.UI.Dialog.EditOutsideTileDialog(this._map);
+    }
+    this.editOutsideTileDialog.show(layer);
+  }
+
   _onSaveButtonClick( li, layer) {
     if ( layer.data.title == undefined)
       layer.data.title = layer.title;
@@ -584,11 +597,15 @@ GSIBV.UI.DisplayLayerListView = class extends GSIBV.UI.Base {
     } else {
       this._freeReliefDialog.show();
     }
-    
-
   }
-  
 
+  _onfreeReliefDialogShow() {
+    if ( !this._freeReliefDialog ) {
+      this._freeReliefDialog = new GSIBV.UI.Dialog.FreeRelief(this._map);
+    }
+    this._freeReliefDialog.show();
+    this._freeReliefDialog.setbutVisible = true;
+  }
 
   showEditView(li, layer, show) {
     if ( layer.type != "binaryvector") return;

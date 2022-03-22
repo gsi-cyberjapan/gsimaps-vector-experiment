@@ -456,8 +456,9 @@ GSIBV.UI.Dialog.SaveImageDialog = class extends GSIBV.UI.Dialog.Modal {
   _createContents(contentsContainer) {
 
     
-    const frame = MA.DOM.select( "#template .saveimage")[0].cloneNode(true)
+    const frame = MA.DOM.select( "#template .saveimage")[0].cloneNode(true);
     const checkList = MA.DOM.find(frame, "input.saveimage-credit");
+    const checkZoom = MA.DOM.find(frame, "input.saveimage-credit-zoom");
     
 
     const fileNameInput = MA.DOM.find(frame, "input.filename")[0];
@@ -482,11 +483,21 @@ GSIBV.UI.Dialog.SaveImageDialog = class extends GSIBV.UI.Dialog.Modal {
 
     }
 
+    for( let i=0; i<checkZoom.length; i++ ) {
+      const checkz = checkZoom[i];
+      const idz = MA.getId( "gsi-saveimage-credit-zoom");
+      const labelz = MA.DOM.find(frame, "label." + checkz.value)[0];
+      checkz.setAttribute("id",idz);
+      labelz.setAttribute("for", idz);
+      checkz.setAttribute("checked", true);
+    }
+
     const saveButton = MA.DOM.find(frame, "button.save-execute")[0];
     MA.DOM.on( saveButton, "click", () => {
       if ( this._saveType === "png") {
         const options = {
           credit : MA.DOM.find(frame, "input.saveimage-credit")[0].checked,
+          checkZoom : MA.DOM.find(frame, "input.saveimage-credit-zoom")[0].checked,
           data : this._data
         };
   

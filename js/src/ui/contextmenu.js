@@ -82,7 +82,6 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
     this._featuresFrame.style.display = 'none';
 
 
-
     this._toggleButton = MA.DOM.find(this._container, ".toggle-button")[0];
 
     this._centerModeButton = MA.DOM.find(this._container, ".button.center")[0];
@@ -128,6 +127,7 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
     this._stop();
     this._start();
   }
+
   _onClickModeClick() {
 
     MA.DOM.removeClass(this._centerModeButton, "active");
@@ -135,15 +135,12 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
     this._mode = 'click';
     this._stop();
     this._start();
-
   }
-
 
   set map(map) {
     this._map = map;
     this._layerList = this._map.layerList;
     this._layerList.on("change", MA.bind(this._onLayerListChange, this));
-
   }
 
   _onLayerListChange() {
@@ -160,15 +157,17 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
       }
 
       if ( this._seamlessVisible) {
-        
         if (this._mode == "mapcenter"){
           this._getPointInfo(this._map.map.getCenter());
-        }
-        else{
+        } else{
           this._getPointInfo(this._map.mousePositionControl._latlng);
         }
       }
     }
+
+    const lakeDepthLayer = this._layerList.find({id:"lakedata"});
+    const lakeDepthVisible = lakeDepthLayer /*&& lakeDepthLayer.visible*/ ? true : false;
+    if(lakeDepthVisible !== this._lakeDepthVisible) this._updateLakeDepthVisible(lakeDepthVisible);
   }
 
   _start() {
@@ -190,46 +189,50 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
       this._onMapMoveEnd();
 
       this._elevationLoader = new GSIBV.Map.Util.FooterElevationLoader();
-      //this._elevationLoader = new GSIBV.Map.Util.ElevationLoader();
-
       this._elevationLoader.on("start", MA.bind(function (e) {
         this._setView({ "elevation": "" });
       }, this));
       this._elevationLoader.on("finish", MA.bind(function (e) {
         if (e.params.h != undefined) {
-
           this._setView({
             "elevation": Math.round(e.params.h * 10) / 10 + "m",
             "elevationTarget": e.params.title
           });
         } else {
           this._setView({ "elevation": "" });
-
         }
       }, this));
       this._elevationLoader.start(this._map.map);
+
+      this._lakedepthLoader = new GSIBV.Map.Util.LakeDepthLoader();
+      this._lakedepthLoader.on("start", MA.bind(function (e) {
+        this._setLakeDepthView(this._lakedepthLoader.typename, null);
+      }, this));
+      this._lakedepthLoader.on("finish", MA.bind(function (e) {
+        let h = e.params.h !== undefined ? Math.round(e.params.h * 10) / 10 : null;
+        this._setLakeDepthView(this._lakedepthLoader.typename, h);
+      }, this));
+      this._lakedepthLoader.start(this._map.map);
+
+      this._lakeStdHeightLoader = new GSIBV.Map.Util.LakeStdHeightLoader();
+      this._lakeStdHeightLoader.on("start", MA.bind(function (e) {
+        this._setLakeDepthView(this._lakeStdHeightLoader.typename, null);
+      }, this));
+      this._lakeStdHeightLoader.on("finish", MA.bind(function (e) {
+        let h = e.params.h !== undefined ? Math.round(e.params.h * 10) / 10 : null;
+        this._setLakeDepthView(this._lakeStdHeightLoader.typename, h);
+      }, this));
+      this._lakeStdHeightLoader.start(this._map.map);
     } else {
       if (this._moveEndHandler) {
         this._map.off("moveend", this._moveEndHandler);
         this._moveEndHandler = null;
       }
-      if (this._elevationLoader) {
-        this._elevationLoader.destroy();
-        this._elevationLoader = null;
-      }
 
-      if (this._addrLoader) {
-        this._addrLoader.destroy();
-        this._addrLoader = null;
-      }
-      if (this._seamlessPhotoInfoLoader) {
-        this._seamlessPhotoInfoLoader.destroy();
-        this._seamlessPhotoInfoLoader = null;
-      }
-
+      this._setLakeDepthView("lakedepth", null);
+      this._setLakeDepthView("lakestdheight", null);
       this._setView({ "elevation": "", "seamlessphoto":"", "addr": "", "utmPoint": "", "lat": "", "lng": "" });
       this._map.mousePositionControl.visible = true;
-      //this._map.centerCrossControl.visible = false;
 
       if (!this._mapClickhandler) {
         this._mapClickhandler = MA.bind(this._onMapClick, this);
@@ -283,11 +286,23 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
       this._addrLoader.destroy();
       this._addrLoader = null;
     }
+
     if (this._seamlessPhotoInfoLoader) {
       this._seamlessPhotoInfoLoader.destroy();
       this._seamlessPhotoInfoLoader = null;
     }
+
+    if (this._lakedepthLoader) {
+      this._lakedepthLoader.destroy();
+      this._lakedepthLoader = null;
+    }
+
+    if (this._lakeStdHeightLoader) {
+      this._lakeStdHeightLoader.destroy();
+      this._lakeStdHeightLoader = null;
+    }
   }
+
   _onMapClick(e) {
     var map = this._map.map;
     var pos = map.unproject(e.point);
@@ -295,30 +310,47 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
 
     if (!this._elevationLoader) {
       this._elevationLoader = new GSIBV.Map.Util.FooterElevationLoader();
-      //this._elevationLoader = new GSIBV.Map.Util.ElevationLoader();
-
       this._elevationLoader.on("start", MA.bind(function (e) {
         this._setView({ "elevation": "" });
       }, this));
       this._elevationLoader.on("finish", MA.bind(function (e) {
         if (e.params.h != undefined) {
-
           this._setView({
             "elevation": Math.round(e.params.h * 10) / 10 + "m",
             "elevationTarget": e.params.title
           });
         } else {
           this._setView({ "elevation": "" });
-
         }
       }, this));
     }
-
     this._elevationLoader.load(this._map.map, pos);
 
+    if(!this._lakedepthLoader) {
+      this._lakedepthLoader = new GSIBV.Map.Util.LakeDepthLoader();
+      this._lakedepthLoader.on("start", MA.bind(function (e) {
+        this._setLakeDepthView(this._lakedepthLoader.typename, null);
+      }, this));
+      this._lakedepthLoader.on("finish", MA.bind(function (e) {
+        let h = e.params.h !== undefined ? Math.round(e.params.h * 10) / 10 : null;
+        this._setLakeDepthView(this._lakedepthLoader.typename, h);
+      }, this));
+    }
+    this._lakedepthLoader.load(this._map.map, pos);
+
+    if(!this._lakeStdHeightLoader){
+      this._lakeStdHeightLoader = new GSIBV.Map.Util.LakeStdHeightLoader();
+      this._lakeStdHeightLoader.on("start", MA.bind(function (e) {
+        this._setLakeDepthView(this._lakeStdHeightLoader.typename, null);
+      }, this));
+      this._lakeStdHeightLoader.on("finish", MA.bind(function (e) {
+        let h = e.params.h !== undefined ? Math.round(e.params.h * 10) / 10 : null;
+        this._setLakeDepthView(this._lakeStdHeightLoader.typename, h);
+      }, this));
+    }
+    this._lakeStdHeightLoader.load(this._map.map, pos);
+
     this._map.mousePositionControl.latlng = pos;
-
-
   }
 
   _onMapMoveEnd() {
@@ -326,7 +358,6 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
   }
 
   _getPointInfo(pos) {
-
     var map = this._map.map;
 
     var data = {};
@@ -358,10 +389,7 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
     data["lng"] = (Math.round(pos.lng * 1000000) / 1000000).toFixed(6);
     data["zoom"] = (Math.round(map.getZoom() * 100) / 100).toFixed(2);
 
-
-
-    if (!this._seamlessPhotoInfoLoader) {
-      
+    if (!this._seamlessPhotoInfoLoader) {  
       this._seamlessPhotoInfoLoader = new GSIBV.Map.Util.SeamlessPhotoInfoLoader();
       this._seamlessPhotoInfoLoader.on("load", MA.bind(function (e) {
         this._setView({"seamlessphoto":e.params["撮影年月"]});
@@ -378,7 +406,50 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
     this._setView(data);
 
     this._setFeatrues(this._getFeatures(pos));
+  }
 
+  _curMode(){
+    if (MA.DOM.hasClass(this._container, "-ma-expand-full")) return "full";
+    if (MA.DOM.hasClass(this._container, "-ma-expand")) return "mid";
+    return 'min';
+  }
+
+  _updateLakeDepthVisible(enabled){
+    this._lakeDepthVisible = enabled;
+    let lakeDepthContainer = MA.DOM.find(this._container, ".lakedepth")[0];
+    if(lakeDepthContainer) lakeDepthContainer.style.display = this._curMode() == 'full'  && enabled? 'block':'none';
+
+    this._refresh();
+  }
+
+  _setLakeDepthView(typename, h){
+    if(!["lakedepth", "lakestdheight"].includes(typename) || h === undefined) return;
+
+    h = h!==null?h.toFixed(1):undefined;
+    if(typename == "lakedepth"){
+      this._lakeDepth = h;
+    } else {
+      this._lakeStdHeight = h;
+    }
+
+    const strNoData = '------';
+    let strDisplay = ": <lakedepth> (湖底標高: <lakebtmheight>　基準水面標高: <lakestdheight>) "
+
+    strDisplay = strDisplay.replace('<lakedepth>', this._lakeDepth!== undefined?this._lakeDepth + 'm':strNoData);
+    strDisplay = strDisplay.replace('<lakestdheight>', this._lakeStdHeight!== undefined?this._lakeStdHeight + 'm':strNoData);
+
+    this._lakeBtmHeight = undefined;
+    if(this._lakeDepth !== undefined && this._lakeStdHeight !== undefined){
+      try{
+        this._lakeBtmHeight = (parseFloat(this._lakeStdHeight) - parseFloat(this._lakeDepth)).toFixed(1);
+      } catch {}
+    }
+    strDisplay = strDisplay.replace('<lakebtmheight>', this._lakeBtmHeight!== undefined?this._lakeBtmHeight + 'm':strNoData);
+
+    var elem = MA.DOM.find(this._container, ".lakedepth.value")[0];
+    if(elem) elem.innerHTML = strDisplay;
+
+    this._refresh();
   }
 
   _setView(data) {
@@ -421,9 +492,9 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
         elem.innerHTML = "------";
       } else {
         if ( GSIBV.application.lang == "ja") {
-          elem.innerHTML = data["elevation"] + "<span>(データソース" + data["elevationTarget"] + ")</span>";
+          elem.innerHTML = data["elevation"] + " (データソース" + data["elevationTarget"] + ")";
         } else {
-          elem.innerHTML = data["elevation"] + "<span>(Source:" + data["elevationTarget"] + ")</span>";
+          elem.innerHTML = data["elevation"] + " (Source:" + data["elevationTarget"] + ")";
         }
       }
     }
@@ -465,23 +536,18 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
   _refresh() {
     var size = MA.DOM.size(MA.DOM.find(this._container, ".context-menu-content")[0]);
 
-
     if (MA.DOM.hasClass(this._container, "-ma-expand")) {
       this._container.style.height = size.height + "px";
       var control = MA.DOM.select(".mapboxgl-ctrl-bottom-right")[0];
       control.style.bottom = size.height + "px";
       this.fire( "refresh", {height:size.height, buttonHeight:0});
     } else {
-
       this._container.style.marginBottom = '-' + size.height + 'px';
       this._container.style.height = size.height + "px";
       
-    
       size = MA.DOM.size(this._toggleButton);
-
       this.fire( "refresh", {height:0, buttonHeight:size.height});
     }
-
   }
 
   set left(left) {
@@ -505,13 +571,10 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
       } else {
         this._toggleButton.setAttribute("title", HINT["close"] );
       }
-    } catch(ex) {
-
-    }
+    } catch(ex) {}
   }
 
   _onToggleClick() {
-    
     this._featuresFrame.style.visibility = 'hidden';
     if (!MA.DOM.hasClass(this._container, "-ma-expand")) {
       this.show();
@@ -522,25 +585,24 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
       this.hide();
     }
   }
-  show(full) {
 
+  show(full) {
     this._start();
-    
 
     if ( full ) {
       MA.DOM.addClass(this._container, "-ma-expand-full");
 
-      if ( !GSIBV.CONFIG.MOBILE )
-        MA.DOM.find( this._container,".controls")[0].style.display = 'block';
+      if ( !GSIBV.CONFIG.MOBILE )　MA.DOM.find( this._container,".controls")[0].style.display = 'block';
       var trList = MA.DOM.find(this._container, "tr.row");
       for( var i=0; i< trList.length; i++) {
         trList[i].style.display = 'block';
         if ( MA.DOM.hasClass(trList[i],"seamlessphoto") && !this.seamlessphotoVisible) {
           trList[i].style.display = 'none';
+        } else if(!this._lakeDepthVisible && MA.DOM.hasClass(trList[i],"lakedepth")) {
+          trList[i].style.display = 'none';
         }
       }
     } else {
-      
       MA.DOM.removeClass(this._container, "-ma-expand-full");
       MA.DOM.find( this._container,".controls")[0].style.display = 'none';
       var trList = MA.DOM.find(this._container, "tr.row");
@@ -559,21 +621,16 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
     this._container.style.marginBottom = '-' + size.height + 'px';
     this._container.style.height = size.height + "px";
 
-
     MA.DOM.addClass(this._container, "-ma-expand");
     this._container.style.transition = 'margin-bottom 300ms';
     this._container.style.marginBottom = '0px';
 
     var handler = MA.bind(function (e) {
-
-
       this._container.removeEventListener('transitionend', handler);
     }, this);
     this._container.addEventListener('transitionend', handler);
 
     this.fire("show", {height:size.height, buttonHeight:0});
-
-
 
     var control = MA.DOM.select(".mapboxgl-ctrl-bottom-right")[0];
     control.style.transition = "bottom 200ms";
@@ -582,7 +639,6 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
   }
 
   hide() {
-
     this._stop();
     var size = MA.DOM.size(this._container);
 
@@ -600,7 +656,6 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
 
     MA.DOM.removeClass(this._container, "-ma-expand");
 
-    
     var buttonSize = MA.DOM.size(this._toggleButton);
 
     this.fire("hide", {height:0, buttonHeight:buttonSize.height});
@@ -609,7 +664,6 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
     control.style.transition = "bottom 200ms";
     control.style.bottom = 0;
     this._updateHint();
-
   }
 
   

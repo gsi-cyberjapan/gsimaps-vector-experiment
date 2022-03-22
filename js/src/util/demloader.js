@@ -16,6 +16,7 @@ GSIBV.DEMLoader = class extends MA.Class.Base {
     this.options.overZooming = true;
     this.options.useHillshademap = options.useHillshademap;
     this.options.tms = false;
+    this.options.useTileList = options.useTileList;
     
     this._hillshademapUrl= 'https://cyberjapandata.gsi.go.jp/xyz/hillshademap/{z}/{x}/{y}.png';
     if (!GSIBV.DEMLoader.pow2_8) {
