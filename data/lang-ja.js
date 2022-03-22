@@ -2,8 +2,8 @@ if ( !GSIBV.CONFIG.LANG ) GSIBV.CONFIG.LANG = {};
 GSIBV.CONFIG.LANG.JA ={};
 
 GSIBV.CONFIG.LANG.JA.TITLE ={
-  "title" : "地理院地図Vector",
-  "subtitle" : "（試験公開）"
+  "title" : "タイトル",
+  "subtitle" : "（サンプル）"
 };
 
 
@@ -192,7 +192,11 @@ GSIBV.CONFIG.LANG.JA.UI.EDITINPUT = {
 
   
   "selectimage" : "画像を選択",
-  "brighten-the-background" : "画像の背景を明るく"
+  "brighten-the-background" : "画像の背景を明るく",
+
+  "note" : "空欄の場合、前後のズームのサイズを基に自動的に設定されます",
+  "minzoom-prefix" : "ズーム",
+  "minzoom-postfix" : "から表示"
 };
 
 GSIBV.CONFIG.LANG.JA.UI.EDIT.MESSAGE = {
@@ -202,6 +206,7 @@ GSIBV.CONFIG.LANG.JA.UI.EDIT.MESSAGE = {
 GSIBV.CONFIG.LANG.JA.UI.EDIT.LINE = {
   "label.line-visible" : "線を表示",
   ".line-color-title" : "線色",
+  ".line-minzoom-title" : "表示するズーム",
   ".line-width-title" : "線の幅",
   ".line-dasharray-title" : "線の破線",
   ".line-offset-title" : "オフセットの幅",
@@ -252,11 +257,31 @@ GSIBV.CONFIG.LANG.JA.UI.EDIT.FILL = {
 
 GSIBV.CONFIG.LANG.JA.UI.SAKUZU = {};
 GSIBV.CONFIG.LANG.JA.UI.SAKUZU.TOOLBUTTON = {
-  ".controls button.open" : "GeoJSON形式のファイルを開く",
-  ".controls button.save" : "作図情報をGeoJSON形式で保存",
+  ".controls button.open" : "ファイルからデータを読込",
+  ".controls button.save" : "表示している情報をまとめてGISデータとして保存",
   ".controls button.marker" : "点（アイコン）を追加",
+  ".controls button.circlemarker" : "点（円形マーカー）を追加",
   ".controls button.line" : "線を追加",
-  ".controls button.polygon" : "面を追加",
+  ".controls button.polygon" : "面（多角形）を追加",
+  ".controls button.circle" : "面（円）を追加",
+  ".controls button.text" : "テキストを追加",
+  ".controls button.freehand" : "フリーハンドで線を追加",
   ".list-frame li > button.edit" : "作図情報の編集",
+  ".list-frame li > button.opacity" : "透過",
   ".list-frame li > button.remove" : "作図情報の削除"
+};
+
+GSIBV.CONFIG.LANG.JA.UI.SAKUZUSAVEDIALOG = {
+  "title": "ファイル形式を選択して下さい",
+  "ok" : "上記の内容で保存",
+  "cancel" : "戻る"
+};
+
+GSIBV.CONFIG.LANG.JA.UI.MEASURE = {};
+GSIBV.CONFIG.LANG.JA.UI.MEASURE.TOOLBUTTON = {
+  "label.type1" : "指定した地点を結ぶ線分の距離を計測できます",
+  "label.type2" : "指定した地点を囲む多角形の面積を計測できます",
+  "label.type3" : "選択した図形の距離または面積を計測します",
+  "label.type4" : "選択した複数の図形の面積の合計値を表示します",
+  "button.save" : "計測の際に作図した図形を保存できます"
 };

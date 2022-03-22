@@ -172,7 +172,10 @@ GSIBV.CONFIG.LANG.EN.UI.EDITINPUT = {
 
 
   "selectimage" : "select image",
-  "brighten-the-background" : "Brighten the background"
+  "brighten-the-background" : "Brighten the background",
+  "note" : "The value of blank items will be filled automatically, based on the zoom size of neighbour ones",
+  "minzoom-prefix": "display from zoom",
+  "minzoom-postfix": ""
 };
 
 GSIBV.CONFIG.LANG.EN.UI.EDIT.MESSAGE = {
@@ -182,6 +185,7 @@ GSIBV.CONFIG.LANG.EN.UI.EDIT.MESSAGE = {
 GSIBV.CONFIG.LANG.EN.UI.EDIT.LINE = {
   "label.line-visible" : "line-visible",
   ".line-color-title" : "line-color",
+  ".line-minzoom-title" : "line-minzoom",
   ".line-width-title" : "line-width",
   ".line-dasharray-title" : "line-dasharray",
   ".line-offset-title" : "line-offset",
@@ -526,4 +530,9 @@ GSIBV.CONFIG.LANG.EN.VECTORTILE = {
   "サービスエリア": "service area",
   "パーキングエリア": "Parking area",
   "スマートインターチェンジ": "Smart-change"
+};
+GSIBV.CONFIG.LANG.EN.UI.SAKUZUSAVEDIALOG = {
+  "title": "Select type",
+  "ok" : "OK",
+  "cancel" : "Cancel"
 };
