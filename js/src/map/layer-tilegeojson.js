@@ -946,6 +946,9 @@ GSIBV.Map.Layer.TileGeoJSON = class extends GSIBV.Map.Layer {
     var minZoom = minmaxdata.minzoom;
     var maxZoom = minmaxdata.maxzoom;
 
+    var curZoomFloor = Math.floor(this._map.map.getZoom());
+    if(minZoom == 18 && curZoomFloor == 17) minZoom = curZoomFloor;
+
     tile.layers = [];
     tile.layers.push({
       "id": this.mapid + "-" + tile.id + "-fill",
