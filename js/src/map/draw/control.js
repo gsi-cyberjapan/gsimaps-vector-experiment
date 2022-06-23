@@ -726,6 +726,13 @@ GSIBV.Map.Draw.Control.FeatureSelector.Item = class extends MA.Class.Base {
     this._container.style.width = pixBounds.width + "px";
     this._container.style.top = pixBounds.top + "px";
     this._container.style.height = pixBounds.height + "px";
+    if(this._noEdit){
+      this._buttonContainer.style.left = pixBounds.right - pixBounds.width/2 - 13 - 3 + "px";
+      this._buttonContainer.style.top = pixBounds.top + pixBounds.height/2 - 12 + 3 + "px";
+    } else {
+      this._buttonContainer.style.left = pixBounds.right - 52 - 3 + "px";
+      this._buttonContainer.style.top = pixBounds.top + 3 + "px";
+    }
   }
   
   
@@ -756,8 +763,6 @@ GSIBV.Map.Draw.Control.FeatureSelector.Item = class extends MA.Class.Base {
     this._buttonContainer.style.display = "none";
     this._buttonContainer.style.width = this._noEdit ? "26px" : "52px";
     this._buttonContainer.style.height = "24px";
-    this._buttonContainer.style.top = "3px";
-    this._buttonContainer.style.right = "3px";
     this._buttonContainer.style.zIndex = 1;
 
     var createButton = function() {
@@ -774,13 +779,6 @@ GSIBV.Map.Draw.Control.FeatureSelector.Item = class extends MA.Class.Base {
     removeButton.style.right = "0px";
     removeButton.style.backgroundImage ="url(./image/sakuzu/icon_remove.png)";
     MA.DOM.on( removeButton, "click", MA.bind( this._onRemoveClick, this ) );
-    
-    if(this._noEdit){
-      removeButton.style.bottom = "12px";
-      removeButton.style.left = "12px";
-      this._buttonContainer.style.top = "50%";
-      this._buttonContainer.style.right = "50%";
-    }
 
     this._buttonContainer.appendChild( removeButton );
     if(!this._noEdit){
@@ -793,7 +791,9 @@ GSIBV.Map.Draw.Control.FeatureSelector.Item = class extends MA.Class.Base {
 
 
 
-    this._container.appendChild(this._buttonContainer);
+    //this._container.appendChild(this._buttonContainer);
+    var canvasContainer = this._map.map.getCanvasContainer();
+    canvasContainer.appendChild(this._buttonContainer);
   }
 
   destroy() {
