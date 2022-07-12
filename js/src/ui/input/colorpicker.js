@@ -145,6 +145,9 @@ GSIBV.UI.ColorPicker = class extends MA.Class.Base {
     }
 
     MA.DOM.fadeIn( this._container, 300);
+
+    $(this._container).draggable({cancel: ".-gsibv-colorpicker>div"});
+
     return baseLine;
   }
 
@@ -221,7 +224,6 @@ GSIBV.UI.ColorPicker = class extends MA.Class.Base {
       MA.DOM.addClass(this._clearButton,"clear-button");
       this._container .appendChild( this._clearButton);
     }
-
   }
 
   _createColorSVSelect(hsv) {
@@ -358,6 +360,7 @@ GSIBV.UI.ColorPicker = class extends MA.Class.Base {
 
     var frame = MA.DOM.create("div");
     frame.style.position = "absolute";
+    frame.style.width = 220 + "px";
     frame.style.height = 12 + "px";
     frame.style.right = 5 + "px";
     frame.style.left = 5 + "px";
