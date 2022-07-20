@@ -204,7 +204,7 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
       }, this));
       this._elevationLoader.start(this._map.map);
 
-      this._lakedepthLoader = new GSIBV.Map.Util.LakeDepthLoader();
+      this._lakedepthLoader = new GSIBV.Map.Util.LakeDepthLoader({"visibility": this._lakeDepthVisible});
       this._lakedepthLoader.on("start", MA.bind(function (e) {
         this._setLakeDepthView(this._lakedepthLoader.typename, null);
       }, this));
@@ -214,7 +214,7 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
       }, this));
       this._lakedepthLoader.start(this._map.map);
 
-      this._lakeStdHeightLoader = new GSIBV.Map.Util.LakeStdHeightLoader();
+      this._lakeStdHeightLoader = new GSIBV.Map.Util.LakeStdHeightLoader({"visibility": this._lakeDepthVisible});
       this._lakeStdHeightLoader.on("start", MA.bind(function (e) {
         this._setLakeDepthView(this._lakeStdHeightLoader.typename, null);
       }, this));
@@ -327,7 +327,7 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
     this._elevationLoader.load(this._map.map, pos);
 
     if(!this._lakedepthLoader) {
-      this._lakedepthLoader = new GSIBV.Map.Util.LakeDepthLoader();
+      this._lakedepthLoader = new GSIBV.Map.Util.LakeDepthLoader({"visibility": this._lakeDepthVisible});
       this._lakedepthLoader.on("start", MA.bind(function (e) {
         this._setLakeDepthView(this._lakedepthLoader.typename, null);
       }, this));
@@ -336,10 +336,9 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
         this._setLakeDepthView(this._lakedepthLoader.typename, h);
       }, this));
     }
-    this._lakedepthLoader.load(this._map.map, pos);
-
+    
     if(!this._lakeStdHeightLoader){
-      this._lakeStdHeightLoader = new GSIBV.Map.Util.LakeStdHeightLoader();
+      this._lakeStdHeightLoader = new GSIBV.Map.Util.LakeStdHeightLoader({"visibility": this._lakeDepthVisible});
       this._lakeStdHeightLoader.on("start", MA.bind(function (e) {
         this._setLakeDepthView(this._lakeStdHeightLoader.typename, null);
       }, this));
@@ -348,7 +347,12 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
         this._setLakeDepthView(this._lakeStdHeightLoader.typename, h);
       }, this));
     }
-    this._lakeStdHeightLoader.load(this._map.map, pos);
+
+    if(this._lakeDepthVisible)
+    {
+      this._lakedepthLoader.load(this._map.map, pos);
+      this._lakeStdHeightLoader.load(this._map.map, pos);
+    }
 
     this._map.mousePositionControl.latlng = pos;
   }
@@ -416,6 +420,9 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
 
   _updateLakeDepthVisible(enabled){
     this._lakeDepthVisible = enabled;
+    if(this._lakedepthLoader) this._lakedepthLoader.visibility = enabled;
+    if(this._lakeStdHeightLoader) this._lakeStdHeightLoader.visibility = enabled;
+
     let lakeDepthContainer = MA.DOM.find(this._container, ".lakedepth")[0];
     if(lakeDepthContainer) lakeDepthContainer.style.display = this._curMode() == 'full'  && enabled? 'block':'none';
 
