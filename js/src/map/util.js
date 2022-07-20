@@ -455,7 +455,12 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
     super();
     this._initUrlList();
     this._initUtils();
+    this._visibility = true;
     this._typename = 'elevation'
+  }
+
+  set visibility(val){
+    this._visibility = val;
   }
 
   get typename(){
@@ -640,7 +645,7 @@ GSIBV.Map.Util.ElevationLoader = class extends MA.Class.Base {
     if (this._current != current) return;
 
     var url = this._parseValidUrl(valueError);
-    if(!url) {
+    if(!this._visibility || !url) {
       this.fire("finish", {
         h: undefined,
         pos: current.pos
@@ -807,9 +812,13 @@ GSIBV.Map.Util.FooterElevationLoader = class extends GSIBV.Map.Util.ElevationLoa
 GSIBV.Map.Util.LakeDataLoader = class extends GSIBV.Map.Util.ElevationLoader{
   constructor(options) {
     super();
-    this._typename = 'elevation'
+    this._typename = 'elevation';
+    this._visibility = false;
+    if(options && options["visibility"]){
+      this.visibility = options["visibility"];
+    }
   }
-
+ 
   _initUrlList() {
     this._demUrlList = [];
   }
@@ -842,7 +851,7 @@ GSIBV.Map.Util.LakeDataLoader = class extends GSIBV.Map.Util.ElevationLoader{
 ************************************************************************/
 GSIBV.Map.Util.LakeDepthLoader = class extends GSIBV.Map.Util.LakeDataLoader{
   constructor(options) {
-    super();
+    super(options);
     this._typename = 'lakedepth';
   }
 
@@ -865,7 +874,7 @@ GSIBV.Map.Util.LakeDepthLoader = class extends GSIBV.Map.Util.LakeDataLoader{
 ************************************************************************/
 GSIBV.Map.Util.LakeStdHeightLoader = class extends GSIBV.Map.Util.LakeDataLoader{
   constructor(options) {
-    super();
+    super(options);
     this._typename = 'lakestdheight';
   }
 
