@@ -127,7 +127,10 @@ GSIBV.UI.DisplayLayerListView = class extends GSIBV.UI.Base {
   _onLayerAdd(e) {
     if ( e.params.reason != "replace" && e.params.layer instanceof GSIBV.Map.Layer.FreeRelief) {
       // 表示時以外、ユーザーの追加操作の場合のみ
-      this._onReliefEditButtonClick();
+      if (!this._freeReliefDialog){
+        //設定画面を先に開いていると閉じてしまうので、画面の有無判定を追加
+        this._onReliefEditButtonClick();
+      }
     }
 
     if ( e.params.layer.isBackground ) return;
@@ -599,10 +602,13 @@ GSIBV.UI.DisplayLayerListView = class extends GSIBV.UI.Base {
     }
   }
 
-  _onfreeReliefDialogShow() {
+  _onfreeReliefDialogShow(layer) {
     if ( !this._freeReliefDialog ) {
       this._freeReliefDialog = new GSIBV.UI.Dialog.FreeRelief(this._map);
+      this._freeReliefDialog.on('committomap', MA.bind(this.getReliefFreeItem, this));
+      this._freeReliefDialog.on('selectitem', MA.bind(this.selectReliefFreeItem, this));
     }
+    this._freeReliefDialog.setCurrent(layer);
     this._freeReliefDialog.show();
     this._freeReliefDialog.setbutVisible = true;
   }
@@ -657,5 +663,25 @@ GSIBV.UI.DisplayLayerListView = class extends GSIBV.UI.Base {
     }
   }
 
+  getReliefFreeItem(layer) {
+    if (layer.params.layer && layer.params.layer.visible == true){
+      return;
+    }
+    var liList = MA.DOM.find( this._ulElement, "li");
 
+    for(var i = 0; i < liList.length; i++){
+      if (liList[i]._layer._id == "relief_free"){
+        this._onLayerVisibleButtonClick(liList[i], layer.params.layer);
+      }
+    }
+
+  }
+
+  selectReliefFreeItem(layer){
+    if (!layer.params.layer){
+      return;
+    }
+
+    GSIBV.application._layerTreeDialog.fire("select", {"layerInfo": layer.params.layer});
+  }
 }
