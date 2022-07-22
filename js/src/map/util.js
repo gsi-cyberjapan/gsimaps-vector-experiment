@@ -861,7 +861,7 @@ GSIBV.Map.Util.LakeDepthLoader = class extends GSIBV.Map.Util.LakeDataLoader{
         "title": "",
         "url": "https://cyberjapandata.gsi.go.jp/xyz/lakedepth/{z}/{x}/{y}.png",
         "minzoom": 14,
-        "maxzoom": 20,
+        "maxzoom": 14,
         "fixed": 1
       }
     ];
@@ -884,7 +884,7 @@ GSIBV.Map.Util.LakeStdHeightLoader = class extends GSIBV.Map.Util.LakeDataLoader
         "title": "",
         "url": "https://cyberjapandata.gsi.go.jp/xyz/lakedepth_standard/{z}/{x}/{y}.png",
         "minzoom": 14,
-        "maxzoom": 20,
+        "maxzoom": 14,
         "fixed": 1
       }
     ];
