@@ -193,7 +193,7 @@ GSIBV.UI.Dialog.LayerTree = class extends GSIBV.UI.Dialog.Modeless {
           MA.DOM.addClass(toolButton,"setting_btn");
           li.appendChild(toolButton);
           a.style.marginRight = "48px"
-          MA.DOM.on( toolButton, "click", MA.bind( GSIBV.UI.DisplayLayerListView.prototype._onfreeReliefDialogShow, GSIBV.application._leftPanel._displayLayerListView));
+          MA.DOM.on( toolButton, "click", MA.bind( GSIBV.UI.DisplayLayerListView.prototype._onfreeReliefDialogShow, GSIBV.application._leftPanel._displayLayerListView, item));
         }
 
         if ( item.area ) {

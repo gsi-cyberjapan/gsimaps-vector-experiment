@@ -10,6 +10,9 @@ GSIBV.UI.Dialog.FreeRelief = class extends GSIBV.UI.Dialog.Modeless {
     this._position = {left:242,top:64};
     this._resizable = true;
     this._current = null;
+
+    this._reliefItem = null;
+
     // カラーパターンのhtmlカラーをRGBに
     for( var i=0; i<GSIBV.CONFIG.FREERELIEF_COLORPATTERNS.length; i++ ) {
       var pattern = GSIBV.CONFIG.FREERELIEF_COLORPATTERNS[i];
@@ -384,6 +387,22 @@ GSIBV.UI.Dialog.FreeRelief = class extends GSIBV.UI.Dialog.Modeless {
     var data = this._makeElevationData();
     this._data = data;
     GSIBV.Map.Layer.FreeRelief.DataManager.instance.data = this._data;
+
+    var fr = null;
+
+    for(var i = 0; i < this._map._layerList._list.length; i++){
+      if (this._map._layerList._list[i]._id == "relief_free"){
+        fr = this._map._layerList._list[i];
+        break;
+      }
+    }
+    if (fr == null){
+      //layerListに無い時は保持しているレイヤを選択状態にする
+      this.fire("selectitem", {layer: this._reliefItem});
+    }
+    else{
+      this.fire('committomap', {layer: fr});
+    }
   }
 
 
@@ -2052,6 +2071,10 @@ GSIBV.UI.Dialog.FreeRelief = class extends GSIBV.UI.Dialog.Modeless {
     return colors;
   }
 
+  setCurrent(layer){
+    //選択する為にレイヤを保持しておく
+    this._reliefItem = layer;
+  }
 
 };
 
