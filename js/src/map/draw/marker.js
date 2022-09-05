@@ -178,7 +178,7 @@ GSIBV.Map.Draw.Marker.Style = class extends GSIBV.Map.Draw.Feature.Style{
   }
 
   setJSON(properties) {
-    if ( properties["_iconUrl"] != undefined ) {
+    if ( properties["_iconUrl"] != undefined && properties["_iconUrl"] != "") {
       this.iconUrl = properties["_iconUrl"];
     } 
     if ( properties["_iconSize"] != undefined ) {
