@@ -799,7 +799,7 @@ GSIBV.Map.Util.FooterElevationLoader = class extends GSIBV.Map.Util.ElevationLoa
     
     var url = this._current.urlList.shift();
     if (valueError && url.title=="DEMGM") return null;
-    if (this._map.getZoom() > url.zoom && url.title=="DEMGM") return null;
+    if (!this._map || (this._map.getZoom() > url.zoom && url.title=="DEMGM")) return null;
     
     return url;
   }
@@ -828,7 +828,7 @@ GSIBV.Map.Util.LakeDataLoader = class extends GSIBV.Map.Util.ElevationLoader{
     
     var url = this._current.urlList.shift();
     if (valueError) return null;
-    if (this._map.getZoom() > url.zoom) return null;
+    if (!this._map || this._map.getZoom() > url.zoom) return null;
 
     return url;
   }
@@ -842,6 +842,21 @@ GSIBV.Map.Util.LakeDataLoader = class extends GSIBV.Map.Util.ElevationLoader{
     result = result.replace("{y}", tileInfo.y);
     result = result.replace("{z}", '14');
     return result;
+  }
+  
+  _makeUrlList() {
+    //request for only once
+    var list = [];
+    for (var i = 0; i < this._demUrlList.length; i++) {
+      var demUrl = this._demUrlList[i];
+      list.push({
+        "title": demUrl.title,
+        "zoom": 18,
+        "url": demUrl.url,
+        "fixed": demUrl.fixed
+      });
+    }
+    return list;
   }
 }
 
