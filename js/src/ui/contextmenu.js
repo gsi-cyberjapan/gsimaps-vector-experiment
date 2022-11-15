@@ -168,6 +168,10 @@ GSIBV.UI.ContextMenu = class extends GSIBV.UI.Base {
     const lakeDepthLayer = this._layerList.find({id:"lakedata"});
     const lakeDepthVisible = lakeDepthLayer /*&& lakeDepthLayer.visible*/ ? true : false;
     if(lakeDepthVisible !== this._lakeDepthVisible) this._updateLakeDepthVisible(lakeDepthVisible);
+    if(lakeDepthVisible) {
+      this._stop();
+      this._start();
+    }
   }
 
   _start() {
