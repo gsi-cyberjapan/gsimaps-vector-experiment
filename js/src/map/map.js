@@ -922,18 +922,31 @@ GSIBV.Map = class extends MA.Class.Base {
     const mapCanvas = this._map.getCanvas();
     const mapImage = new Image();
 
+    const dpr = window.devicePixelRatio;
+
     const width = mapCanvas.clientWidth;
     const height = mapCanvas.clientHeight;
     
     const canvas = MA.DOM.create("canvas");
 
+    var dprLeft = 0;
+    var dprTop = 0;
+    var dprWidth = 0;
+    var dprHeight = 0;
 
     if ( options.data ) {
+      dprLeft = options.data.left * dpr;
+      dprTop = options.data.top * dpr;
+      dprWidth = options.data.width * dpr;
+      dprHeight = options.data.height * dpr;
+
       canvas.width = options.data.width;
       canvas.height = options.data.height;
     } else {
       canvas.width = width;
       canvas.height = height;
+      dprWidth = width * dpr;
+      dprHeight = height * dpr;
     }
 
     const ctx = canvas.getContext("2d");
@@ -948,10 +961,10 @@ GSIBV.Map = class extends MA.Class.Base {
       if ( options.data ) {
         console.log( options.data );
         ctx.drawImage(mapImage,
-          options.data.left, options.data.top, options.data.width, options.data.height, 
+          dprLeft, dprTop, dprWidth, dprHeight, 
           0,0, options.data.width, options.data.height );
       } else {
-        ctx.drawImage(mapImage, 0, 0);
+        ctx.drawImage(mapImage, 0, 0, dprWidth, dprHeight, 0, 0, width, height);
       }
 
       // 地理院地図ロゴ
