@@ -8,6 +8,7 @@ function dslorethumbnail_click(list) {
   names["Address"]="所在地";
   names["DisasterInfo"] = "伝承内容";
   names["Image"]="概要";
+  names["Limitations"] = "制限事項";
 
   var title = "";
   var id = "";
