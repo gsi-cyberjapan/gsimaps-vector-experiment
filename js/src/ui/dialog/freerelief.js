@@ -133,7 +133,7 @@ GSIBV.UI.Dialog.FreeRelief = class extends GSIBV.UI.Dialog.Modeless {
     // 凡例保存
     var saveHanreiButton = MA.DOM.create("button");
     //saveHanreiButton.innerHTML = "凡例保存";
-    saveHanreiButton.setAttribute("title","判例を画像として保存します");
+    saveHanreiButton.setAttribute("title","凡例を画像として保存します");
     MA.DOM.addClass(saveHanreiButton, "save-hanrei");
     container.appendChild( saveHanreiButton );
     MA.DOM.on(saveHanreiButton,"click", MA.bind(this._onSaveHanrei,this));
