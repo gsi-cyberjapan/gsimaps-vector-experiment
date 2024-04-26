@@ -1,4 +1,4 @@
-# 地理院地図Vector（仮称）提供実験
+# 地理院地図Vector提供実験
 
 ## ベクトルタイルの仕様
 本提供実験によるベクトルタイルは、[地理院タイル（ラスタ）](http://maps.gsi.go.jp/development/siyou.html)と同じ方式で配信します。
@@ -57,9 +57,9 @@
 ## style.json
 * 地図のデザインを規定しているファイル。[Style Specification](https://docs.mapbox.com/mapbox-gl-js/style-spec/)をベースにしたうえで、若干の拡張を施しています。
 * 仕様については、以下のファイルからご確認いただけます。
-  * [地理院地図Vector（仮称） style.jsonの仕様](https://maps.gsi.go.jp/help/pdf/vector/stylespec.pdf)
+  * [地理院地図Vector style.jsonの仕様](https://maps.gsi.go.jp/help/pdf/vector/stylespec.pdf)
 
-  ※地理院地図Vector（仮称） style.jsonの仕様は検討中のものであり、今後変更する可能性があります。
+  ※地理院地図Vector style.jsonの仕様は検討中のものであり、今後変更する可能性があります。
 	
 * 2020年3月19日現在の地理院地図Vector「おすすめの地図」から閲覧できるstyle.jsonは下表のとおりです。
 * 下表のリンクを右クリックし、「名前をつけて保存」からダウンロードすることができます。
@@ -86,7 +86,7 @@
 * この他、[地理院地図](https://maps.gsi.go.jp)の「標準地図」にできる限り表現を近づけたstyle.jsonは下記リンクからダウンロードできます。このファイルも、「地図デザインの追加」-「地図デザインファイルを開く」から読み込むことができますが、初期表示に長い時間がかかりますので、ご注意ください。
   * [地理院地図の「標準地図」にできる限り表現を近づけたstyle.json](https://maps.gsi.go.jp/vector/data/std3.json)
 
-## 地理院地図Vector（仮称）
+## 地理院地図Vector
 - 地理院地図Vector（国土地理院が運営しているもの）：https://maps.gsi.go.jp/vector/
 - 地理院地図Vector（本レポジトリを用いたデモ）：https://gsi-cyberjapan.github.io/gsimaps-vector-experiment/
 - 地理院地図Vectorは、[Mapbox GL JS](https://github.com/mapbox/mapbox-gl-js)をベースに構築されています。
