@@ -112646,7 +112646,8 @@
 									"type": "symbol",
 									"source-layer": "elevation",
 									"info": {
-										"text-field": "alti"
+										"text-field": "alti",
+										"text-field-round":1
 									},
 									"draw": {
 										"text-color": "rgba(0,0,0,1)",
