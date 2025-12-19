@@ -755,6 +755,14 @@ GSIBV.CONFIG.HANREILIST = {
       "maxZoom": 16
     }
   },
+  "vlcd_akitayake": {
+    "url": "https://maps.gsi.go.jp/xyz/vlcd_akitayake/vlcd_akitayake.csv",
+    "layer": {
+      "url": "https://maps.gsi.go.jp/xyz/vlcd_akitayake/{z}/{x}/{y}.png",
+      "minZoom": 10,
+      "maxZoom": 16
+    }
+  },
   "vlcd_iwate": {
     "url": "https://maps.gsi.go.jp/xyz/vlcd_iwate/vlcd_iwate.csv",
     "layer": {
@@ -771,10 +779,26 @@ GSIBV.CONFIG.HANREILIST = {
       "maxZoom": 16
     }
   },
+  "vlcd_chokai": {
+    "url": "https://maps.gsi.go.jp/xyz/vlcd_chokai/vlcd_chokai.csv",
+    "layer": {
+      "url": "https://maps.gsi.go.jp/xyz/vlcd_chokai/{z}/{x}/{y}.png",
+      "minZoom": 10,
+      "maxZoom": 16
+    }
+  },
   "vlcd_kurikoma": {
     "url": "https://maps.gsi.go.jp/xyz/vlcd_kurikoma/vlcd_kurikoma.csv",
     "layer": {
       "url": "https://maps.gsi.go.jp/xyz/vlcd_kurikoma/{z}/{x}/{y}.png",
+      "minZoom": 10,
+      "maxZoom": 16
+    }
+  },
+  "vlcd_zao": {
+    "url": "https://maps.gsi.go.jp/xyz/vlcd_zao/vlcd_zao.csv",
+    "layer": {
+      "url": "https://maps.gsi.go.jp/xyz/vlcd_zao/{z}/{x}/{y}.png",
       "minZoom": 10,
       "maxZoom": 16
     }
@@ -787,10 +811,26 @@ GSIBV.CONFIG.HANREILIST = {
       "maxZoom": 16
     }
   },
+  "vlcd_niigatayake": {
+    "url": "https://maps.gsi.go.jp/xyz/vlcd_niigatayake/vlcd_niigatayake.csv",
+    "layer": {
+      "url": "https://maps.gsi.go.jp/xyz/vlcd_niigatayake/{z}/{x}/{y}.png",
+      "minZoom": 10,
+      "maxZoom": 16
+    }
+  },
   "vlcd_bandai": {
     "url": "https://maps.gsi.go.jp/xyz/vlcd_bandai/vlcd_bandai.csv",
     "layer": {
       "url": "https://maps.gsi.go.jp/xyz/vlcd_bandai/{z}/{x}/{y}.png",
+      "minZoom": 10,
+      "maxZoom": 16
+    }
+  },
+  "vlcd_nks": {
+    "url": "https://maps.gsi.go.jp/xyz/vlcd_nks/vlcd_nks.csv",
+    "layer": {
+      "url": "https://maps.gsi.go.jp/xyz/vlcd_nks/{z}/{x}/{y}.png",
       "minZoom": 10,
       "maxZoom": 16
     }
@@ -811,10 +851,18 @@ GSIBV.CONFIG.HANREILIST = {
       "maxZoom": 16
     }
   },
-  "vlcd_niigatayake": {
-    "url": "https://maps.gsi.go.jp/xyz/vlcd_niigatayake/vlcd_niigatayake.csv",
+    "vlcd_mdg": {
+    "url": "https://maps.gsi.go.jp/xyz/vlcd_mdg/vlcd_mdg.csv",
     "layer": {
-      "url": "https://maps.gsi.go.jp/xyz/vlcd_niigatayake/{z}/{x}/{y}.png",
+      "url": "https://maps.gsi.go.jp/xyz/vlcd_mdg/{z}/{x}/{y}.png",
+      "minZoom": 10,
+      "maxZoom": 16
+    }
+  },
+    "vlcd_yakedake": {
+    "url": "https://maps.gsi.go.jp/xyz/vlcd_yakedake/vlcd_yakedake.csv",
+    "layer": {
+      "url": "https://maps.gsi.go.jp/xyz/vlcd_yakedake/{z}/{x}/{y}.png",
       "minZoom": 10,
       "maxZoom": 16
     }
@@ -855,6 +903,14 @@ GSIBV.CONFIG.HANREILIST = {
     "url": "https://maps.gsi.go.jp/xyz/vlcd_miyake/vlcd_miyake.csv",
     "layer": {
       "url": "https://maps.gsi.go.jp/xyz/vlcd_miyake/{z}/{x}/{y}.png",
+      "minZoom": 10,
+      "maxZoom": 16
+    }
+  },
+  "vlcd_koz": {
+    "url": "https://maps.gsi.go.jp/xyz/vlcd_koz/vlcd_koz.csv",
+    "layer": {
+      "url": "https://maps.gsi.go.jp/xyz/vlcd_koz/{z}/{x}/{y}.png",
       "minZoom": 10,
       "maxZoom": 16
     }
@@ -927,14 +983,6 @@ GSIBV.CONFIG.HANREILIST = {
     "url": "https://maps.gsi.go.jp/xyz/vlcd_suwanosejima/vlcd_suwanosejima.csv",
     "layer": {
       "url": "https://maps.gsi.go.jp/xyz/vlcd_suwanosejima/{z}/{x}/{y}.png",
-      "minZoom": 10,
-      "maxZoom": 16
-    }
-  },
-  "vlcd_akitayake": {
-    "url": "https://maps.gsi.go.jp/xyz/vlcd_akitayake/vlcd_akitayake.csv",
-    "layer": {
-      "url": "https://maps.gsi.go.jp/xyz/vlcd_akitayake/{z}/{x}/{y}.png",
       "minZoom": 10,
       "maxZoom": 16
     }
