@@ -685,7 +685,7 @@ GSIBV.CONFIG.CONFIRM_LAYERS = {
 GSIBV.CONFIG.SKHBMESSAGE = 
 '<div class="evac_dialog_content">最新の状況などは当該市町村にご確認ください。<br>' 
  + '<a href="http://www.gsi.go.jp/bousaichiri/hinanbasho.html" target="blank">「指定緊急避難場所」について</a>'
- + '　<a href="https://hinan.gsi.go.jp/hinanjocjp/hinanbasho/koukaidate.html" target="blank">市町村別公開日・更新日一覧</a>'
+ + '　<a href="https://hinanmap.gsi.go.jp/index.html" target="blank">市町村別公開日・更新日一覧</a>'
   + '</div>';
 
 
